@@ -1,18 +1,26 @@
+import { promises as fs } from 'fs';
 import React from 'react';
 import Link from 'next/link';
 
-export default function registerPage() {
+
+export default async function registerPage() {
+    const file = await fs.readFile(process.cwd() + '/src/app/database/userLogins.json', 'utf8');
+    const data = JSON.parse(file);
+    console.log(data);
+    
+  
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
         <h1 className="text-3xl font-bold text-center text-gray-700">Register</h1>
         <form className="mt-6">
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-800">
+            <label htmlFor="username" className="block text-sm font-semibold text-gray-800">
               Username
             </label>
             <input
-              type="text"
+              type="text" id="username" autoComplete="username"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
@@ -21,7 +29,7 @@ export default function registerPage() {
               Password
             </label>
             <input
-              type="password"
+              type="password" id="password" autoComplete="current-password"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
@@ -33,7 +41,7 @@ export default function registerPage() {
               Confirm Password
             </label>
             <input
-              type="repeatPassword"
+              type="password" id="repeatPassword" autoComplete='current-password'
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>

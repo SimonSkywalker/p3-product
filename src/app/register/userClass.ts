@@ -1,40 +1,45 @@
 class User{
     
-    private _username: string;
+    private _username: String;
     
-    private _password: string;
+    private _password: String;
     
-    private _displayName: string;
+    private _displayName: String;
     
     
-    constructor(username:string,password:string){
+    constructor(username:String,password:String){
         this._username = username;
         this._password = password;
         this._displayName = username;
     }
     
-    public get username(): string {
+    public get username(): String {
         return this._username;
     }
-    public set username(value: string) {
+    public set username(value: String) {
         this._username = value;
     }
     
-    public get password(): string {
+    public get password(): String {
         return this._password;
     }
-    public set password(value: string) {
+    public set password(value: String) {
         this._password = value;
     }
 
-    public get displayName(): string {
+    public get displayName(): String {
         return this._displayName;
     }
-    public set displayName(value: string) {
+    public set displayName(value: String) {
         this._displayName = value;
     }
     
     public createUser(){
+        //const res = fetch()
         
+    }
+
+    public deleteUser(){
+
     }
 }
