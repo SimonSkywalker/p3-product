@@ -1,3 +1,5 @@
+import { promises as fs } from "fs";
+
 class User{
     
     private _username: String;
@@ -34,9 +36,9 @@ class User{
         this._displayName = value;
     }
     
-    public createUser(){
-        //const res = fetch()
-        
+    public async createUser(){
+        const file = await fs.readFile(process.cwd() + '/app/data.json', 'utf8');
+        const data = JSON.parse(file);
     }
 
     public deleteUser(){

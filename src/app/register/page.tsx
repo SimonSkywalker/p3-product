@@ -1,15 +1,8 @@
-import { promises as fs } from 'fs';
 import React from 'react';
 import Link from 'next/link';
 
 
 export default async function registerPage() {
-    const file = await fs.readFile(process.cwd() + '/src/app/database/userLogins.json', 'utf8');
-    const data = JSON.parse(file);
-    console.log(data);
-    
-  
-
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
