@@ -12,10 +12,10 @@ export default function loginPage() {
               htmlFor="email"
               className="block text-sm font-semibold text-gray-800"
             >
-              Email
+              Username
             </label>
             <input
-              type="email"
+              type="text"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
@@ -40,10 +40,7 @@ export default function loginPage() {
 
         <p className="mt-4 text-sm text-center text-gray-700">
           Don't have an account?{" "}
-          <Link
-            href="/register"
-            className="font-medium text-blue-600 hover:underline"
-          >
+          <Link href="/register" className="font-medium text-blue-600 hover:underline">
             Sign up
           </Link>
         </p>

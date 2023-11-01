@@ -8,22 +8,16 @@ export default function registerPage() {
         <h1 className="text-3xl font-bold text-center text-gray-700">Register</h1>
         <form className="mt-6">
           <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-gray-800"
-            >
-              Email
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-800">
+              Username
             </label>
             <input
-              type="email"
+              type="text"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <div className="mb-2">
-            <label
-              htmlFor="password"
-              className="block text-sm font-semibold text-gray-800"
-            >
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-800">
               Password
             </label>
             <input
@@ -54,8 +48,7 @@ export default function registerPage() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-medium text-blue-600 hover:underline"
-          >
+            className="font-medium text-blue-600 hover:underline">
             Log in
           </Link>
         </p>
