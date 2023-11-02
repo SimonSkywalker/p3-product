@@ -1,4 +1,4 @@
-export default function ProductDetail({
+export default function Form({
   params,
 }: {
   params: { form: string; formId: string };
