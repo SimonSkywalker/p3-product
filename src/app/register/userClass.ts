@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 
-class User{
+export class User{
     
     private _username: String;
     
@@ -36,9 +36,15 @@ class User{
         this._displayName = value;
     }
     
-    public async createUser(){
+    public static async getData(){
         const file = await fs.readFile(process.cwd() + '/app/data.json', 'utf8');
         const data = JSON.parse(file);
+        console.log(data);
+        
+    }
+
+    public createUser(){
+        
     }
 
     public deleteUser(){

@@ -1,8 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
+import Button from './registerButton';
 
 
-export default async function registerPage() {
+
+
+export default function registerPage() {
+  
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
@@ -39,9 +43,9 @@ export default async function registerPage() {
             />
           </div>
           <div className="mt-2">
-            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
-              Register
-            </button>
+
+          <Button></Button>
+
           </div>
         </form>
 
@@ -51,7 +55,7 @@ export default async function registerPage() {
             href="/login"
             className="font-medium text-blue-600 hover:underline">
             Log in
-          </Link>
+            </Link>
         </p>
       </div>
     </div>
