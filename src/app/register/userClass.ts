@@ -1,4 +1,8 @@
-import { promises as fs } from "fs";
+import userList from '@/app/database/userLogins.json'
+
+
+
+
 
 export class User{
     
@@ -35,19 +39,39 @@ export class User{
     public set displayName(value: String) {
         this._displayName = value;
     }
-    
-    public static async getData(){
-        const file = await fs.readFile(process.cwd() + '/app/data.json', 'utf8');
-        const data = JSON.parse(file);
-        console.log(data);
+        /**
+     * findDuplicate
+        list: list     */
+    public isDuplicate(list: typeof userList):boolean {
         
+        list.forEach(user => {
+            if(user.Username == this.username){
+                return true;
+            }
+        })
+        
+        return false
     }
 
     public createUser(){
+
+        if(this.isDuplicate(userList)){
+            throw Error('this user exist')
+        }
+        console.log('you good');
+        
         
     }
 
     public deleteUser(){
 
     }
+
+    public static main(username: String, password:String){
+        let u:User = new User(username, password);
+        u.createUser;
+    }
+
 }
+
+
