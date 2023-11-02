@@ -28,6 +28,4 @@ class Project{
     public set logo(value: String) {
         this._logo = value;
     }
-
-    
 }

@@ -6,7 +6,7 @@ export default function Home() {
     <main>
       <h1>Welcome to Project survey tool</h1>
       <div className='flex flex-wrap content-evenly'>
-        <Link className="border-white border-2 p-2" href={"/leaderHome"}>LH</Link><br />
+        <Link className="border-white border-2 p-2" href={"/projectCreation"}>Projects</Link><br />
         <Link className="border-white border-2 p-2" href={"/login"}>Login</Link><br />
         <Link className="border-white border-2 p-2" href={"/register"}>Register</Link><br />
       </div>
