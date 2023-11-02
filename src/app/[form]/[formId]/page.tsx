@@ -1,3 +1,7 @@
-export default function ProductDetail() {
-  return <h1>Details about the product</h1>;
+export default function ProductDetail({
+  params,
+}: {
+  params: { form: string; formId: string };
+}) {
+  return <h1>form = {params.form} & formId = {params.formId}</h1>;
 }
