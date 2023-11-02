@@ -1,9 +1,58 @@
+import Link from "next/link";
+import formList from "@/app/database/forms.json"
+
+const fs = require('fs');
+
+
+class Token {
+    private _tokenID: String;
+    private _isUsed: boolean;
+
+    public get tokenID(): String {
+        return this._tokenID;
+    }
+    public set tokenID(value: String) {
+        this._tokenID = value;
+    }
+
+    public get isUsed(): boolean {
+        return this._isUsed;
+    }
+    public set isUsed(value: boolean) {
+        this._isUsed = value;
+    }
+
+    constructor(ID : String){
+        this._tokenID = ID;
+        this._isUsed = false;
+    }
+
+    //This function takes as input two numbers, amount and length
+    //It returns as 
+    public static createTokenArray(amount:number, length:number) : Array<Token> {
+        let tokens = new Array<Token>;
+
+        const characters : String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for(let i = 0; i < amount ; i++) {
+            let randomString : String = "";
+            for(let j = 0; j < length; j++){
+                randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            let newToken : Token = new Token(randomString);
+            tokens.push(newToken);
+        }
+        return tokens;
+    }
+
+
+
+}
 
 class Form {
     private _name: String;
     private _description: String;
     private _questions: Array<Question>;
-    private _exceptedLinks: Array<String>;
+    private _expectedLinks: Array<Token>;
 
     //Get and set functions for the fields.
     public get name(): String {
@@ -27,37 +76,35 @@ class Form {
         this._questions = value;
     }
 
-    public get exceptedLinks(): Array<String> {
-        return this._exceptedLinks;
+    public get expectedLinks(): Array<Token> {
+        return this._expectedLinks;
     }
-    public set exceptedLinks(value: Array<String>) {
-        this._exceptedLinks = value;
+    public set expectedLinks(value: Array<Token>) {
+        this._expectedLinks = value;
     }
 
     constructor(){
         this._name = "Untitled form";
         this._description = "";
         this._questions = [];
-        this._exceptedLinks = [];
+        this._expectedLinks = [];
     }
 
+    public uploadToFile(fileName : String) : void {
+        fs.writeFile(fileName, JSON.stringify(this))
+    }
 
-    //Takes as input a number and length
-    //Outputs an array of random n-length strings with those numbers
-    public static createIDStrings(amount:number, length:number) : Array<String> {
-        let urls = new Array<String>;
-        const characters : String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for(let i = 0; i < amount ; i++) {
-            let newURL : String = "";
-            for(let j = 0; j < length; i++){
-                newURL += characters.charAt(Math.floor(Math.random() * characters.length));
+    public getFromDatabase(database : Array<object>, formName : String) : Form {
+
+        for (let i of database) {
+            if (i instanceof Form && (i as Form).name == formName) {
+                return i;
             }
-            urls.push(newURL);
         }
-        return urls;
+
+        throw ()
+
     }
-
-
 
 }
 
@@ -168,4 +215,5 @@ enum SliderTypes {
     agreeDisagree, values
 }
 
-console.log(Form.createIDStrings(5,7));
+
+export default Token;
