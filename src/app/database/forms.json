@@ -1,0 +1,26 @@
+{
+    "forms":[
+       {
+          "myFormName":{
+             "someValues":"Merete",
+             "tokens":[
+                {
+                   "tokenId":{
+                      "isUsed":0
+                   }
+                }
+             ]
+          },
+          "myFormName1":{
+             "someValues":"Merete",
+             "tokens":[
+                {
+                   "tokenId":{
+                      "isUsed":0
+                   }
+                }
+             ]
+          }
+       }
+    ]
+ }
