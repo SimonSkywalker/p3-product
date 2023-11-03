@@ -1,4 +1,4 @@
-class Project{
+export class Project{
     private _name:String;
     private _isActive: boolean;
     private _logo: String;
