@@ -1,31 +1,34 @@
-import formList from '@/app/database/forms.json'
-import {notFound} from "next/navigation";
+import formList from '@/app/database/forms.json';
+import { notFound } from "next/navigation";
 
-// Define the type/structure for the JSON data
+// Define the type for your JSON data
 type FormData = {
-  [key: string]: {
+  forms: {
+    name: string;
+    description: string;
+    questions: any[]; // You can define the type for your questions
     tokens: {
       [tokenId: string]: {
         isUsed: number;
       };
     }[];
-  };
+  }[];
 };
 
 // https://stackoverflow.com/questions/76650404/creating-dynamic-routes-from-local-json-file-nextjs-13
 export default function formPage({ params }: { params: { form: string; formId: string } }) {
-  // We assuming formList is an object of type FormData
-  const formsObject: FormData = formList.forms[0];
+  // Assuming formList is an object of type FormData
+  const formData: FormData = formList;
 
   // Find the form object with the specified key
-  const formObject = formsObject[params.form];
+  const formObject = formData.forms.find((form) => form.name === params.form);
 
   if (!formObject) {
     notFound();
   }
 
   // Check if the specified "tokenId" (based on formId) exists in the formObject
-  const tokenIdExists = formObject.tokens.find(token => token[params.formId]);
+  const tokenIdExists = formObject.tokens.find((token) => token[params.formId]);
 
   if (!tokenIdExists) {
     notFound();
@@ -33,7 +36,8 @@ export default function formPage({ params }: { params: { form: string; formId: s
 
   return (
     <main>
-      <p>formName Here: {params.form}</p>
+      <p>formName Here: {formObject.name}</p>
+      <p>formDescription: {formObject.description}</p>
       <p>tokenId Here: {params.formId}</p>
     </main>
   );

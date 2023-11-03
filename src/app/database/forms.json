@@ -1,24 +1,28 @@
 {
     "forms":[
        {
-          "myFormName":{
-             "tokens":[
-                {
-                   "tokenId":{
-                      "isUsed":0
-                   }
-                }
-             ]
-          },
-          "myFormName1":{
-             "tokens":[
-                {
-                   "tokenId1":{
-                      "isUsed":0
-                   }
-                }
-             ]
-          }
+         "name": "myFormName",
+         "description": "Hej",
+         "questions": [{}],
+         "tokens":[
+            {
+               "tokenId":{
+                  "isUsed":0
+               }
+            }
+         ]
+       },
+       {
+         "name": "myFormName1",
+         "description": "Hej1",
+         "questions": [{}],
+         "tokens":[
+            {
+               "tokenId1":{
+                  "isUsed":0
+               }
+            }
+         ]
        }
     ]
  }
