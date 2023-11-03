@@ -2,7 +2,7 @@ import Link from "next/link";
 import formList from "@/app/database/forms.json"
 
 const fs = require('fs');
-
+const path = require('path');
 
 class Token {
     private _tokenID: String;
@@ -52,7 +52,7 @@ class Form {
     private _name: String;
     private _description: String;
     private _questions: Array<Question>;
-    private _expectedLinks: Array<Token>;
+    private _tokens: Array<Token>;
 
     //Get and set functions for the fields.
     public get name(): String {
@@ -76,43 +76,68 @@ class Form {
         this._questions = value;
     }
 
-    public get expectedLinks(): Array<Token> {
-        return this._expectedLinks;
+    public get tokens(): Array<Token> {
+        return this._tokens;
     }
-    public set expectedLinks(value: Array<Token>) {
-        this._expectedLinks = value;
+    public set tokens(value: Array<Token>) {
+        this._tokens = value;
     }
 
     constructor(){
         this._name = "Untitled form";
         this._description = "";
         this._questions = [];
-        this._expectedLinks = [];
+        this._tokens = [];
     }
 
-    public uploadToFile(fileName : String) : void {
-        fs.writeFile(fileName, JSON.stringify(this))
-    }
 
-    public getFromDatabase(database : Array<object>, formName : String) : Form {
 
-        for (let i of database) {
-            if (i instanceof Form && (i as Form).name == formName) {
-                return i;
+    //Takes an object array and a string as input.
+    //If the array is a Form array, and it has an object with the name, return the object
+    //If not, throw an exception.
+    public static getIndexFromDatabase(database : Array<object>, name : String) : number {
+
+        for (let i in database) {
+            if (database[i] instanceof Form) {
+                if ((database[i] as Form).name == name){
+                    return parseInt(i);
+                }
             }
+            else throw new WrongTypeException;
+        }
+        //If the database is looped through with no object.
+        throw new NoObjectException;
+    }
+
+    //Takes as input a Form database
+    //Finds a Form with the given name
+    //Returns the database without this form
+    //Have to catch WrongTypeException
+    public static removeFromDatabase(database : Array<object>, name : String) : Array<Form> {
+        let i = -1
+        //Gets index of object with the desired name
+        try {
+            i = Form.getIndexFromDatabase(database, name);
+        }
+        //If the object does not exist, return with no change
+        catch (NoObjectException) {
+            return database as Array<Form>
         }
 
-        throw ()
-
+        //Removes object at index i
+        database.splice(i, 1);
+        return database as Array<Form>
     }
 
 }
+
 
 
 class Question {
     private _description: String;
     private _mandatory: boolean;
     private _userDisplay: boolean;
+    private _questionType: QuestionTypes;
 
     public get description(): String {
         return this._description;
@@ -135,10 +160,18 @@ class Question {
         this._userDisplay = value;
     }
 
-    constructor(){
+    public get questionType(): QuestionTypes {
+        return this._questionType;
+    }
+    public set questionType(value: QuestionTypes) {
+        this._questionType = value;
+    }
+
+    constructor(type : QuestionTypes){
         this._description = "";
         this._mandatory = false;
         this._userDisplay = false;
+        this._questionType = type;
 
     }
 
@@ -172,7 +205,7 @@ class MultipleChoice extends Question {
     }
 
     constructor(){
-        super();
+        super(QuestionTypes.slider);
         this._saveRole = false;
         this._options = [];
         this._type = ChoiceTypes.radio;
@@ -198,7 +231,7 @@ class Slider extends Question {
     }
 
     constructor(){
-        super()
+        super(QuestionTypes.slider);
         this._type = SliderTypes.agreeDisagree;
         this._range = 7;
     }
@@ -213,6 +246,10 @@ enum ChoiceTypes {
 
 enum SliderTypes {
     agreeDisagree, values
+}
+
+enum QuestionTypes {
+    multipleChoice, slider, textInput
 }
 
 
