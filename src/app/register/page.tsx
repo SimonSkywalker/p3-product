@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import Link from 'next/link';
-import { User }  from "./userClass";
+import { loginFormSchema } from "@/app/lib/validations/form"
 import {useState} from 'react';
 
 
@@ -9,11 +9,34 @@ export default function registerPage() {
 
   const [Username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
+  const [cPassword, setcPassword] = useState('');
 
-  const handleSubmit = () =>{
-    console.log('hej');
-    
-    User.main(Username,Password)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+      
+    try {
+      // Here zod performs it's magic by parsing your data against
+      // the schema defined earlier.
+      if(cPassword != Password){
+        throw new Error("Password doesnt match")
+      }
+
+      //Const Username and password is matched with the fields in the form Schema. 
+      const validatedData = loginFormSchema.parse({ username:Username, password:Password })
+      
+
+      // We send the validated data to the an API endpoint
+      // on the server; we will code this later.
+      await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify(validatedData),
+      }).then((res)=>{res.json}).then((data)=>{console.log(data);
+      });
+    } catch (err: any) {
+      // If parsing fails, you will get a helpful error
+      // message about the problem.
+      console.log(err.message)
+    }
   }
   
 
@@ -27,7 +50,7 @@ export default function registerPage() {
               Username
             </label>
             <input
-              type="text" id="username" autoComplete="username" onChange={event => setUsername(event.target.value)} value={Username}
+              type="text" id="username" autoComplete="username" onChange={(e) => setUsername(e.target.value)} value={Username}
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
@@ -36,7 +59,7 @@ export default function registerPage() {
               Password
             </label>
             <input
-              type="password" id="password" autoComplete="current-password" onChange={event => setPassword(event.target.value)} value={Password}
+              type="password" id="password" autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} value={Password}
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
@@ -48,13 +71,15 @@ export default function registerPage() {
               Confirm Password
             </label>
             <input
-              type="password" id="repeatPassword" autoComplete='current-password'
+              type="password" id="repeatPassword" autoComplete='current-password' onChange={(e) => setcPassword(e.target.value)} value={cPassword}
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
           <div className="mt-2">
 
-          <input type="submit" value="Regiser" className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600" ></input>
+          <button type="submit" className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600" >
+            Register
+          </button>
 
           </div>
         </form>
