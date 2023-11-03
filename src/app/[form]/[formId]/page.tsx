@@ -1,5 +1,17 @@
+import { Metadata } from 'next'
+
 import formList from '@/app/database/forms.json';
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: { 
+  params: { form: string; formId: string } 
+}): Promise<Metadata> { 
+  return { 
+      title: params.form, 
+  } 
+}
 
 // Define the type for your JSON data
 type FormData = {
