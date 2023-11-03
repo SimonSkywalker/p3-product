@@ -9,7 +9,7 @@ export async function generateMetadata({
   params: { form: string; formId: string } 
 }): Promise<Metadata> { 
   return { 
-      title: params.form, 
+      title: params.form + ' | Project management survey tool (working title)', 
   } 
 }
 
