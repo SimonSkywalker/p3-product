@@ -2,7 +2,6 @@
     "forms":[
        {
           "myFormName":{
-             "someValues":"Merete",
              "tokens":[
                 {
                    "tokenId":{
@@ -12,10 +11,9 @@
              ]
           },
           "myFormName1":{
-             "someValues":"Merete",
              "tokens":[
                 {
-                   "tokenId":{
+                   "tokenId1":{
                       "isUsed":0
                    }
                 }

@@ -1,49 +1,40 @@
 import formList from '@/app/database/forms.json'
 import {notFound} from "next/navigation";
 
+// Define the type/structure for the JSON data
+type FormData = {
+  [key: string]: {
+    tokens: {
+      [tokenId: string]: {
+        isUsed: number;
+      };
+    }[];
+  };
+};
+
 // https://stackoverflow.com/questions/76650404/creating-dynamic-routes-from-local-json-file-nextjs-13
-export async function generateStaticParams() {
-  const formsArray = formList.forms;
-
-  const keys = formsArray.map((formObj) => {
-    return Object.keys(formObj);
-  });
-
-  // Flatten the array of arrays into a single array of keys
-  const flattenedKeys = keys.flat();
-
-  return flattenedKeys.map((key) => ({
-    form: key,
-  }));
-}
-
-export default function UniquePage({ params: { form } }: { params: { form: string; formId: string } }) {
-  // Assuming formList is an array of objects with keys in the "forms" array
-  const formsArray = formList.forms;
+export default function formPage({ params }: { params: { form: string; formId: string } }) {
+  // We assuming formList is an object of type FormData
+  const formsObject: FormData = formList.forms[0];
 
   // Find the form object with the specified key
-  const project = formsArray.find((formObj) => {
-    return Object.keys(formObj).some((key) => key === form);
-  });
+  const formObject = formsObject[params.form];
 
-  if (!project) {
+  if (!formObject) {
+    notFound();
+  }
+
+  // Check if the specified "tokenId" (based on formId) exists in the formObject
+  const tokenIdExists = formObject.tokens.find(token => token[params.formId]);
+
+  if (!tokenIdExists) {
     notFound();
   }
 
   return (
     <main>
-      <p>formName Here: {form}</p>
+      <p>formName Here: {params.form}</p>
+      <p>tokenId Here: {params.formId}</p>
     </main>
   );
 }
-
-
-/*
-export default function Form({
-  params,
-}: {
-  params: { form: string; formId: string };
-}) {
-  return <h1>form = {params.form} & formId = {params.formId}</h1>;
-}
-*/
