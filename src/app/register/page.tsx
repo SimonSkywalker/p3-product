@@ -5,6 +5,7 @@ import { registerFormSchema } from '../lib/validations/registerForm';
 import {useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { ZodError } from 'zod';
+import { RegisterException } from '../exceptions/RegisterException';
 
 export default function registerPage() {
   const router = useRouter();
@@ -36,17 +37,7 @@ export default function registerPage() {
         body: JSON.stringify(validatedData),
       })
         .then((response) => {
-          if (response.status === 500) {
-            // Handle the 500 Internal Server Error
-            setUserError("Username is already taken");
-            // You can display an error message to the user or take other actions
-          } else if (response.status === 409) {
-            // Handle the 409 conflict error
-            return response.json().then((data) => {
-              console.error('Conflict error:', data);
-              // Handle the conflict error, e.g., display an error message to the user
-            });
-          } else if (response.ok) {
+          if (response.ok) {
             // Request was successful
             router.push('/login');
             return response.json().then((data) => {
@@ -54,18 +45,18 @@ export default function registerPage() {
               // Process the response data as needed
                
             });
-          } else {
-            // Handle other errors (status codes other than 409 and 500)
-            console.error('Other error:', response.status, response.statusText);
-            // Handle other errors as needed
+          } else if(RegisterException){
+            
+            setUserError('Username already exists')
           }
         })
      
     } catch (err: any) {
-      let error = err
+      
+      
       if (err instanceof ZodError)
       {         
-        error.issues.forEach((issue: any) => {
+        err.issues.forEach((issue: any) => {
           switch (issue.path[0]) {
             case 'username':
               setUserError(issue.message);
@@ -107,7 +98,7 @@ export default function registerPage() {
               Password
             </label>
             <input
-              type="password" id="password" autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} value={Password}
+              type="password" id="password" autoComplete="new-password" onChange={(e) => setPassword(e.target.value)} value={Password}
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
             <div className="text-red-500 text-sm">{PasswordError}</div>
@@ -120,7 +111,7 @@ export default function registerPage() {
               Confirm Password
             </label>
             <input
-              type="password" id="repeatPassword" autoComplete='current-password' onChange={(e) => setcPassword(e.target.value)} value={cPassword}
+              type="password" id="repeatPassword" autoComplete='new-password' onChange={(e) => setcPassword(e.target.value)} value={cPassword}
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
             <div className="text-red-500 text-sm">{cPasswordError}</div>

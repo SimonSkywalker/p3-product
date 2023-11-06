@@ -1,70 +1,17 @@
 [
     {
         "Username": "Simon",
-        "Password": "1234"
-    },
-    {
-        "Username": "Nicolai",
-        "Password": "5678"
-    },
-    {
-        "Username": "asdas",
-        "Password": "$2b$10$dtiRQvRUr.tV23FF6Uon0erkRrU76J18VjrZyNAe5ToVaUsq1V69a"
-    },
-    {
-        "Username": "asda",
-        "Password": "$2b$10$UGwBURzeUDhSh3G82X77jOU7QwsHVxF9CgUflVVHkdTB7gC0KGRV6"
-    },
-    {
-        "Username": "asdasdas",
-        "Password": "$2b$10$tlh20gWZygJ9TUtMydqXe.6ZPskkfhVErUND1BRHTSeVpC2yRScLe"
-    },
-    {
-        "Username": "asdasd",
-        "Password": "$2b$10$y1KwWjSRDQwW7akj/pJekOQBeuUA6mnYR3v2O79FF1Wsvuvx7ZqLW"
+        "Password": "123456",
+        "DisplayName": "Simon"
     },
     {
         "Username": "ASD",
-        "Password": "$2b$10$Xmb7oAqPTvWco0EaMbb3m.VfXpIHaAPND8SntMdrUv8O8yFvgM806"
+        "Password": "$2b$10$3/HQEeZliogBhdqKJFLssOBPM7gc57LDnAgKaoH0IJ3xxdLH.ApzC",
+        "DisplayName": "ASD"
     },
     {
-        "Username": "ASDASD",
-        "Password": "$2b$10$aExGnVQn5MUL4dr2WpO0zurtkkKRRf1gmSGiizWV9CDhFZGpzVXCW"
-    },
-    {
-        "Username": "asdasda",
-        "Password": "$2b$10$k1uHPO.sn3DqWL55rXjQquSX.m80Csc1NbLm3ozr6YTpCki6/etUW"
-    },
-    {
-        "Username": "asd",
-        "Password": "$2b$10$rWLsF17Jn96zLAiirse7R..Dl6AbH0zq0Jgw8yVvwLiRicXs66IlW"
-    },
-    {
-        "Username": "DAS",
-        "Password": "$2b$10$zlwBahos/2.zMoRtV6EyZun7PQXcqtnpZr0pqNNRGuCAh4CbxUeUy"
-    },
-    {
-        "Username": "ASDdsd",
-        "Password": "$2b$10$n7TWNOJI6fq3jG2zNtvrXO4UntGWbWUIrRbkVkFJTVzxXL.KISLe6"
-    },
-    {
-        "Username": "ASDfff",
-        "Password": "$2b$10$s52dHu5/hu0IA8MoiHlr1ertJMbmYF03gpzjppxgFyxPBsECvRPCy"
-    },
-    {
-        "Username": "ASDg",
-        "Password": "$2b$10$Rrn4wBSY3QhJgsd83h2cKOb4ht7vnhUpWcyp1nVrBK.E8JzSRolQS"
-    },
-    {
-        "Username": "Nicolaj Skjødt",
-        "Password": "$2b$10$MHWpZuJ71mqcIYy7vc7.G.4uYwU9jr.4z49MkyyWTYAqbMinHWf42"
-    },
-    {
-        "Username": "Patrick Skjødt",
-        "Password": "$2b$10$edi6Gfi0GJXot45izx9zhe8vkuMsECnbRkHu.XB3afv0jGdtF8wFS"
-    },
-    {
-        "Username": "Karl",
-        "Password": "$2b$10$mxw5Ej0OlaKCWoLIpI3HCeUIEIQ1BjheQnFjpru0bACO8zN5JCy0."
+        "Username": "Nicolaj",
+        "Password": "$2b$10$45y5ncIRU6DLE54zNCn9meO9KiBFb5M0TmJN8nM99vjK8a3eyaJwu",
+        "DisplayName": "Nicolaj"
     }
 ]

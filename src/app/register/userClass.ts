@@ -1,57 +1,55 @@
 import userList from '@/app/database/userLogins.json'
 import {promises as fs} from "fs"
 import bcrypt from 'bcrypt';
+import { RegisterException } from '../exceptions/RegisterException';
 
 export class User{
 
-    private _username: String;
+    private _username: string;
     
-    private _password: String;
+    private _password: string;
     
-    private _displayName: String;
+    private _displayName: string;
 
-    constructor(username:String,password:String){
+
+    constructor(username:string,password:string){
 
         this._username = username;
         this._password =  password;
         this._displayName = username;
     }
     
-    public get username(): String {
+    public get username(): string {
         return this._username;
     }
-    public set username(value: String) {
+    public set username(value: string) {
         this._username = value;
     }
     
-    public get password(): String {
+    public get password(): string {
         return this._password;
     }
-    public set password(value: String) {
+    public set password(value: string) {
         this._password = value;
     }
 
-    public get displayName(): String {
+    public get displayName(): string {
         return this._displayName;
     }
-    public set displayName(value: String) {
+    public set displayName(value: string) {
         this._displayName = value;
     }
-       
-    public toString(): void{
-        console.log("username: " + this.username, "password: " + this.password);
-    }
-    
 
     public createUser(){
             
             if(checkList.isDuplicate(userList, this.username)){
-                throw new Error('this user exist')
+                throw new RegisterException();
             }
             
-            userList.push({Username: (this.username as string), Password: (this.password as string)})
+            userList.push({Username: this.username, Password: this.password, DisplayName: this.displayName});
 
-            dataManipulation.saveListData(userList);    
+            dataManipulation.saveListData(userList);
+            dataManipulation.makeUserFolder(this.username);   
         
     }
 
@@ -73,15 +71,7 @@ export class User{
 
     }
 
-    public static main(username: String, password:String){
-        try{
-        let u:User = new User(username, password);
-        u.createUser();
-        u.toString();
-        } catch (error) {
-            throw error
-        }
-    }
+   
 
 }
 
@@ -91,9 +81,9 @@ class checkList{
      /**
      * isDuplicate
         list: list
-        Username: String     */
+        Username: string     */
 
-    public static isDuplicate(list: typeof userList, Username: String):boolean {
+    public static isDuplicate(list: typeof userList, Username: string):boolean {
 
         let bool = false;
 
@@ -116,6 +106,11 @@ class dataManipulation{
     public static saveListData(list: typeof userList){
 
         fs.writeFile(process.cwd() +'/src/app/database/userLogins.json', JSON.stringify(list, null, 4));
+    }
+
+    public static makeUserFolder(user: string){
+        fs.mkdir(process.cwd() +'/src/app/database/'+user);
+        
     }
 }
 

@@ -24,7 +24,7 @@ export async function POST(request: Request) {
         }
     })
 
-    let check = await bcrypt.compare(u.password as string,u2.password as string)
+    let check = await bcrypt.compare(u.password,u2.password)
 
     if(check){
         console.log("LoggedIn")
