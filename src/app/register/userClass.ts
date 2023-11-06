@@ -44,26 +44,28 @@ export class User{
     
 
     public createUser(){
-
-        try{
             
-        if(checkList.isDuplicate(userList, this.username)){
-            throw new Error('this user exist')
-        }
-
-
-        userList.push({Username: (this.username as string), Password: (this.password as string)})
-
-        
-        dataManipulation.saveListData(userList);
-        
-
-        }catch (err: any) {
+            if(checkList.isDuplicate(userList, this.username)){
+                throw new Error('this user exist')
+            }
             
-            console.log(err.message)
-        }
+            userList.push({Username: (this.username as string), Password: (this.password as string)})
+
+            dataManipulation.saveListData(userList);    
         
     }
+
+    public findUser() {
+        userList.some((element) => {
+            if (element.Username === this.username) {
+
+                let user:User = new User(this.username,this.password)
+                return user;
+            }
+    })
+}
+
+
 
     public deleteUser(){
 
@@ -72,10 +74,13 @@ export class User{
     }
 
     public static main(username: String, password:String){
+        try{
         let u:User = new User(username, password);
         u.createUser();
         u.toString();
-
+        } catch (error) {
+            throw error
+        }
     }
 
 }

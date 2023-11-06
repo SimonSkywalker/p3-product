@@ -1,10 +1,10 @@
 "use server"
 import { NextRequest, NextResponse } from "next/server"
 import { User } from "@/app/register/userClass"
-import { loginFormSchema } from "@/app/lib/validations/form"
+import { loginFormSchema } from "@/app/lib/validations/loginForm";
 import bcrypt from 'bcrypt';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     // Parsing the data yet again on the server-side
     // to guarantee 100% security.
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     
     return new NextResponse('it works');
   } catch (err: any) {
-    console.log(err.message);
+    throw err
     return new NextResponse("this is an error");
   }
 };
