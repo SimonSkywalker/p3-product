@@ -4,6 +4,12 @@ import Link from 'next/link'
 import Token from './formCreation'
 import DatabaseAccess from './DatabaseAccess';
 
+function testFunction() : void {
+  console.log("hej");
+  let database : DatabaseAccess = new DatabaseAccess('/');
+  console.log(database.findJSONFile(["database"], "forms"));
+}
+
 export default function Home() {
   return (
     <main>
@@ -12,7 +18,11 @@ export default function Home() {
         <Link className="border-white border-2 p-2" href={"/login"}>Login</Link><br />  
         <Link className="border-white border-2 p-2" href={"/register"}>Register</Link><br />
         <button onClick={() => {console.log(Token.createTokenArray(5,10))}}>Tokens</button>;
-        <button onClick={() => {console.log(DatabaseAccess.findJSONFile(["database"], "forms"))}}>Database</button>;
+        <button onClick={() => {
+            console.log("hej");
+            let database : DatabaseAccess = new DatabaseAccess('/');
+            console.log(database.findDirectory(["database"]));
+        }}>Database</button>;
       </div>
     </main>
   )

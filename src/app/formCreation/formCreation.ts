@@ -1,8 +1,4 @@
 import Link from "next/link";
-import formList from "@/app/database/forms.json"
-
-const fs = require('fs');
-const path = require('path');
 
 class Token {
     private _tokenID: String;

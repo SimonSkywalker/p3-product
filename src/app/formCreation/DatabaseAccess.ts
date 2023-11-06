@@ -1,21 +1,51 @@
 
-const path = require('path');
-const fs = require('fs');
 
+import FileSystemService from "./FileSystemService";
+import FileTypes from "./FileTypes";
 
 class DatabaseAccess {
-    private directoryPath : String;
+    private _directoryPath: string;
 
-    constructor(directoryPath : String) {
-        this.directoryPath = directoryPath;
+    public get directoryPath_(): string {
+        return this._directoryPath;
+    }
+    public set directoryPath(value: string) {
+        this._directoryPath = value;
     }
 
+    constructor(directoryPath : string) {
+        this._directoryPath = directoryPath;
+    }
+
+    public async findDirectory(desiredFilePath: Array<string>): Promise<string> {
+        try {
+            let newDirectoryPath : String = this.directoryPath;
+
+            for (let i : number = 0; i < desiredFilePath.length; i++) {
+                console.log("Calling file system service");
+                const files = await FileSystemService.listFiles(desiredFilePath[i]);
+                console.log("File system service succeeded");
+                if (!files.some(function (file, index) {
+
+                })) {
+                    throw NoFileNameException;
+                }   
+            }
+
+            return this.directoryPath;
+        } catch (error : any) {
+            throw new Error('Failed to find directory: ' + error.message);
+        }
+    }
+
+    /*
     public static uploadToFile(database: Array<object>, filePath : String) : void {
         fs.writeFile(filePath, JSON.stringify(database))
-    }
+    }*/
 
     //https://stackoverflow.com/questions/32511789/looping-through-files-in-a-folder-node-js
 
+    /*
     public findDirectory(desiredFilePath : Array<String>) : String {
         let directoryPath : String = this.directoryPath;
         for (let i : number = 0; i < desiredFilePath.length; i++) {
@@ -42,25 +72,19 @@ class DatabaseAccess {
         return directoryPath;
 
     }
+    */
 
-    public findJSONFile(desiredFilePath : Array<string>, fileName : string) : String {
-        let filePath = this.findDirectory(desiredFilePath);
-        fs.readdir(filePath, function (files: Array<File>) {
 
-            files.forEach(function (file, index) {
-                let currentPath = path.join(filePath, file);
-                fs.stat(currentPath, function (error: Error, stat : any) {
-                    if (error) {
-                      throw NoFileNameException;
-                    }
-                    //If a directory of the desired name is found
-                    if (stat.isDirectory() && stat.name.equals(fileName + ".json"))
-                        filePath = currentPath;
-                        return filePath;
-                    });
-              
-            })
-        })
+    public async findJSONFile(desiredFilePath : Array<string>, fileName : string) : Promise<string> {
+        let filePath : Promise<string> = this.findDirectory(desiredFilePath);
+        let files : Promise<string[]> = FileSystemService.listFiles(await filePath);
+        for (let i in await files){
+            let currentPath : string = (filePath + "/" + (await files)[i]);
+            let fileType : FileTypes = await FileSystemService.getType(currentPath);
+            if (fileType == FileTypes.JSON && (await files)[i] == fileName){
+                return currentPath;
+            }
+        }
         throw NoFileNameException;
     }
 }
