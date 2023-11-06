@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 export async function generateMetadata({
   params,
 }: { 
-  params: { form: string; formId: string } 
+  params: { project: string; form: string; formId: string } 
 }): Promise<Metadata> { 
   return { 
       title: params.form + ' | Project management survey tool (working title)', 
@@ -28,7 +28,7 @@ type FormData = {
 };
 
 // https://stackoverflow.com/questions/76650404/creating-dynamic-routes-from-local-json-file-nextjs-13
-export default function formPage({ params }: { params: { form: string; formId: string } }) {
+export default function formPage({ params }: { params: { project: string; form: string; formId: string } }) {
   // Assuming formList is an object of type FormData
   const formData: FormData = formList;
 
@@ -48,6 +48,7 @@ export default function formPage({ params }: { params: { form: string; formId: s
 
   return (
     <main>
+      <p>projectName Here: {params.project}</p>
       <p>formName Here: {formObject.name}</p>
       <p>formDescription: {formObject.description}</p>
       <p>tokenId Here: {params.formId}</p>
