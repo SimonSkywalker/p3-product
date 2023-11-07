@@ -1,12 +1,12 @@
 
-
+import NoFileNameException from "../exceptions/NoFileNameException"
 import FileSystemService from "./FileSystemService";
 import FileTypes from "./FileTypes";
 
 class DatabaseAccess {
     private _directoryPath: string;
 
-    public get directoryPath_(): string {
+    public get directoryPath(): string {
         return this._directoryPath;
     }
     public set directoryPath(value: string) {
@@ -19,20 +19,13 @@ class DatabaseAccess {
 
     public async findDirectory(desiredFilePath: Array<string>): Promise<string> {
         try {
-            let newDirectoryPath : String = this.directoryPath;
-
-            for (let i : number = 0; i < desiredFilePath.length; i++) {
-                console.log("Calling file system service");
-                const files = await FileSystemService.listFiles(desiredFilePath[i]);
-                console.log("File system service succeeded");
-                if (!files.some(function (file, index) {
-
-                })) {
-                    throw NoFileNameException;
-                }   
+            let newDirectoryPath : string = this.directoryPath
+            for(let i in desiredFilePath){
+                if(await FileSystemService.getType(desiredFilePath[i])  == FileTypes.directory){
+                    newDirectoryPath += desiredFilePath[i];
+                }
             }
-
-            return this.directoryPath;
+            return newDirectoryPath
         } catch (error : any) {
             throw new Error('Failed to find directory: ' + error.message);
         }

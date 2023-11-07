@@ -1,15 +1,20 @@
 "use server"
-import { NextApiRequest, NextApiResponse } from 'next';
+import NoFileNameException from '@/app/exceptions/NoFileNameException';
+import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { filePath } = req.query;
+export default async function handler(req: NextRequest, res: NextResponse) {
+
+    const body = await req.json()
+
+    console.log(body);
+    const filePath = body.path;
 
     if (filePath !== 'string') {
-        return res.status(400).json({ error: 'Invalid file Path' });
+        return NextResponse.json({ error: 'Invalid file Path' , status: 400});
     }
-    
+
     try {
         let file = path.join(process.cwd(), filePath);
 
@@ -23,6 +28,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         res.status(200).json("directory");
                     else if (stat.isFile())
                         res.status(200).json("file");
+                    else
+                        return NextResponse({})
                     });
               
             })

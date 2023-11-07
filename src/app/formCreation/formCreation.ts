@@ -1,4 +1,6 @@
 import Link from "next/link";
+import NoObjectException from "../exceptions/NoObjectException";
+import WrongTypeException from "../exceptions/WrongTypeException";
 
 class Token {
     private _tokenID: String;
