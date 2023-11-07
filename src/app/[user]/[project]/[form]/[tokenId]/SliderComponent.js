@@ -5,8 +5,9 @@ import React from 'react';
 export default function SliderComponent({ jsonData }) {
   return (
     <form>
+        <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
         <div className="flex flex-col space-y-2 w-full">
-            <input type="range" className="w-full" min="1" max={jsonData.range} step="1"/>
+            <input type="range" className="w-full" min="1" max={jsonData.range} step="1" value="0"/>
             <ul className="flex justify-between w-full px-[10px]">
                 <li className="flex justify-center relative"><span className="absolute">1<br></br>Strongly disagree</span></li>
                 <li className="flex justify-center relative"><span className="absolute">2<br></br>Disagree</span></li>
