@@ -14,10 +14,10 @@
        },
        {
          "name": "20-10",
-         "description": "Hej1",
+         "description": "Dette er en beskrivelse af 20-10",
          "questions": [{
             "description": "hej1",
-            "mandatory": false,
+            "mandatory": true,
             "userDisplay": false,
             "questionType": 0,
             "saveRole": 1, 

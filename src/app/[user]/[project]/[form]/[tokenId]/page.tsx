@@ -1,7 +1,10 @@
 import { Metadata } from 'next';
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic"; 
-import { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
+import FormRenderer from './FormRenderer';
+
+const DynamicComponent = lazy(() => import('./DynamicComponent'));
 
 //import formList from '@/app/database/forms.json';
 //import userList from '@/app/database/userLogins.json';
@@ -85,42 +88,56 @@ export default function FormPage({ params }: { params: { user: string; project: 
     // Render the form's questions here
     return (
       <div>
-        <h1>{/*formObject.name*/}</h1>
-        <p>{/*formObject.description*/}</p>
-
-        {formObject.questions.map((question, index) => (
-          <div key={index}>
-            <h2>{question.description}</h2>
-            {/* Render the question based on its type and options */}
-            {/* You can use conditionals to render different question types */}
-            {question.questionType === 0 && (
-              <div>
-                <p>Multiple Choice</p>
-                {/*question.options.map((option, optionIndex) => (
-                  <label key={optionIndex}>
-                    <input type="radio" name={`question-${index}`} value={option} />
-                    {option}
-                  </label>
-                )*/}
-              </div>
-            )}
-            {question.questionType === 1 && (
-              <div>
-                <p>Slider</p>
-                <input type="range" min="0" max="10" step="1" />
-              </div>
-            )}
-            {question.questionType === 2 && (
-              <div>
-                <p>Text Input</p>
-                <input type="text" />
-              </div>
-            )}
-          </div>
-        ))}
+        {formObject ? (
+          <FormRenderer formObject={formObject} />
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
-    );
+    );    
   };
 
   return renderPage();
 }
+
+
+
+/*
+<form>
+  {formObject.questions.map((question, index) => (
+  <div className="mb-4" key={index}>
+    <h2 className="block text-gray-700 font-medium mb-2">
+      {question.description}{question.mandatory && <span style={{ color: 'red' }}>*</span>} 
+    </h2>
+    {question.questionType === 0 && (
+      <div>
+        <p>Multiple Choice</p>
+        {question.options.map((option, optionIndex) => (
+          <label key={optionIndex}>
+            <input type="radio" name={`question-${index}`} value={option} />
+            {option}
+          </label>
+        )}
+        </div>
+        )}
+        {question.questionType === 1 && (
+          <div className="flex flex-col space-y-2 w-full">
+              <input type="range" className="w-full" min="1" max={question.range} step="1"/>
+              <ul className="flex justify-between w-full px-[10px]">
+                  <li className="flex justify-center relative"><span className="absolute">1<br></br>Strongly disagree</span></li>
+                  <li className="flex justify-center relative"><span className="absolute">2<br></br>Disagree</span></li>
+                  <li className="flex justify-center relative"><span className="absolute">3<br></br>Neutral</span></li>
+                  <li className="flex justify-center relative"><span className="absolute">4<br></br>Agree</span></li>
+                  <li className="flex justify-center relative"><span className="absolute">5<br></br>Strongly agree</span></li>
+              </ul>
+          </div>
+        )}
+        {question.questionType === 2 && (
+          <div>
+            <input className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" type="text" />
+          </div>
+        )}
+      </div>
+    ))}
+  </form>
+*/
