@@ -4,8 +4,6 @@ import dynamic from "next/dynamic";
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import FormRenderer from './FormRenderer';
 
-const DynamicComponent = lazy(() => import('./DynamicComponent'));
-
 //import formList from '@/app/database/forms.json';
 //import userList from '@/app/database/userLogins.json';
 

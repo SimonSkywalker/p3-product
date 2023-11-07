@@ -1,11 +1,17 @@
 "use client"
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 
-const DynamicComponent = lazy(() => import('./DynamicComponent'));
+const TextFieldComponent = lazy(() => import('./TextFieldComponent'));
 
 function FormRenderer({ formObject }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const totalQuestions = formObject.questions.length;
+
+  const goToPreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex < totalQuestions - 1) {
@@ -27,13 +33,18 @@ function FormRenderer({ formObject }) {
       {formObject.questions.map((question, index) => (
         index === currentQuestionIndex && question.questionType === 2 && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
-            <DynamicComponent jsonData = {question} />
+            <TextFieldComponent jsonData = {question} />
           </Suspense>
         )
       ))}
-      {currentQuestionIndex < totalQuestions - 1 && (
-        <button onClick={goToNextQuestion}>Next Question</button>
-      )}
+      <div className="flex justify-between mt-4">
+        {currentQuestionIndex > 0 && (
+          <button onClick={goToPreviousQuestion}>Previous Question</button>
+        )}
+        {currentQuestionIndex < totalQuestions - 1 && (
+          <button onClick={goToNextQuestion}>Next Question</button>
+        )}
+      </div>
     </div>
   );
 }

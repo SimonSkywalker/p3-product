@@ -1,7 +1,8 @@
-// DynamicComponent.js
+"use client"
+// TextFieldComponent.js
 import React from 'react';
 
-export default function DynamicComponent({ jsonData }) {
+export default function TextFieldComponent({ jsonData }) {
   return (
     <form>
         <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
