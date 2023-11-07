@@ -34,7 +34,7 @@
          },
          {
             "description": "hej3",
-            "mandatory": false,
+            "mandatory": true,
             "userDisplay": false,
             "questionType": 2
          }],
