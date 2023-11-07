@@ -1,7 +1,9 @@
 "use client"
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 
-const TextFieldComponent = lazy(() => import('./TextFieldComponent'));
+const MultipleChoiceComponent = lazy(() => import('./MultipleChoiceComponent'));
+const SliderComponent = lazy(() => import('./SliderComponent'));
+const TextInputComponent = lazy(() => import('./TextInputComponent'));
 
 function FormRenderer({ formObject }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -31,9 +33,17 @@ function FormRenderer({ formObject }) {
         <div className="flex-grow border-t border-gray-400"></div>
       </div>
       {formObject.questions.map((question, index) => (
-        index === currentQuestionIndex && question.questionType === 2 && (
+        index === currentQuestionIndex && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
-            <TextFieldComponent jsonData = {question} />
+            {question.questionType === 0 && (
+              <MultipleChoiceComponent jsonData = {question} />
+            )}
+            {question.questionType === 1 && (
+              <SliderComponent jsonData = {question} />
+            )}
+            {question.questionType === 2 && (
+              <TextInputComponent jsonData = {question} />
+            )}
           </Suspense>
         )
       ))}

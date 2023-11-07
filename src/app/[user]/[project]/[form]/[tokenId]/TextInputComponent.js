@@ -1,8 +1,8 @@
 "use client"
-// TextFieldComponent.js
+// TextInputComponent.js
 import React from 'react';
 
-export default function TextFieldComponent({ jsonData }) {
+export default function TextInputComponent({ jsonData }) {
   return (
     <form>
         <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
