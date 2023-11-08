@@ -16,7 +16,7 @@
          "name": "20-10",
          "description": "Dette er en beskrivelse af 20-10",
          "questions": [{
-            "description": "hej1",
+            "description": "Test af Multiple Choice",
             "mandatory": true,
             "userDisplay": false,
             "questionType": 0,
@@ -25,7 +25,7 @@
             "type": 1
            },
          {
-            "description": "hej2",
+            "description": "Test af Slider",
             "mandatory": false,
             "userDisplay": false,
             "questionType": 1,
@@ -33,7 +33,7 @@
             "range": 5
          },
          {
-            "description": "hej3",
+            "description": "Test af Text Input",
             "mandatory": true,
             "userDisplay": false,
             "questionType": 2
