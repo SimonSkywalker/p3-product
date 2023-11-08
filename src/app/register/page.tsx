@@ -4,12 +4,11 @@ import Link from 'next/link';
 import { registerFormSchema } from '../lib/validations/registerForm';
 import {useState} from 'react';
 import { useRouter } from 'next/navigation';
-import { ZodError, z } from 'zod';
+import  * as z  from 'zod';
 import { RegisterException } from '../exceptions/RegisterException';
 
 
 export default function RegisterPage() {
-  /* istanbul ignore next */
   const router = useRouter();
 
   const [formData, setFormData] = useState({
