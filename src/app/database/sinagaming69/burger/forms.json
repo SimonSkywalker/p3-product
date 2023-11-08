@@ -30,7 +30,7 @@
             "userDisplay": false,
             "questionType": 1,
             "type": 0,
-            "range": 5
+            "range": 9
          },
          {
             "description": "Test af Text Input",

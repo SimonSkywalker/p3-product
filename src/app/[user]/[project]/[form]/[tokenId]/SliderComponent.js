@@ -6,7 +6,7 @@ export default function SliderComponent({ jsonData }) {
   useEffect(() => {});
   const changeHandler = (e) => {
     const slider = document.getElementById("slider");
-    slider.defaultValue = 4;
+    slider.defaultValue = Math.floor(jsonData.range / 2);
     const react1 = document.querySelector("#react1");
     const react2 = document.querySelector("#react2");
     const react3 = document.querySelector("#react3");
@@ -19,143 +19,378 @@ export default function SliderComponent({ jsonData }) {
     const react10 = document.querySelector("#react10");
     const exp = document.querySelector("#exp");
 
-    switch (parseInt(e.target.value)) {
-      case 0:
-        react1.style.display = "block";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Strongly Disagree";
-        break;
-      case 1:
-        react1.style.display = "none";
-        react2.style.display = "block";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Disagree";
-        break;
-      case 2:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "block";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Moderately Disagree";
-        break;
-      case 3:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "block";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Slightly Disagree";
-        break;
-      case 4:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "block";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Neutral";
-        break;
-      case 5:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "block";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Slightly Agree";
-        break;
-      case 6:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "block";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Moderately Agree";
-        break;
-      case 7:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "block";
-        react9.style.display = "none";
-        react10.style.display = "none";
-        exp.innerText = "Agree";
-        break;
-      case 8:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "block";
-        react10.style.display = "none";
-        exp.innerText = "Strongly Agree";
-        break;
-      case 9:
-        react1.style.display = "none";
-        react2.style.display = "none";
-        react3.style.display = "none";
-        react4.style.display = "none";
-        react5.style.display = "none";
-        react6.style.display = "none";
-        react7.style.display = "none";
-        react8.style.display = "none";
-        react9.style.display = "none";
-        react10.style.display = "block";
-        exp.innerText = ":)";
-        break;
-      default:
-        react1.style.display = "block";
-        react3.style.display = "none";
-        react2.style.display = "none";
-
-        break;
+    if (jsonData.range === 9) {
+      switch (parseInt(e.target.value)) {
+        case 0:
+          react1.style.display = "block";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Strongly Disagree";
+          break;
+        case 1:
+          react1.style.display = "none";
+          react2.style.display = "block";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Disagree";
+          break;
+        case 2:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "block";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Moderately Disagree";
+          break;
+        case 3:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "block";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Slightly Disagree";
+          break;
+        case 4:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Neutral";
+          break;
+        case 5:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "block";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Slightly Agree";
+          break;
+        case 6:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "block";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Moderately Agree";
+          break;
+        case 7:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "block";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Agree";
+          break;
+        case 8:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "block";
+          react10.style.display = "none";
+          exp.innerText = "Strongly Agree";
+          break;
+        default:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          break;
+      }
+    } else if (jsonData.range === 7) {
+      switch (parseInt(e.target.value)) {
+        case 0:
+          react1.style.display = "block";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Strongly Disagree";
+          break;
+        case 1:
+          react1.style.display = "none";
+          react2.style.display = "block";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Disagree";
+          break;
+        case 2:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "block";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Somewhat Disagree";
+          break;
+        case 3:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Neutral";
+          break;
+        case 4:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "block";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Somewhat Agree";
+          break;
+        case 5:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "block";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Agree";
+          break;
+        case 6:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "block";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Strongly Agree";
+          break;
+        default:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          break;
+      }
+    } else if (jsonData.range === 5) {
+      switch (parseInt(e.target.value)) {
+        case 0:
+          react1.style.display = "block";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Strongly Disagree";
+          break;
+        case 1:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "block";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Disagree";
+          break;
+        case 2:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Neutral";
+          break;
+        case 3:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "block";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Agree";
+          break;
+        case 4:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "block";
+          react10.style.display = "none";
+          exp.innerText = "Strongly Agree";
+          break;
+        default:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          break;
+      }
+    } else if (jsonData.range === 3) {
+      switch (parseInt(e.target.value)) {
+        case 0:
+          react1.style.display = "block";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Disagree";
+          break;
+        case 1:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          exp.innerText = "Neutral";
+          break;
+        case 2:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "block";
+          exp.innerText = "Agree";
+          break;
+        default:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          break;
+      }
     }
   };
 
@@ -309,10 +544,10 @@ export default function SliderComponent({ jsonData }) {
                 onChange={changeHandler}
                 className="w-full cursor-pointer rounded-full "
                 type="range"
-                defaultValue={4}
+                defaultValue={Math.floor(jsonData.range / 2)}
                 min={0}
-                max={8}
-                step={0}
+                max={(jsonData.range) - 1}
+                step={1}
               />
             </div>
           </div>
