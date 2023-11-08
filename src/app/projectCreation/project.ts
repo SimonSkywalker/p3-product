@@ -1,31 +1,49 @@
+
 export class Project{
-    private _name:String;
+
+    private _title: String;
+
     private _isActive: boolean;
+
     private _logo: String;
+
     
 
-    constructor(name:String, isActive:boolean, logo:String){
-        this._name=name;
-        this._isActive=isActive;
-        this._logo=logo;
+    constructor(title:String, isActive:boolean, logo:String){
+
+        this._title = title;
+        this._isActive = isActive;
+        this._logo = logo;
 
     }
-    public get name(): String {
-        return this._name;
+
+    public get title(): String {
+        return this._title;
     }
-    public set name(value: String) {
-        this._name = value;
+
+    public set title(value: String) {
+        this._title = value;
     }
+
     public get isActive(): boolean {
         return this._isActive;
     }
+
     public set isActive(value: boolean) {
         this._isActive = value;
     }
+
     public get logo(): String {
         return this._logo;
     }
+
     public set logo(value: String) {
         this._logo = value;
     }
+
+
+
+
+
+
 }

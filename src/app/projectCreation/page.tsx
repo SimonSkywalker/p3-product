@@ -1,172 +1,260 @@
-//'use client'
-/*'use server'*/
-/*import React from 'react'
 
-export default async function leaderHome() {
-return (
-    
+'use client'
+import Modal from "react-modal";
+import React, { useEffect } from "react";
 
-  function openPage(pageName: string, event: React.MouseEvent<HTMLButtonElement>, color: string): void {
-    // your code here
+const customStyles = {
+  content: {
     
-      <><div className="w-full p-6  lg:max-w-xl">
-      <h1 className="text-3xl font-bold text-center text-white-700">Project</h1>
-    </div><button className="tablink" onClick={(event: React.MouseEvent<HTMLButtonElement>) => openPage('Home', event, 'red')}>
-        Home
-      </button><button className="tablink" onClick={(event: React.MouseEvent<HTMLButtonElement>) => openPage('News', event, 'green')} id="defaultOpen">
-        News
-      </button><button className="tablink" onClick={(event: React.MouseEvent<HTMLButtonElement>) => openPage('Contact', event, 'blue')}>
-        Contact
-      </button><button className="tablink" onClick={(event: React.MouseEvent<HTMLButtonElement>) => openPage('About', event, 'orange')}>
-        About
-      </button><div id="Home" className="tabcontent">
-        <h3>Home</h3>
-        <p>Home is where the heart is..</p>
-      </div><div id="News" className="tabcontent">
-        <h3>News</h3>
-        <p>Some news this fine day!</p>
-      </div><div id="Contact" className="tabcontent">
-        <h3>Contact</h3>
-        <p>Get in touch with us!</p>
-      </div><div id="About" className="tabcontent">
-        <h3>About</h3>
-        <p>Learn more about us!</p>
-      </div></>
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    height: 500, width: 400,
+
+  },
+};
+
+
+
+export default function projectPage() {
+
+  const [openTab, setOpenTab] = React.useState(1);
+  
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const [creatingProject, setCreating] = React.useState(false);
+
+  useEffect(() => {
+    const appElement: HTMLElement | null = document.getElementById('outerDiv');
+    if (appElement) {
+      Modal.setAppElement(appElement);
+    }
+  }, []);
+
+
+
+  function openModal() {
+    console.log("tryk");
+    setIsOpen(true);
   }
-  );
-}*/
-/*import React from 'react';
-import Link from 'next/link';
-import {Project} from './project.js';
 
-export default function registerPage() {
+  function closeModal() {
+    
+    setIsOpen(false);
+  }
+
+  function Show(){
+    setCreating(true);
+    console.log("heyi");
+    
+  }
+
+  function hide(){
+    setCreating(false);
+    console.log("heyu");
+    
+  }
+
+  function handleSubmit(){
+    
+  }
+
+  function handleSubmitIcon(){
+    
+  }
+
+  let projectNames : String[] = ["Project123", "Project456", "Project789"];
+  let projectIcons : String[] = ["hat", "ball", "foot"];
+
+
+
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
-        <h1 className="text-3xl font-bold text-center text-gray-700">Project</h1>
-        <form className="mt-6">
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-800">
-              Username
-            </label>
-            <input
-              type="text"
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-            />
+    <>
+      <div className="flex flex-wrap">
+        
+        <div id="outerDiv" className="w-full">
+
+          <Modal
+            
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Choose Icon Modal"
+            style={customStyles}
+          >
+            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={closeModal}></img>
+            
+            
+
+            <form 
+            className="mt-6" 
+            onSubmit={handleSubmitIcon}>
+              <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
+              <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
+                
+              </div>
+
+              <hr className="rounded-lg border-2"></hr>
+
+              <h2 className="text-3xl text-center m-4">Or Upload Image</h2>
+              <div id="uploadIcon" className="grid place-items-center m-12">
+
+                <label htmlFor="file-input">
+                  <img className="w-10 h-10 hover:scale-125" src="icons/upload.png"/>
+                </label>
+                <input id="file-input" type="file" className="hidden"/>
+
+              </div>
+
+
+              
+              <button 
+                type="submit"
+                title="submitButton"
+                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
+                Submit
+              </button>
+
+            </form>
+          </Modal>
+
+          <ul key="ul1" 
+            className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+            role="tablist"
+          >
+            <li key="activeTab" className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a key="activeTabLink"
+                className={
+                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  (openTab === 1
+                    ? "text-white bg-blueGray-600"
+                    : "text-blueGray-600 bg-white")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  setOpenTab(1);
+                }}
+                data-toggle="tab"
+                href="#link1"
+                role="tablist"
+              >
+                Active
+              </a>
+            </li>
+            <li key="historyTab" className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a key="historyTabLink"
+                className={
+                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  (openTab === 2
+                    ? "text-white bg-blueGray-600"
+                    : "text-blueGray-600 bg-white")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  setOpenTab(2);
+                }}
+                data-toggle="tab"
+                href="#link2"
+                role="tablist"
+              >
+                History
+              </a>
+            </li>
+          </ul>
+          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+            <div className="px-4 py-5 flex-auto">
+              <div className="tab-content tab-space">
+                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"}  id="link1">
+                  
+                  <div id="newProjectDiv" className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
+                      <h3>Create New</h3>
+                      <button className={"text-5xl text-align-center"}
+                      onClick={ e => {
+                        e.preventDefault();
+                        Show();
+
+                      }}
+                      >+</button>
+                  </div>
+
+                  <div id="createProjectDiv" className={(creatingProject ? "block " : "hidden ") + "h-30 w-30 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400"}>
+
+                    <form 
+                    className="mt-6" 
+                    onSubmit={handleSubmit}>
+                      <div 
+                        className="mb-4">
+                          <input
+                            type="text" 
+                            id="projectname" 
+                            placeholder="Project Name" 
+                            autoComplete="Project Name" 
+                            name="projectname"
+                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                          />
+                      </div>
+                      
+                      <div 
+                        className="mt-2 grid place-items-center">
+                        <img className="w-10 h-10 hover:scale-125" src="icons/upload.png"
+                        onClick={ e => {
+                          e.preventDefault();
+                          openModal();
+    
+                        }}>
+                        </img>
+                      </div>
+
+                      <div>
+                        <br/>
+                        <img className="w-6 h-6 float-left hover:scale-125" src="icons/cross.png"></img>
+                        <img className="w-6 h-6 float-right hover:scale-125" src="icons/checkmark.png"></img>
+                      </div>
+
+                    </form>
+
+                  </div>
+
+                  {projectNames.map((name, i) => 
+                    <div key={i} className="h-30 w-30 border-solid border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
+                      <p key={i+"p"}>{name}</p><br/>
+                      <p key={i+"para"}>{projectIcons[projectNames.indexOf(name)]}</p>
+                    </div>  
+                  )}
+
+                  <button className={"text-5xl text-align-center"}
+                    onClick={ e => {
+                      e.preventDefault();
+                      openModal();
+                  }}
+                  >+</button>
+
+                </div>
+
+                  
+                <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"} id="link2">
+                </div>  
+
+              </div>
+            </div>
           </div>
-          <div className="mb-2">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-800">
-              Password
-            </label>
-            <input
-              type="password"
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="repeatPassword"
-              className="block text-sm font-semibold text-gray-800"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="repeatPassword"
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-            />
-          </div>
-          <div className="mt-2">
-            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
-              Register
-            </button>
-          </div>
-        </form>
-
-        <p className="mt-4 text-sm text-center text-gray-700">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="font-medium text-blue-600 hover:underline">
-            Log in
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
-}*/
-
-
-
-
-
-/*'use client'
-import React from 'react';
-import Link from 'next/link';
-import { useState } from 'react';
-import {Project} from './project.js';
-
-
-export default function loginPage() {
-  
-  const [index, setIndex] = useState(0);
-
-  function handleClickActive() {
-    setIndex(1);
-  }
-
-  function handleClickHistory() {
-    setIndex(2);
-  }
-
- /* const tabClick = (event: any) => {
-    alert();
-  }*/
-  
-  
-  /*return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
-        <div className="tab">
-          <button className="projectTablinks" onClick = {handleClickActive}> Active </button>
-          <div id="Active" className="tabcontent">
-        <h3>Active</h3>
-        <p>Here are your current projects.</p>
-      </div>
-
-          </div>
-          <div className="tab">
-          <button className="projectTablinks" onClick = {handleClickHistory}> History </button>
-          <div id="History" className="tabcontent">
-        <h3>History</h3>
-        <p>Here you can see your archived projects.</p> 
-      </div>
-      
         </div>
       </div>
-  
-      if(index == 1){
-    /*<div id="Active" className="tabcontent">
-        <h3>Active</h3>
-        <p>Here are your current projects.</p>
-      </div>*/
-    //} else {
-      /*<div id="History" className="tabcontent">
-        <h3>History</h3>
-        <p>Here you can see your archived projects.</p> 
-      </div>
-    } 
-    
-      
-    </div>
+    </>
   );
-}
+};
 
 
-*/
+
+
+
+/*
 'use client'
 import React from "react";
 
-const Tabs = () => {
+export default function projectPage() {
   const [openTab, setOpenTab] = React.useState(1);
 
   let projectNames : String[] = ["Project123", "Project456", "Project789"];
@@ -237,7 +325,7 @@ const Tabs = () => {
                     <br />
                   </p>
                   {projectNames.map((name) => 
-                    <div className="border-solid border-4 border-teal-600 bg-teal-400 p-8 inline-block m-24 inline-block bg-teal-400">
+                    <div className="border-solid border-4 border-grey-600 bg-teal-400 p-8 inline-block m-24 inline-block bg-teal-400">
                       <p>{name}</p><br/>
                       <p>{projectIcons[projectNames.indexOf(name)]}</p>
                     </div>  
@@ -251,5 +339,5 @@ const Tabs = () => {
     </>
   );
 };
+*/
 
-export default Tabs;
