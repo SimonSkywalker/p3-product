@@ -1,4 +1,5 @@
 export class RegisterException extends Error {
+    static message: any;
     
     constructor(){
         super();
@@ -6,3 +7,4 @@ export class RegisterException extends Error {
     }
     
 }
+

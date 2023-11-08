@@ -4,42 +4,54 @@ import Link from 'next/link';
 import { registerFormSchema } from '../lib/validations/registerForm';
 import {useState} from 'react';
 import { useRouter } from 'next/navigation';
-import { ZodError } from 'zod';
+import { ZodError, z } from 'zod';
 import { RegisterException } from '../exceptions/RegisterException';
-import { error } from 'console';
+
 
 export default function RegisterPage() {
-  
+  /* istanbul ignore next */
+  const router = useRouter();
 
-  const [form, setForm] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
   }) 
 
   const handleChange = (e:any) => {
-    setForm({
-      ...form,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value
     })
   }
+  
+  const initialValidationErrors: z.infer<typeof registerFormSchema> = {
+    username: '',
+    password: '',
+    confirmPassword: '',
+  };
+  
+  const [validationErrors, setValidationErrors] = useState(initialValidationErrors);
 
-  const [UserError, setUserError] = useState('');
-  const [PasswordError, setPasswordError] = useState('');
-  const [cPasswordError, setcPasswordError] = useState('');
+  
 
+  /* const [validationErrors, setValidationErrors] = useState<z.infer<typeof registerFormSchema>>(
+    registerFormSchema.parse({}) // Initialize with an empty object of the same shape
+  ); */
+  
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault()
     try {
+
       // Here zod performs it's magic by parsing your data against
       // the schema defined earlier.
-      
-      setUserError("");
-      setPasswordError("");
-      setcPasswordError("");
+     
+
+      setValidationErrors(initialValidationErrors);
 
       //Const Username and password is matched with the fields in the form Schema. 
-      const validatedData = registerFormSchema.parse(form)
+      const validatedData = registerFormSchema.parse(formData)
       
       // We send the validated data to the an API endpoint
       // on the server; we will code this later.
@@ -50,43 +62,51 @@ export default function RegisterPage() {
         .then((response) => {
           if (response.ok) {
             // Request was successful
-            const router = useRouter();
-            router.push('/login');
+            
+            //router.push('/login');
             return response.json().then((data) => {
               console.log(data);
               // Process the response data as needed
                
             });
           } else if(RegisterException){
-            
-            setUserError('Username already exists')
+
+            let a = new RegisterException;
+            setValidationErrors({...validationErrors, username:  a.message})
           }
         })
      
     } catch (err: any) {
       
-      
-      if (err instanceof ZodError)
-      {         
-        err.issues.forEach((issue: any) => {
-          switch (issue.path[0]) {
-            case 'username':
-              setUserError(issue.message);
-              break;
-            case 'password':
-              setPasswordError(issue.message);
-              break;
-            case 'confirmPassword':
-              setcPasswordError(issue.message);
-              break;
-            default:
-              console.error(issue.message);
-              
-          }
+      if (err instanceof z.ZodError) {
+        // Handle validation errors
+        
+        const newValidationErrors: z.infer<typeof registerFormSchema> = { ...initialValidationErrors };
+
+        err.errors.forEach((validationError) => {
+          // Extract the field name and error message from the validationError.
+          const fieldName = validationError.path[0] as keyof z.infer<typeof registerFormSchema>;
+          const errorMessage = validationError.message;
+
+          // Update the corresponding field in the newValidationErrors object.
+          newValidationErrors[fieldName] = errorMessage;
         });
+
+        // Update the validationErrors state with the new errors.
+        setValidationErrors(newValidationErrors);
+       
       }
 
+      if(err instanceof RegisterException){
+
+        let a = new RegisterException;
+        setValidationErrors({...validationErrors, username:  a.message})
+      }
+
+      
     }
+
+    
   }
   return (
 <div 
@@ -110,10 +130,16 @@ export default function RegisterPage() {
               autoComplete="username" 
               onChange={handleChange} 
               name="username"
+              data-testid="unInput"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
-          <div className="text-red-500 text-sm">{UserError}</div>
-        </div>
+            {validationErrors.username && (
+              <div 
+                className="text-red-500 text-sm">
+                {validationErrors.username}
+              </div>
+            )}
+        </div> 
       <div className="mb-2">
         <label 
           htmlFor="password" 
@@ -128,13 +154,17 @@ export default function RegisterPage() {
           name="password"
           className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
         />
-        <div className="text-red-500 text-sm">{PasswordError}</div>
-      </div>
+          {validationErrors.password && (
+            <div 
+              className="text-red-500 text-sm">
+              {validationErrors.password}
+            </div>
+          )}
+      </div> 
         <div className="mb-2">
           <label
             htmlFor="repeatPassword"
-            className="block text-sm font-semibold text-gray-800"
-            >
+            className="block text-sm font-semibold text-gray-800">
             Confirm Password
           </label>
           <input
@@ -145,12 +175,18 @@ export default function RegisterPage() {
             name="confirmPassword"
             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
           />
-        <div className="text-red-500 text-sm">{cPasswordError}</div>
-      </div>
+          {validationErrors.confirmPassword && (
+            <div 
+              className="text-red-500 text-sm">
+              {validationErrors.confirmPassword}
+            </div>
+          )}
+        </div>
       <div 
         className="mt-2">
         <button 
           type="submit"
+          title="submitButton"
           className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
           Register
         </button>
