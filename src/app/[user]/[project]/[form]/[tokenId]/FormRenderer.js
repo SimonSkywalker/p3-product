@@ -7,6 +7,7 @@ const TextInputComponent = lazy(() => import('./TextInputComponent'));
 
 function FormRenderer({ formObject }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userResponses, setUserResponses] = useState([]);
   const totalQuestions = formObject.questions.length;
 
   const goToPreviousQuestion = () => {
@@ -19,6 +20,15 @@ function FormRenderer({ formObject }) {
     if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
+  };
+
+  const handleUserInput = (response) => {
+    // Update the userResponses array with the latest response
+    setUserResponses((prevResponses) => {
+      const newResponses = [...prevResponses];
+      newResponses[currentQuestionIndex] = response;
+      return newResponses;
+    });
   };
 
   return (
@@ -36,13 +46,28 @@ function FormRenderer({ formObject }) {
         index === currentQuestionIndex && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
             {question.questionType === 0 && (
-              <MultipleChoiceComponent jsonData = {question} />
+              <MultipleChoiceComponent
+              jsonData={question}
+              onUserInput={handleUserInput}
+              currentQuestionIndex={currentQuestionIndex}
+              userResponses={userResponses}
+              />
             )}
             {question.questionType === 1 && (
-              <SliderComponent jsonData = {question} />
+              <SliderComponent
+              jsonData={question}
+              onUserInput={handleUserInput}
+              currentQuestionIndex={currentQuestionIndex}
+              userResponses={userResponses}
+              />
             )}
             {question.questionType === 2 && (
-              <TextInputComponent jsonData = {question} />
+              <TextInputComponent
+              jsonData={question}
+              onUserInput={handleUserInput}
+              currentQuestionIndex={currentQuestionIndex}
+              userResponses={userResponses}
+              />
             )}
           </Suspense>
         )
@@ -55,6 +80,7 @@ function FormRenderer({ formObject }) {
           <button onClick={goToNextQuestion}>Next Question</button>
         )}
       </div>
+      <button onClick={() => console.log(userResponses)}>Log User Responses</button>
     </div>
   );
 }

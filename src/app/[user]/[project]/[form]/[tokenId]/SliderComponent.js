@@ -19,8 +19,8 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
   };
 
   const changeHandler = (e) => {
-    const slider = document.getElementById("slider");
-    slider.defaultValue = Math.ceil(jsonData.range / 2);
+    //const slider = document.getElementById("slider");
+    //slider.defaultValue = Math.ceil(jsonData.range / 2);
     const react1 = document.querySelector("#react1");
     const react2 = document.querySelector("#react2");
     const react3 = document.querySelector("#react3");
@@ -31,7 +31,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
     const react8 = document.querySelector("#react8");
     const react9 = document.querySelector("#react9");
     const react10 = document.querySelector("#react10");
-    const exp = document.querySelector("#exp");
+    //const exp = document.querySelector("#exp");
 
     if (jsonData.range === 9) {
       switch (parseInt(e.target.value)) {
@@ -589,7 +589,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
                   {userResponses[currentQuestionIndex] === 4 && (
                     "Slightly Disagree"
                   )}
-                  {(userResponses[currentQuestionIndex] === 5 || !userResponses[currentQuestionIndex]) && (
+                  {(!userResponses[currentQuestionIndex] || userResponses[currentQuestionIndex] === 5) && (
                     "Neutral"
                   )}
                   {userResponses[currentQuestionIndex] === 6 && (
@@ -617,7 +617,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
                   {userResponses[currentQuestionIndex] === 3 && (
                     "Somewhat Disagree"
                   )}
-                  {(userResponses[currentQuestionIndex] === 4 || !userResponses[currentQuestionIndex]) && (
+                  {(!userResponses[currentQuestionIndex] || userResponses[currentQuestionIndex] === 4) && (
                     "Neutral"
                   )}
                   {userResponses[currentQuestionIndex] === 5 && (
@@ -639,7 +639,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
                   {userResponses[currentQuestionIndex] === 2 && (
                     "Disagree"
                   )}
-                  {(userResponses[currentQuestionIndex] === 3 || !userResponses[currentQuestionIndex]) && (
+                  {(!userResponses[currentQuestionIndex] || userResponses[currentQuestionIndex] === 3) && (
                     "Neutral"
                   )}
                   {userResponses[currentQuestionIndex] === 4 && (
@@ -655,7 +655,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
                   {userResponses[currentQuestionIndex] === 1 && (
                     "Disagree"
                   )}
-                  {(userResponses[currentQuestionIndex] === 2 || !userResponses[currentQuestionIndex]) && (
+                  {(!userResponses[currentQuestionIndex] || userResponses[currentQuestionIndex] === 2) && (
                     "Neutral"
                   )}
                   {userResponses[currentQuestionIndex] === 3 && (
@@ -680,7 +680,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
                 step={1}
               />
             </div>
-            <p>Selected value: {sliderValue}</p>
+            <p>DEBUG: Selected value: {sliderValue}</p>
           </div>
         </div>
       </div>
