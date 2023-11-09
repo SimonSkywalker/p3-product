@@ -1,12 +1,26 @@
 "use client"
 // SliderComponent.js
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function SliderComponent({ jsonData }) {
-  useEffect(() => {});
+export default function SliderComponent({ jsonData, onUserInput, currentQuestionIndex, userResponses }) {
+
+  const [sliderValue, setSliderValue] = useState(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
+
+  useEffect(() => {
+    // Update the slider value when the current question changes
+    setSliderValue(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
+  }, [currentQuestionIndex, userResponses]);
+
+  const handleSliderChange = (e) => {
+    const value = parseInt(e.target.value);
+    setSliderValue(value);
+    // Send the response to the parent component
+    onUserInput(value);
+  };
+
   const changeHandler = (e) => {
     const slider = document.getElementById("slider");
-    slider.defaultValue = Math.floor(jsonData.range / 2);
+    slider.defaultValue = Math.ceil(jsonData.range / 2);
     const react1 = document.querySelector("#react1");
     const react2 = document.querySelector("#react2");
     const react3 = document.querySelector("#react3");
@@ -21,7 +35,7 @@ export default function SliderComponent({ jsonData }) {
 
     if (jsonData.range === 9) {
       switch (parseInt(e.target.value)) {
-        case 0:
+        case 1:
           react1.style.display = "block";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -32,9 +46,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Strongly Disagree";
+          //exp.innerText = "Strongly Disagree";
           break;
-        case 1:
+        case 2:
           react1.style.display = "none";
           react2.style.display = "block";
           react3.style.display = "none";
@@ -45,9 +59,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Disagree";
+          //exp.innerText = "Disagree";
           break;
-        case 2:
+        case 3:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "block";
@@ -58,9 +72,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Moderately Disagree";
+          //exp.innerText = "Moderately Disagree";
           break;
-        case 3:
+        case 4:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -71,9 +85,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Slightly Disagree";
+          //exp.innerText = "Slightly Disagree";
           break;
-        case 4:
+        case 5:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -84,9 +98,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Neutral";
+          //exp.innerText = "Neutral";
           break;
-        case 5:
+        case 6:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -97,9 +111,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Slightly Agree";
+          //exp.innerText = "Slightly Agree";
           break;
-        case 6:
+        case 7:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -110,20 +124,7 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Moderately Agree";
-          break;
-        case 7:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "block";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          exp.innerText = "Agree";
+          //exp.innerText = "Moderately Agree";
           break;
         case 8:
           react1.style.display = "none";
@@ -133,10 +134,23 @@ export default function SliderComponent({ jsonData }) {
           react5.style.display = "none";
           react6.style.display = "none";
           react7.style.display = "none";
+          react8.style.display = "block";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          //exp.innerText = "Agree";
+          break;
+        case 9:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
           react8.style.display = "none";
           react9.style.display = "block";
           react10.style.display = "none";
-          exp.innerText = "Strongly Agree";
+          //exp.innerText = "Strongly Agree";
           break;
         default:
           react1.style.display = "none";
@@ -149,11 +163,12 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
+          //exp.innerText = "Neutral";
           break;
       }
     } else if (jsonData.range === 7) {
       switch (parseInt(e.target.value)) {
-        case 0:
+        case 1:
           react1.style.display = "block";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -164,9 +179,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Strongly Disagree";
+          //exp.innerText = "Strongly Disagree";
           break;
-        case 1:
+        case 2:
           react1.style.display = "none";
           react2.style.display = "block";
           react3.style.display = "none";
@@ -177,9 +192,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Disagree";
+          //exp.innerText = "Disagree";
           break;
-        case 2:
+        case 3:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -190,9 +205,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Somewhat Disagree";
+          //exp.innerText = "Somewhat Disagree";
           break;
-        case 3:
+        case 4:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -203,9 +218,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Neutral";
+          //exp.innerText = "Neutral";
           break;
-        case 4:
+        case 5:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -216,20 +231,7 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Somewhat Agree";
-          break;
-        case 5:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "block";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          exp.innerText = "Agree";
+          //exp.innerText = "Somewhat Agree";
           break;
         case 6:
           react1.style.display = "none";
@@ -242,76 +244,9 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "block";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Strongly Agree";
+          //exp.innerText = "Agree";
           break;
-        default:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-      }
-    } else if (jsonData.range === 5) {
-      switch (parseInt(e.target.value)) {
-        case 0:
-          react1.style.display = "block";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          exp.innerText = "Strongly Disagree";
-          break;
-        case 1:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "block";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          exp.innerText = "Disagree";
-          break;
-        case 2:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          exp.innerText = "Neutral";
-          break;
-        case 3:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "block";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          exp.innerText = "Agree";
-          break;
-        case 4:
+        case 7:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -322,7 +257,7 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "block";
           react10.style.display = "none";
-          exp.innerText = "Strongly Agree";
+          //exp.innerText = "Strongly Agree";
           break;
         default:
           react1.style.display = "none";
@@ -335,11 +270,12 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
+          //exp.innerText = "Neutral";
           break;
       }
-    } else if (jsonData.range === 3) {
+    } else if (jsonData.range === 5) {
       switch (parseInt(e.target.value)) {
-        case 0:
+        case 1:
           react1.style.display = "block";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -350,9 +286,22 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Disagree";
+          //exp.innerText = "Strongly Disagree";
           break;
-        case 1:
+        case 2:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "block";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          //exp.innerText = "Disagree";
+          break;
+        case 3:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -363,9 +312,77 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          exp.innerText = "Neutral";
+          //exp.innerText = "Neutral";
+          break;
+        case 4:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "block";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          //exp.innerText = "Agree";
+          break;
+        case 5:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "block";
+          react10.style.display = "none";
+          //exp.innerText = "Strongly Agree";
+          break;
+        default:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          //exp.innerText = "Neutral";
+          break;
+      }
+    } else if (jsonData.range === 3) {
+      switch (parseInt(e.target.value)) {
+        case 1:
+          react1.style.display = "block";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "none";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          //exp.innerText = "Disagree";
           break;
         case 2:
+          react1.style.display = "none";
+          react2.style.display = "none";
+          react3.style.display = "none";
+          react4.style.display = "none";
+          react5.style.display = "block";
+          react6.style.display = "none";
+          react7.style.display = "none";
+          react8.style.display = "none";
+          react9.style.display = "none";
+          react10.style.display = "none";
+          //exp.innerText = "Neutral";
+          break;
+        case 3:
           react1.style.display = "none";
           react2.style.display = "none";
           react3.style.display = "none";
@@ -376,7 +393,7 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "block";
-          exp.innerText = "Agree";
+          //exp.innerText = "Agree";
           break;
         default:
           react1.style.display = "none";
@@ -389,6 +406,7 @@ export default function SliderComponent({ jsonData }) {
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
+          //exp.innerText = "Neutral";
           break;
       }
     }
@@ -404,7 +422,9 @@ export default function SliderComponent({ jsonData }) {
             </p>
             <div
               id="react1"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 3 || jsonData.range === 5 || jsonData.range === 7 || jsonData.range === 9) ? (userResponses[currentQuestionIndex] === 1 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.706 61.708" width="61.706" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -417,7 +437,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react2"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 7 || jsonData.range === 9) ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.706 61.708" width="61.706" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -430,7 +452,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react3"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 5) ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.702 61.708" width="61.702" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -443,7 +467,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react4"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 7) ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.708 61.708" width="61.708" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -456,7 +482,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react5"
-              style={{ display: "block" }}
+              style={{
+                display: !userResponses[currentQuestionIndex] ? 'block' : jsonData.range === 3 ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : jsonData.range === 5 ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : jsonData.range === 7 ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.708 61.708" width="61.708" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -469,7 +497,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react6"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 7) ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 6 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.703 61.708" width="61.703" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -482,7 +512,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react7"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 5) ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 7 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.714 61.708" width="61.714" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -495,7 +527,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react8"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 7) ? (userResponses[currentQuestionIndex] === 6 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 8 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.703 61.708" width="61.703" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -511,7 +545,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react9"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 5) ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : jsonData.range === 7 ? (userResponses[currentQuestionIndex] === 7 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 9 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.713 61.708" width="61.713" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -524,7 +560,9 @@ export default function SliderComponent({ jsonData }) {
             </div>
             <div
               id="react10"
-              style={{ display: "none" }}
+              style={{
+                display: (jsonData.range === 3) ? (userResponses[currentQuestionIndex] === 10 ? 'block' : 'none') : 'none',
+              }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
               <svg viewBox="0 0 61.704 61.708" width="61.704" height="61.708" xmlns="http://www.w3.org/2000/svg">
@@ -536,20 +574,113 @@ export default function SliderComponent({ jsonData }) {
               </svg>
             </div>
             <p className="text-sm leading-none text-center text-gray-600">
-              <span id="exp">Neutral</span>
+            <span id="exp">
+              {jsonData.range === 9 && (
+                <>
+                  {userResponses[currentQuestionIndex] === 1 && (
+                    "Strongly Disagree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 2 && (
+                    "Disagree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 3 && (
+                    "Moderately Disagree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 4 && (
+                    "Slightly Disagree"
+                  )}
+                  {(userResponses[currentQuestionIndex] === 5 || !userResponses[currentQuestionIndex]) && (
+                    "Neutral"
+                  )}
+                  {userResponses[currentQuestionIndex] === 6 && (
+                    "Slightly Agree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 7 && (
+                    "Moderately Agree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 8 && (
+                    "Agree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 9 && (
+                    "Strongly Agree"
+                  )}
+                </>
+              )}
+              {jsonData.range === 7 && (
+                <>
+                  {userResponses[currentQuestionIndex] === 1 && (
+                    "Strongly Disagree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 2 && (
+                    "Disagree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 3 && (
+                    "Somewhat Disagree"
+                  )}
+                  {(userResponses[currentQuestionIndex] === 4 || !userResponses[currentQuestionIndex]) && (
+                    "Neutral"
+                  )}
+                  {userResponses[currentQuestionIndex] === 5 && (
+                    "Somewhat Agree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 6 && (
+                    "Agree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 7 && (
+                    "Strongly Agree"
+                  )}
+                </>
+              )}
+              {jsonData.range === 5 && (
+                <>
+                  {userResponses[currentQuestionIndex] === 1 && (
+                    "Strongly Disagree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 2 && (
+                    "Disagree"
+                  )}
+                  {(userResponses[currentQuestionIndex] === 3 || !userResponses[currentQuestionIndex]) && (
+                    "Neutral"
+                  )}
+                  {userResponses[currentQuestionIndex] === 4 && (
+                    "Agree"
+                  )}
+                  {userResponses[currentQuestionIndex] === 5 && (
+                    "Strongly Agree"
+                  )}
+                </>
+              )}
+              {jsonData.range === 3 && (
+                <>
+                  {userResponses[currentQuestionIndex] === 1 && (
+                    "Disagree"
+                  )}
+                  {(userResponses[currentQuestionIndex] === 2 || !userResponses[currentQuestionIndex]) && (
+                    "Neutral"
+                  )}
+                  {userResponses[currentQuestionIndex] === 3 && (
+                    "Agree"
+                  )}
+                </>
+              )}
+            </span>
             </p>
             <div className="slider mt-4 mb-4 mx-auto ">
               <input
                 id="slider"
-                onChange={changeHandler}
+                onChange={(e) => {
+                  changeHandler(e);
+                  handleSliderChange(e);
+                }}
                 className="w-full cursor-pointer rounded-full "
                 type="range"
-                defaultValue={Math.floor(jsonData.range / 2)}
-                min={0}
-                max={(jsonData.range) - 1}
+                value={sliderValue}
+                min={1}
+                max={(jsonData.range)}
                 step={1}
               />
             </div>
+            <p>Selected value: {sliderValue}</p>
           </div>
         </div>
       </div>
