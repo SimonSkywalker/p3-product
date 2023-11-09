@@ -1,6 +1,6 @@
 import FileTypes from "./FileTypes";
 
-class FileSystemService {
+export default class FileSystemService {
     public static async listFiles(directoryPath: string): Promise<string[]> {
         console.log("hello");
         try {
@@ -30,8 +30,8 @@ class FileSystemService {
     }
 
     public static async getType(currentPath : string) : Promise<FileTypes> {
-
-        const response : FileTypes = await fetch('../api/fileType', {
+        let fileType :FileTypes = FileTypes.other;
+         await fetch('../api/fileType', {
             method: 'POST',
             body: JSON.stringify({path: currentPath})
           })
@@ -39,22 +39,69 @@ class FileSystemService {
               if (!response.ok) {
                 throw new Error('Network response was not ok');
               }
-              return await response.json();
+              return response.json();
             })
-            .then(data => {
-              console.log(data); // Handle the response data here
+            .then((data) => {
+              console.log("data " + data.fileType); // Handle the response data here
+              fileType = data.fileType;
             })
             .catch(error => {
+              console.log("REEEEEEEE");
               console.error('There has been a problem with your fetch operation:', error);
             });
-        console.log("I fetched bitch");
-        if (response == ("JSON"))
-            return FileTypes.JSON
-        else if (await response.json() == "directory")
-            return FileTypes.directory
-        else
-            return FileTypes.other
+        console.log("I fetched bitch" + fileType);
+        return fileType;
+    }
+
+    public static async writeToJSONFile(data : Array<Object>, filePath : string) {
+            await fetch('../api/writeToFile', {
+                method: 'POST',
+                body: JSON.stringify({data: data, path : filePath})
+              })
+                .then(async response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log("data " + data.fileType); // Handle the response data here
+                })
+                .catch(error => {
+                  console.log("REEEEEEEE");
+                  console.error('There has been a problem with your fetch operation:', error);
+                });
+    }
+
+    public static async getJSONFile(filePath : string) : Promise<Array<Object>> {
+        let jsonArray : Array<Object> = [];
+        if(await this.getType(filePath) == FileTypes.JSON){
+            await fetch('../api/readFile', {
+                method: 'POST',
+                body: JSON.stringify({path : filePath})
+              })
+                .then(async response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log("data " + data); // Handle the response data here
+                  if (data.data == "") {
+                    jsonArray = [];
+                  }
+                  else {
+                    jsonArray = data.data;
+                  }
+                })
+                .catch(error => {
+                  console.log("REEEEEEEE");
+                  console.error('There has been a problem with your fetch operation:', error);
+                });
+        }
+        console.log("returning json array");
+        console.dir(jsonArray);
+        return jsonArray;
     }
 }
-
-export default FileSystemService;

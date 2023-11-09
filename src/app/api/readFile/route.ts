@@ -20,20 +20,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
     try {
         let file = path.join(process.cwd(), filePath);
-        
-        console.log(file);
-        //If a directory of the desired name is found
-        if (fs.lstatSync(file).isDirectory()){
-            console.log("it's a directory")
-            return NextResponse.json({fileType: FileTypes.directory, status: 200});
-            console.log("Why are we still here?");
-        }  else if (fs.lstatSync(file).isFile()){
-            console.log("it's a file");
-            return NextResponse.json({fileType: FileTypes.JSON, status: 200});
-        }  else {
-            return NextResponse.json({fileType: FileTypes.other, status: 200});
-            console.log("Just to suffer?");
-        } 
+        let fileData : string = fs.readFileSync(file, 'utf8');
+        if (fileData == "")
+            return NextResponse.json({data: ""})
+        else
+            return NextResponse.json({data: JSON.parse(fileData)});
     }
     catch (error) {
         console.log("IEEEEEEEEEEEEH")

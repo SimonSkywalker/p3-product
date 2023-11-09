@@ -12,6 +12,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     console.log(body);
     const filePath : string = body.path;
+    const data : Array<Object> = body.data;
     console.log(filePath)
 
     if (typeof filePath !== 'string') {
@@ -20,20 +21,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
     try {
         let file = path.join(process.cwd(), filePath);
-        
-        console.log(file);
-        //If a directory of the desired name is found
-        if (fs.lstatSync(file).isDirectory()){
-            console.log("it's a directory")
-            return NextResponse.json({fileType: FileTypes.directory, status: 200});
-            console.log("Why are we still here?");
-        }  else if (fs.lstatSync(file).isFile()){
-            console.log("it's a file");
-            return NextResponse.json({fileType: FileTypes.JSON, status: 200});
-        }  else {
-            return NextResponse.json({fileType: FileTypes.other, status: 200});
-            console.log("Just to suffer?");
-        } 
+        fs.writeFile(file, JSON.stringify(data), err => {
+            if (err) {
+                console.error(err);
+            }
+        })
+        return NextResponse.json({status: 200});
     }
     catch (error) {
         console.log("IEEEEEEEEEEEEH")
