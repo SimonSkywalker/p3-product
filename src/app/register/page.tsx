@@ -18,10 +18,10 @@ export default function RegisterPage() {
   }) 
 
   const handleChange = (e:any) => {
-    setFormData({
+    /* setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    })
+    }) */
   }
   
   const initialValidationErrors: z.infer<typeof registerFormSchema> = {
@@ -41,7 +41,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault()
-    try {
+    /* try {
 
       // Here zod performs it's magic by parsing your data against
       // the schema defined earlier.
@@ -62,7 +62,7 @@ export default function RegisterPage() {
           if (response.ok) {
             // Request was successful
             
-            //router.push('/login');
+            router.push('/login');
             return response.json().then((data) => {
               console.log(data);
               // Process the response data as needed
@@ -104,7 +104,7 @@ export default function RegisterPage() {
 
       
     }
-
+ */
     
   }
   return (
