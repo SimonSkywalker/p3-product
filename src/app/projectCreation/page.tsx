@@ -1,7 +1,10 @@
+//modal icons - select med options og billeder. lav border rundt om :(
+
 
 'use client'
 import Modal from "react-modal";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Image from 'next/image';
 
 const customStyles = {
   content: {
@@ -27,11 +30,19 @@ export default function projectPage() {
 
   const [creatingProject, setCreating] = React.useState(false);
 
+  const [icons, setIcons] = useState([]);
+
   useEffect(() => {
     const appElement: HTMLElement | null = document.getElementById('outerDiv');
+
     if (appElement) {
       Modal.setAppElement(appElement);
     }
+
+    fetch('/api/icons')
+    .then(response => response.json())
+    .then(data => setIcons(data));
+
   }, []);
 
 
@@ -94,6 +105,12 @@ export default function projectPage() {
               <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
               <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
                 
+                {icons.map(icon => (
+                  <div key={icon}>
+                    <img src={`/icons/${icon}`} alt={icon} width={50} height={50} className="hover:scale-125"/>
+                  </div>
+                ))}
+    
               </div>
 
               <hr className="rounded-lg border-2"></hr>
@@ -209,16 +226,27 @@ export default function projectPage() {
 
                       <div>
                         <br/>
-                        <img className="w-6 h-6 float-left hover:scale-125" src="icons/cross.png"></img>
+                        <img className="w-6 h-6 float-left hover:scale-125" src="icons/cross.png"
+                        onClick={ e => {
+                          e.preventDefault();
+                          hide();
+    
+                        }}>
+                        </img>
                         <img className="w-6 h-6 float-right hover:scale-125" src="icons/checkmark.png"></img>
+
+                        
+
+
                       </div>
+                      
 
                     </form>
 
                   </div>
 
                   {projectNames.map((name, i) => 
-                    <div key={i} className="h-30 w-30 border-solid border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
+                    <div key={i} className="h-30 w-30 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
                       <p key={i+"p"}>{name}</p><br/>
                       <p key={i+"para"}>{projectIcons[projectNames.indexOf(name)]}</p>
                     </div>  
