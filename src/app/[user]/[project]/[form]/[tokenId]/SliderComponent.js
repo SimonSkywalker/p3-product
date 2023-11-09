@@ -561,7 +561,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
             <div
               id="react10"
               style={{
-                display: (jsonData.range === 3) ? (userResponses[currentQuestionIndex] === 10 ? 'block' : 'none') : 'none',
+                display: (jsonData.range === 3) ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : 'none',
               }}
               className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
             >
