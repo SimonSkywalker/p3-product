@@ -1,22 +1,77 @@
 'use client'
 
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Button, Input } from "@nextui-org/react";
 import Link from 'next/link'
 import FileSystemService from './FileSystemService';
 import Token from './formCreation'
 import Form from './form';
+import Question from "./question";
 import DatabaseAccess from './DatabaseAccess';
+import { QuestionTypes, MultipleChoice, Slider } from "./question";
+import { createElement } from "react";
+
+let currForm : Form = new Form();
+
+
+class FormCreator{
+  public static updateQuestionBox(form : Form){
+    for (let i in form.questions){
+
+    }
+  }
+
+  public static createQuestionBox(questionType : QuestionTypes, questionNumber : number) : Element {
+    let questionBox = <><p> Question number {questionNumber}</p>
+    <Input label="Question name" id="questionID"></Input></>
+    return questionBox;
+  }
+}
+
+
 
 export default function Home() {
   return (
     <main>
       <h1>New form</h1>
-      <label htmlFor="fname">Form name: </label>
-      <input name="fname"/>
-      <label htmlFor="fname">Form description: </label>
-      <input name="fname"/>
-      
+      <Input
+      type="text"
+      label="fname"
+      defaultValue="New form"
+    />
+      <Input
+      type="text"
+      label="fdescription"
+    />
+      <label htmlFor="Qtype"/>
+      <Dropdown>
+        <DropdownTrigger>
+          <Button variant="bordered">Question type</Button>
+        </DropdownTrigger>
+        <DropdownMenu 
+          aria-label="Link Actions"
+          onAction={() => {FormCreator.updateQuestionBox}}
+        >
+          <DropdownItem key="mchoice" onClick={async () => {
+            currForm.addQuestion(QuestionTypes.multipleChoice);
+            console.dir(currForm);
+          }}>
+            Multiple choice
+          </DropdownItem>
+          <DropdownItem key="slider" onClick={async () => {
+            currForm.addQuestion(QuestionTypes.slider);
+          }}>
+            Slider
+          </DropdownItem>
+          <DropdownItem key="input" onClick={async () => {
+            currForm.addQuestion(QuestionTypes.textInput);
+          }}>
+            Text input
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       <div className='flex flex-wrap content-evenly'>
       </div>
+      {FormCreator.createQuestionBox(QuestionTypes.multipleChoice, 1)};
     </main>
   )
 }

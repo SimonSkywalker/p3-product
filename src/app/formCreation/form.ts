@@ -1,7 +1,7 @@
 import Token from "./formCreation";
 import WrongTypeException from "../exceptions/WrongTypeException";
 import NoObjectException from "../exceptions/NoObjectException";
-import Question from "./question";
+import Question, { MultipleChoice, Slider } from "./question";
 import { QuestionTypes } from "./question";
 
 
@@ -49,7 +49,20 @@ export default class Form {
 
     
     public addQuestion(questionType : QuestionTypes) : void{
-        this.questions.push (new Question(questionType))
+        switch (questionType){
+            case QuestionTypes.multipleChoice: {
+                this.questions.push(new MultipleChoice());
+                break;
+            }
+            case QuestionTypes.slider: {
+                this.questions.push(new Slider());
+                break;
+            }
+            default: {
+                this.questions.push(new Question(QuestionTypes.textInput));
+                break;
+            }
+        }
     }
 
 

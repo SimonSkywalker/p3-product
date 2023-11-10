@@ -42,7 +42,7 @@ export default class Question {
 
 }
 
-class MultipleChoice extends Question {
+export class MultipleChoice extends Question {
     private _saveRole: boolean;
     private _options : Array<String>;
     private _choiceType : ChoiceTypes;
@@ -77,7 +77,7 @@ class MultipleChoice extends Question {
     }
 }
 
-class Slider extends Question {
+export class Slider extends Question {
     private _sliderType: SliderTypes;
     private _range: number;
 
