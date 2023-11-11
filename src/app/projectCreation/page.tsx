@@ -39,9 +39,15 @@ export default function projectPage() {
       Modal.setAppElement(appElement);
     }
 
-    fetch('/api/icons')
-    .then(response => response.json())
-    .then(data => setIcons(data));
+    fetch('/api/getIconsList')
+      .then((response) => response.json())
+      .then((data) => {
+        setIcons(data['data']);
+      })
+      .catch((error) => {
+        console.error('API request failed', error);
+      });
+
 
   }, []);
 
