@@ -5,6 +5,7 @@
 import Modal from "react-modal";
 import React, { useEffect, useState } from "react";
 import Image from 'next/image';
+//import FileSystemService from "./fileSystem";
 
 const customStyles = {
   content: {
@@ -32,6 +33,9 @@ export default function projectPage() {
 
   const [icons, setIcons] = useState([]);
 
+  let user: String = "Mka16";
+
+
   useEffect(() => {
     const appElement: HTMLElement | null = document.getElementById('outerDiv');
 
@@ -51,10 +55,28 @@ export default function projectPage() {
 
   }, []);
 
+  /*
+  let jsonArray = FileSystemService.getJSONFile("/src/app/database/Mka16");
+  console.log(jsonArray);
 
+  
+  const loadUserProjectData = async (user: String) => {
+    try {
+      // Dynamic import of the JSON file based on the project name
+      const dataModule = await import(`@/app/database/${user}/projects.json`);
+      return dataModule.default;
+    } catch (error) {
+      console.error("Error loading JSON data:", error);
+      return null;
+    }
+  };
+
+
+ 
+  const userProjectData = loadUserProjectData(user);*/
 
   function openModal() {
-    console.log("tryk");
+    
     setIsOpen(true);
   }
 
@@ -65,13 +87,13 @@ export default function projectPage() {
 
   function Show(){
     setCreating(true);
-    console.log("heyi");
+    
     
   }
 
   function hide(){
     setCreating(false);
-    console.log("heyu");
+    
     
   }
 
