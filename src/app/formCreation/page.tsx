@@ -1,6 +1,6 @@
 'use client'
 
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Button, Input } from "@nextui-org/react";
+import {Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Button, Input, RadioGroup, Radio} from "@nextui-org/react";
 import Link from 'next/link'
 import FileSystemService from './FileSystemService';
 import Token from './formCreation'
@@ -20,11 +20,40 @@ class FormCreator{
     }
   }
 
-  public static createQuestionBox(questionType : QuestionTypes, questionNumber : number) : Element {
-    let questionBox = <><p> Question number {questionNumber}</p>
-    <Input label="Question name" id="questionID"></Input></>
+  public static createQuestionBox(questionType : QuestionTypes, questionNumber : number) {
+    let questionBox : Array<any> = []
+
+    questionBox.push(<><p> Question number {questionNumber}</p>
+    <Input label="Question name" id={"questionID" + questionNumber.toString}></Input>
+    <Checkbox>Required</Checkbox>
+    <Checkbox>Show answers to respondents</Checkbox>
+    </>)
+
+    {switch (questionType){
+      case QuestionTypes.multipleChoice: {
+        questionBox.push(<><Input defaultValue="option" id={"OPTION" + questionNumber.toString + ".1"}></Input>
+        <Checkbox>Allow multiple options checked</Checkbox>
+        <Checkbox>Use question to determine roles</Checkbox></>);
+        break;
+      }
+      case QuestionTypes.slider: {
+        questionBox.push(<><Input type="number" label="Amount of steps" min="3" max="9" defaultValue="5" step="2"/>
+        <RadioGroup
+        label="Slider type"
+        >
+          <Radio value="agreeDisagree">Agree/disagree</Radio>
+          <Radio value="number">Number</Radio>
+      </RadioGroup></>);
+
+      }
+    }}
     return questionBox;
   }
+
+  public static addOption(optionBox : Element) {
+
+  }
+
 }
 
 
@@ -35,12 +64,12 @@ export default function Home() {
       <h1>New form</h1>
       <Input
       type="text"
-      label="fname"
+      label="Form name"
       defaultValue="New form"
     />
       <Input
       type="text"
-      label="fdescription"
+      label="Form description"
     />
       <label htmlFor="Qtype"/>
       <Dropdown>
@@ -70,8 +99,9 @@ export default function Home() {
         </DropdownMenu>
       </Dropdown>
       <div className='flex flex-wrap content-evenly'>
+      {FormCreator.createQuestionBox(QuestionTypes.multipleChoice, 1)}
+      {FormCreator.createQuestionBox(QuestionTypes.slider, 2)}
       </div>
-      {FormCreator.createQuestionBox(QuestionTypes.multipleChoice, 1)};
     </main>
   )
 }
