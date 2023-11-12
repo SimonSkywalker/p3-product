@@ -39,6 +39,10 @@ function FormRenderer({ formObject }) {
     }
   };
 
+  const submitAnswers = () => {
+    //code goes here, chatgpt
+  }
+
   const handleUserInput = (response) => {
     // Update the userResponses array with the latest response
     setUserResponses((prevResponses) => {
@@ -106,6 +110,13 @@ function FormRenderer({ formObject }) {
             onClick={goToNextQuestion}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}>
               Next Question
+          </button>
+        )}
+        {currentQuestionIndex === totalQuestions - 1 && (
+          <button 
+            onClick={submitAnswers}
+            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}>
+              Sumbit Answers
           </button>
         )}
         {!formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && (

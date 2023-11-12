@@ -8,7 +8,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
 
   useEffect(() => {
     // Set the initial user response value on component mount
-    if (Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] !== -1) {
+    if ((Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] !== -1) || typeof userResponses[currentQuestionIndex] == 'undefined') {
       // This will set userResponses[currentQuestionIndex] only if it's not already set
       onUserInput(Math.ceil(jsonData.range / 2));
     }
