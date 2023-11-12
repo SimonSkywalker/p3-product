@@ -1,17 +1,20 @@
 "use client"
 import React, { lazy, Suspense, useState, useEffect } from 'react';
+import axios from 'axios'; // Import the axios library
 
 const MultipleChoiceComponent = lazy(() => import('./MultipleChoiceComponent'));
 const SliderComponent = lazy(() => import('./SliderComponent'));
 const TextInputComponent = lazy(() => import('./TextInputComponent'));
 const SkippedComponent = lazy(() => import('./SkippedComponent'));
+const SubmitPageComponent = lazy(() => import('./SubmitPageComponent'));
 
-function FormRenderer({ formObject }) {
+function FormRenderer({ formObject, params }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userResponses, setUserResponses] = useState([]);
   const totalQuestions = formObject.questions.length;
   const [isResponseProvided, setIsResponseProvided] = useState(false);
   const [isSkippedResponse, setIsSkippedResponse] = useState(false);
+  const [isOnSubmitPage, setIsOnSubmitPage] = useState(false);
 
   useEffect(() => {
     //console.log(Boolean(userResponses[currentQuestionIndex]));
@@ -29,19 +32,36 @@ function FormRenderer({ formObject }) {
 
   const goToPreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      if (isOnSubmitPage) {
+        setIsOnSubmitPage(false);
+      } else {
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+      }
     }
   };
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setIsOnSubmitPage(false);
     }
   };
 
+  const goToSubmitPage = () => {
+      setIsOnSubmitPage(true);
+  };
+
   const submitAnswers = () => {
-    //code goes here, chatgpt
-  }
+    // Make a POST request to the API route
+    axios
+      .post('/api/submitResponses', { userResponses, params })
+      .then((response) => {
+        console.log(response.data.message); // Output the response from the server
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
 
   const handleUserInput = (response) => {
     // Update the userResponses array with the latest response
@@ -56,17 +76,28 @@ function FormRenderer({ formObject }) {
     <div className="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
       <h1 className="text-2xl font-medium text-center">{formObject.name}</h1>
       <p className="text-l font-medium mb-4 text-center">{formObject.description}</p>
-      <div className="relative flex pb-5 items-center">
-        <div className="flex-grow border-t border-gray-400"></div>
-        <span className="flex-shrink mx-4 text-gray-400">
-          Question {currentQuestionIndex + 1} of {totalQuestions}
-        </span>
-        <div className="flex-grow border-t border-gray-400"></div>
-      </div>
+      {!isOnSubmitPage && (
+        <div className="relative flex pb-5 items-center">
+          <div className="flex-grow border-t border-gray-400"></div>
+            <span className="flex-shrink mx-4 text-gray-400">
+              Question {currentQuestionIndex + 1} of {totalQuestions}
+            </span>
+          <div className="flex-grow border-t border-gray-400"></div>
+        </div>
+      )}
+      {isOnSubmitPage && (
+        <div className="relative flex pb-5 items-center">
+          <div className="flex-grow border-t border-gray-400"></div>
+            <span className="flex-shrink mx-4 text-gray-400">
+              Submit Answers Page
+            </span>
+          <div className="flex-grow border-t border-gray-400"></div>
+        </div>
+      )}
       {formObject.questions.map((question, index) => (
         index === currentQuestionIndex && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
-            {question.questionType === 0 && !isSkippedResponse && (
+            {question.questionType === 0 && !isSkippedResponse && !isOnSubmitPage && (
               <MultipleChoiceComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -74,7 +105,7 @@ function FormRenderer({ formObject }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && !isSkippedResponse && (
+            {question.questionType === 1 && !isSkippedResponse && !isOnSubmitPage && (
               <SliderComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -82,7 +113,7 @@ function FormRenderer({ formObject }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 2 && !isSkippedResponse && (
+            {question.questionType === 2 && !isSkippedResponse && !isOnSubmitPage && (
               <TextInputComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -90,9 +121,14 @@ function FormRenderer({ formObject }) {
               userResponses={userResponses}
               />
             )}
-            {isSkippedResponse && (
+            {isSkippedResponse && !isOnSubmitPage && (
               <SkippedComponent
               jsonData={question}
+              />
+            )}
+            {isOnSubmitPage && (
+              <SubmitPageComponent
+              jsonData={formObject}
               />
             )}
           </Suspense>
@@ -105,21 +141,21 @@ function FormRenderer({ formObject }) {
               Previous Question
           </button>
         )}
-        {currentQuestionIndex < totalQuestions - 1 && (
+        {currentQuestionIndex < totalQuestions - 1 && !isOnSubmitPage && (
           <button 
             onClick={goToNextQuestion}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}>
               Next Question
           </button>
         )}
-        {currentQuestionIndex === totalQuestions - 1 && (
+        {currentQuestionIndex === totalQuestions - 1 && !isOnSubmitPage && (
           <button 
-            onClick={submitAnswers}
+            onClick={goToSubmitPage}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}>
-              Sumbit Answers
+              Submit
           </button>
         )}
-        {!formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && (
+        {currentQuestionIndex < totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnSubmitPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
@@ -129,7 +165,17 @@ function FormRenderer({ formObject }) {
             Skip
           </button>
         )}
-        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && (
+        {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnSubmitPage && (
+          <button
+            onClick={() => {
+              handleUserInput([-1]); // Set the response to -1
+              goToSubmitPage();
+            }}
+          >
+            Skip and Submit
+          </button>
+        )}
+        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnSubmitPage && (
           <button
             onClick={() => {
               let initialValue;
@@ -149,6 +195,13 @@ function FormRenderer({ formObject }) {
             }}
           >
             Don't Skip
+          </button>
+        )}
+        {isOnSubmitPage && (
+          <button 
+            onClick={submitAnswers}
+          >
+            Submit My Answers
           </button>
         )}
       </div>

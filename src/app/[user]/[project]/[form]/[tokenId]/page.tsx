@@ -87,7 +87,10 @@ export default function FormPage({ params }: { params: { user: string; project: 
     return (
       <div>
         {formObject ? (
-          <FormRenderer formObject={formObject} />
+          <FormRenderer 
+            formObject={formObject} 
+            params={params}
+          />
         ) : (
           <div>Loading...</div>
         )}

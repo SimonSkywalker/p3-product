@@ -40,7 +40,7 @@
             },
             {
                "description": "Test af Multiple Choice (radio buttons)",
-               "mandatory": false,
+               "mandatory": true,
                "userDisplay": false,
                "questionType": 0,
                "saveRole": 1, 
