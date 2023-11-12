@@ -13,8 +13,9 @@ interface Nameable {
     _name : String;
 }
 
-interface Project {
+export interface ProjectInterface {
     title: String;
     isActive: Boolean;
-    logo: String;
+    icon: String;
 }
+

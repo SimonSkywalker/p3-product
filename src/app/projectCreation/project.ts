@@ -1,44 +1,44 @@
 
 export class Project{
 
-    private _title: String;
+    private title: String;
 
-    private _isActive: boolean;
+    private isActive: boolean;
 
-    private _logo: String;
+    private icon: String;
 
     
 
-    constructor(title:String, isActive:boolean, logo:String){
+    constructor(){
 
-        this._title = title;
-        this._isActive = isActive;
-        this._logo = logo;
+        this.title = '';
+        this.isActive = true;
+        this.icon = '';
 
     }
 
-    public get title(): String {
-        return this._title;
+    public getTitle(): String {
+        return this.title;
     }
 
-    public set title(value: String) {
-        this._title = value;
+    public setTitle(value: String) {
+        this.title = value;
     }
 
-    public get isActive(): boolean {
-        return this._isActive;
+    public getIsActive(): boolean {
+        return this.isActive;
     }
 
-    public set isActive(value: boolean) {
-        this._isActive = value;
+    public setIsActive(value: boolean) {
+        this.isActive = value;
     }
 
-    public get logo(): String {
-        return this._logo;
+    public getIcon(): String {
+        return this.icon;
     }
 
-    public set logo(value: String) {
-        this._logo = value;
+    public setIcon(value: String) {
+        this.icon = value;
     }
 
 

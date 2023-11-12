@@ -1,17 +1,1 @@
-[
-    {
-        "title": "ProjectIWP",
-        "isActive": false,
-        "logo": "./"
-    },
-    {
-        "title": "ProjectIMPR",
-        "isActive": false,
-        "logo": "./"
-    },
-    {
-        "title": "ProjectOOP",
-        "isActive": true,
-        "logo": "./"
-    }
-]
+[{"title":"ProjectIWP","isActive":false,"icon":"checkmark.png"},{"title":"ProjectIMPR","isActive":false,"icon":"checkmark.png"},{"title":"ProjectOOP","isActive":true,"icon":"cross.png"},{"title":"Teams","isActive":true,"icon":"checkmark.png"},{"title":"Teams","isActive":true,"icon":"checkmark.png"},{"title":"Teams","isActive":true,"icon":"checkmark.png"}]

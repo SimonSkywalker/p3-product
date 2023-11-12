@@ -57,10 +57,11 @@ export default class FileSystemService {
                   if (!response.ok) {
                     throw new Error('Network response was not ok');
                   }
+                  
                   return response.json();
                 })
                 .then((data) => {
-                  // console.log("data " + data.fileType); // Handle the response data here
+                   console.log("data " + data); // Handle the response data here
                 })
                 .catch(error => {
                   console.error('There has been a problem with your fetch operation:', error);
