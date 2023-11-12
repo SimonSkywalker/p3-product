@@ -1,11 +1,12 @@
 //modal icons - select med options og billeder. lav border rundt om :(
 
-
 'use client'
-import Modal from "react-modal";
 import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
 import Image from 'next/image';
-//import FileSystemService from "./fileSystem";
+import FileSystemService from '../components/FileSystemService';
+import ServerSidePaths from '../components/ServerSidePaths';
+
 
 const customStyles = {
   content: {
@@ -26,54 +27,36 @@ const customStyles = {
 export default function projectPage() {
 
   const [openTab, setOpenTab] = React.useState(1);
-  
   const [modalIsOpen, setIsOpen] = React.useState(false);
-
   const [creatingProject, setCreating] = React.useState(false);
-
-  const [icons, setIcons] = useState([]);
-
-  let user: String = "Mka16";
+  const [icons, setIcons] = useState<string[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [projectNames, setProjectNames] = useState<String[]>([]);
+  const [user, setUser] = useState<string>("Mka16");
+  const URLIconsPath = ServerSidePaths.getURLIconsPath();
+  let projectIcons : String[] = ["hat", "ball", "foot"];
 
 
   useEffect(() => {
+    async function getProjects() {
+        const data: Project[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as Project[];
+        setProjects(data);
+        setProjectNames(data.map(project => project.title));
+        }
+     
     const appElement: HTMLElement | null = document.getElementById('outerDiv');
-
     if (appElement) {
       Modal.setAppElement(appElement);
     }
 
-    fetch('/api/getIconsList')
-      .then((response) => response.json())
-      .then((data) => {
-        setIcons(data['data']);
-      })
-      .catch((error) => {
-        console.error('API request failed', error);
-      });
+    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
+        setIcons(iconFiles);
+    });
 
-
+    getProjects();
   }, []);
 
-  /*
-  let jsonArray = FileSystemService.getJSONFile("/src/app/database/Mka16");
-  console.log(jsonArray);
 
-  
-  const loadUserProjectData = async (user: String) => {
-    try {
-      // Dynamic import of the JSON file based on the project name
-      const dataModule = await import(`@/app/database/${user}/projects.json`);
-      return dataModule.default;
-    } catch (error) {
-      console.error("Error loading JSON data:", error);
-      return null;
-    }
-  };
-
-
- 
-  const userProjectData = loadUserProjectData(user);*/
 
   function openModal() {
     
@@ -105,11 +88,6 @@ export default function projectPage() {
     
   }
 
-  let projectNames : String[] = ["Project123", "Project456", "Project789"];
-  let projectIcons : String[] = ["hat", "ball", "foot"];
-
-
-
   return (
     <>
       <div className="flex flex-wrap">
@@ -132,10 +110,10 @@ export default function projectPage() {
             onSubmit={handleSubmitIcon}>
               <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
               <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
-                
-                {icons.map(icon => (
+
+                {icons.map(icon => (  
                   <div key={icon}>
-                    <img src={`/icons/${icon}`} alt={icon} width={50} height={50} className="hover:scale-125"/>
+                    <img src={`${URLIconsPath}/${icon}`} alt={icon} width={50} height={50} className="hover:scale-125"/>
                   </div>
                 ))}
     

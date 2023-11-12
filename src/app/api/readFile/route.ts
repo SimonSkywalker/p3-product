@@ -1,29 +1,14 @@
 "use server"
-
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-
-
-
-
-
-
-
-
-/*
-export async function GET(req: NextRequest, res: NextResponse) {
-
-    console.log("pee");
+export async function POST(req: NextRequest, res: NextResponse) {
     const body = await req.json()
-
-    console.log(body);
     const filePath : string = body.path;
-    console.log(filePath)
 
     if (typeof filePath !== 'string') {
-        console.log("ERROR BITCH");
+        console.log("Invalid file Path");
         return NextResponse.json({ error: 'Invalid file Path' , status: 400});
     }
     try {
@@ -35,8 +20,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
             return NextResponse.json({data: JSON.parse(fileData)});
     }
     catch (error) {
-        console.log("IEEEEEEEEEEEEH")
         console.error(error);
         return NextResponse.json({ error: 'Internal server error', status: 500});
     }
-}*/
+}
+

@@ -1,15 +1,10 @@
-/*
 import FileTypes from "./FileTypes";
 
 export default class FileSystemService {
-
-    /*
     public static async listFiles(directoryPath: string): Promise<string[]> {
-        console.log("hello");
         try {
             let data : string[] = [];
-            console.log("Imma fetch bitch");
-            await fetch('../api/files', {
+            await fetch('/api/files', {
                 method: 'POST',
                 body: JSON.stringify({path: directoryPath})
               })
@@ -20,12 +15,11 @@ export default class FileSystemService {
                   data = await response.json();
                 })
                 .then(data => {
-                  console.log(data); // Handle the response data here
+                  // console.log(data); // Handle the response data here
                 })
                 .catch(error => {
                   console.error('There has been a problem with your fetch operation:', error);
                 });
-            console.log("I fetched bitch");
             return data;
         } catch (error : any) {
             throw new Error('Failed to fetch files: ' + error.message);
@@ -34,7 +28,7 @@ export default class FileSystemService {
 
     public static async getType(currentPath : string) : Promise<FileTypes> {
         let fileType :FileTypes = FileTypes.other;
-         await fetch('../api/fileType', {
+         await fetch('/api/fileType', {
             method: 'POST',
             body: JSON.stringify({path: currentPath})
           })
@@ -45,19 +39,17 @@ export default class FileSystemService {
               return response.json();
             })
             .then((data) => {
-              console.log("data " + data.fileType); // Handle the response data here
+              // console.log("data " + data.fileType); // Handle the response data here
               fileType = data.fileType;
             })
             .catch(error => {
-              console.log("REEEEEEEE");
               console.error('There has been a problem with your fetch operation:', error);
             });
-        console.log("I fetched bitch" + fileType);
         return fileType;
     }
 
     public static async writeToJSONFile(data : Array<Object>, filePath : string) {
-            await fetch('../api/writeToFile', {
+            await fetch('/api/writeToFile', {
                 method: 'POST',
                 body: JSON.stringify({data: data, path : filePath})
               })
@@ -68,19 +60,18 @@ export default class FileSystemService {
                   return response.json();
                 })
                 .then((data) => {
-                  console.log("data " + data.fileType); // Handle the response data here
+                  // console.log("data " + data.fileType); // Handle the response data here
                 })
                 .catch(error => {
-                  console.log("REEEEEEEE");
                   console.error('There has been a problem with your fetch operation:', error);
                 });
     }
 
     public static async getJSONFile(filePath : string) : Promise<Array<Object>> {
         let jsonArray : Array<Object> = [];
-        
-            await fetch('../api/getProjectList', {
-                method: 'GET',
+        if(await this.getType(filePath) == FileTypes.JSON){
+            await fetch('/api/readFile', {
+                method: 'POST',
                 body: JSON.stringify({path : filePath})
               })
                 .then(async response => {
@@ -90,7 +81,7 @@ export default class FileSystemService {
                   return response.json();
                 })
                 .then((data) => {
-                  console.log("data " + data); // Handle the response data here
+                  //console.log("data " + data); // Handle the response data here
                   if (data.data == "") {
                     jsonArray = [];
                   }
@@ -99,14 +90,10 @@ export default class FileSystemService {
                   }
                 })
                 .catch(error => {
-                  console.log("REEEEEEEE");
                   console.error('There has been a problem with your fetch operation:', error);
                 });
-        
-        console.log("returning json array");
-        console.dir(jsonArray);
+        }
+        // console.dir(jsonArray);
         return jsonArray;
     }
 }
-
-*/
