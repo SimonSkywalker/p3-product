@@ -6,6 +6,12 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
   const [inputValue, setInputValue] = useState(userResponses[currentQuestionIndex] || '');
 
   useEffect(() => {
+    // Set the initial user response value on component mount
+    if (Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] === -1) {
+      // This will set userResponses[currentQuestionIndex] only if it's not already set
+      onUserInput('');
+    }
+
     // Update the input value when the current question changes
     setInputValue(userResponses[currentQuestionIndex] || '');
   }, [currentQuestionIndex, userResponses]);

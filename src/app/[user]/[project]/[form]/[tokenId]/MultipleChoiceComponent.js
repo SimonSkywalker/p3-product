@@ -8,6 +8,11 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
 
   useEffect(() => {
     // Send the response to the parent component when selectedOptions change
+    if (Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] !== -1) {
+      // This will set userResponses[currentQuestionIndex] only if it's not already set
+      onUserInput([]);
+    }
+
     onUserInput(selectedOptions);
   }, [selectedOptions]); // Only re-run the effect when selectedOptions change
 

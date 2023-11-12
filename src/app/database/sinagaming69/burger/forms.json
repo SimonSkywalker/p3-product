@@ -16,28 +16,38 @@
          "name": "20-10",
          "description": "Dette er en beskrivelse af 20-10",
          "questions": [{
-            "description": "Test af Multiple Choice",
-            "mandatory": true,
-            "userDisplay": false,
-            "questionType": 0,
-            "saveRole": 1, 
-            "options": ["hej1", "hej2", "hej3", "hej4", "hej5", "hej6", "hej7", "hej8", "hej9", "hej10"],
-            "type": 1
-           },
-         {
-            "description": "Test af Slider",
-            "mandatory": false,
-            "userDisplay": false,
-            "questionType": 1,
-            "type": 0,
-            "range": 9
-         },
-         {
-            "description": "Test af Text Input",
-            "mandatory": true,
-            "userDisplay": false,
-            "questionType": 2
-         }],
+               "description": "Test af Multiple Choice (checkboxes)",
+               "mandatory": false,
+               "userDisplay": false,
+               "questionType": 0,
+               "saveRole": 1, 
+               "options": ["hej1", "hej2", "hej3", "hej4", "hej5", "hej6", "hej7", "hej8", "hej9", "hej10"],
+               "type": 1
+            },
+            {
+               "description": "Test af Slider",
+               "mandatory": false,
+               "userDisplay": false,
+               "questionType": 1,
+               "type": 0,
+               "range": 9
+            },
+            {
+               "description": "Test af Text Input",
+               "mandatory": false,
+               "userDisplay": false,
+               "questionType": 2
+            },
+            {
+               "description": "Test af Multiple Choice (radio buttons)",
+               "mandatory": false,
+               "userDisplay": false,
+               "questionType": 0,
+               "saveRole": 1, 
+               "options": ["hej1", "hej2", "hej3", "hej4", "hej5", "hej6", "hej7", "hej8", "hej9", "hej10"],
+               "type": 0
+            }
+         ],
          "tokens":[
             {
                "tokenId1":{

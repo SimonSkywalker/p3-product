@@ -7,6 +7,12 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
   const [sliderValue, setSliderValue] = useState(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
 
   useEffect(() => {
+    // Set the initial user response value on component mount
+    if (Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] !== -1) {
+      // This will set userResponses[currentQuestionIndex] only if it's not already set
+      onUserInput(Math.ceil(jsonData.range / 2));
+    }
+
     // Update the slider value when the current question changes
     setSliderValue(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
   }, [currentQuestionIndex, userResponses]);
