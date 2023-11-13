@@ -104,7 +104,7 @@ export default function Home() {
         </DropdownMenu>
       </Dropdown>
       <div className='flex flex-wrap content-evenly'>
-      {currForm.questions.map((e) => {return <li> key="{e.number}{FormCreator.createQuestionBox(e.questionType,e.number)}</li>})}
+      {currForm.questions.map((e) => {return <li key={e.number}> {FormCreator.createQuestionBox(e.questionType,e.number)}</li>})}
       </div>
     </main>
   )
