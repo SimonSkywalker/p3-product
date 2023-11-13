@@ -36,8 +36,7 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
     <form>
         <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
             {jsonData.options.map((option, optionIndex) => (
-            <div className="flex items-center mb-4" key={optionIndex}>
-                <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <div className="mb-[1rem] block min-h-[1.5rem] pl-[1.5rem]" key={optionIndex}>
                 {jsonData.type === 0 ? ( // Display radio buttons if type is 0
                     <input
                       type="radio"
@@ -45,7 +44,7 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
                       checked={selectedOptions.includes(optionIndex)}
                       value={option}
                       name={jsonData.description}
-                      className="w-4 h-4"
+                      className="relative float-left -ml-[1.5rem] mr-[0.75rem] mt-0.5 h-5 w-5"
                     />
                 ) : (
                     // Display checkboxes if type is 1
@@ -55,10 +54,11 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
                       checked={selectedOptions.includes(optionIndex)}
                       value={option}
                       name={jsonData.description}
-                      className="w-4 h-4"
+                      className="relative float-left -ml-[1.5rem] mr-[0.75rem] mt-0.5 h-5 w-5"
                     />
                 )}
-                {option}
+                <label className="mt-px inline-block hover:cursor-pointer">
+                  {option}
                 </label>
             </div>
             ))}
