@@ -8,7 +8,8 @@ export default function SkippedComponent({ jsonData }) {
     <form>
       <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
       <p>
-        You have choosen to skip this question.
+        You have choosen to skip this question.<br></br>
+        You can click the "Don't Skip"-button if you want to answer the question.
       </p>
     </form>
   );

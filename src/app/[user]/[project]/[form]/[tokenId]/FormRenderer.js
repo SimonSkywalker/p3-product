@@ -2,12 +2,14 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import axios from 'axios'; // Import the axios library
 
+const FirstPageComponent = lazy(() => import('./FirstPageComponent'));
 const MultipleChoiceComponent = lazy(() => import('./MultipleChoiceComponent'));
 const AgreeDisagreeComponent = lazy(() => import('./AgreeDisagreeComponent'));
 const SliderComponent = lazy(() => import('./SliderComponent'));
 const TextInputComponent = lazy(() => import('./TextInputComponent'));
 const SkippedComponent = lazy(() => import('./SkippedComponent'));
 const SubmitPageComponent = lazy(() => import('./SubmitPageComponent'));
+const FinalPageComponent = lazy(() => import('./FinalPageComponent'));
 
 function FormRenderer({ formObject, params }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -15,7 +17,10 @@ function FormRenderer({ formObject, params }) {
   const totalQuestions = formObject.questions.length;
   const [isResponseProvided, setIsResponseProvided] = useState(false);
   const [isSkippedResponse, setIsSkippedResponse] = useState(false);
+
+  const [isOnFirstPage, setIsOnFirstPage] = useState(true);
   const [isOnSubmitPage, setIsOnSubmitPage] = useState(false);
+  const [isOnFinalPage, setIsOnFinalPage] = useState(false);
 
   useEffect(() => {
     //console.log(Boolean(userResponses[currentQuestionIndex]));
@@ -42,26 +47,42 @@ function FormRenderer({ formObject, params }) {
   };
 
   const goToNextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (isOnFirstPage === true) {
+      setIsOnFirstPage(false);
+    } else if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setIsOnSubmitPage(false);
     }
   };
 
   const goToSubmitPage = () => {
-      setIsOnSubmitPage(true);
+    setIsOnSubmitPage(true);
   };
 
+  const goToFinalPage = () => {
+    setIsOnFinalPage(true);
+  };  
+
   const submitAnswers = () => {
-    // Make a POST request to the API route
-    axios
-      .post('/api/submitResponses', { userResponses, params })
-      .then((response) => {
-        console.log(response.data.message); // Output the response from the server
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    // Show a confirmation dialog to the user
+    const confirmed = window.confirm('Are you sure you want to submit your answers?');
+
+    if (confirmed) {
+      // User confirmed, proceed with Axios request
+      // Make a POST request to the API route
+      axios
+        .post('/api/submitResponses', { userResponses, params })
+        .then((response) => {
+          console.log(response.data.message); // Output the response from the server
+          goToFinalPage();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    } else {
+      // User canceled the action
+      console.log('Submission canceled.');
+    }
   };
 
   const handleUserInput = (response) => {
@@ -77,7 +98,13 @@ function FormRenderer({ formObject, params }) {
     <div className="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
       <h1 className="text-2xl font-medium text-center">{formObject.name}</h1>
       <p className="text-l font-medium mb-4 text-center">{formObject.description}</p>
-      {!isOnSubmitPage && (
+      {isOnFirstPage || isOnSubmitPage || isOnFinalPage ? (
+        <div className="relative flex pb-5 items-center">
+          <div className="flex-grow border-t border-gray-400"></div>
+        </div>
+        ) : null // Optional: Render null if none of the conditions are true
+      }
+      {!isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
         <div className="relative flex pb-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
             <span className="flex-shrink mx-4 text-gray-400">
@@ -86,19 +113,13 @@ function FormRenderer({ formObject, params }) {
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
       )}
-      {isOnSubmitPage && (
-        <div className="relative flex pb-5 items-center">
-          <div className="flex-grow border-t border-gray-400"></div>
-            <span className="flex-shrink mx-4 text-gray-400">
-              Submit Answers Page
-            </span>
-          <div className="flex-grow border-t border-gray-400"></div>
-        </div>
+      {isOnFirstPage && (
+        <FirstPageComponent/>
       )}
       {formObject.questions.map((question, index) => (
         index === currentQuestionIndex && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
-            {question.questionType === 0 && !isSkippedResponse && !isOnSubmitPage && (
+            {question.questionType === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
               <MultipleChoiceComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -106,7 +127,7 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && question.type === 0 && !isSkippedResponse && !isOnSubmitPage && (
+            {question.questionType === 1 && question.type === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
               <AgreeDisagreeComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -114,7 +135,7 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && question.type === 1 && !isSkippedResponse && !isOnSubmitPage && (
+            {question.questionType === 1 && question.type === 1 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
               <SliderComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -122,7 +143,7 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 2 && !isSkippedResponse && !isOnSubmitPage && (
+            {question.questionType === 2 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
               <TextInputComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -130,61 +151,76 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {isSkippedResponse && !isOnSubmitPage && (
+            {isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
               <SkippedComponent
               jsonData={question}
               />
             )}
-            {isOnSubmitPage && (
+            {isOnSubmitPage && !isOnFirstPage && !isOnFinalPage && (
               <SubmitPageComponent
               jsonData={formObject}
               />
             )}
+            {!isOnFirstPage && isOnFinalPage && (
+              <FinalPageComponent/>
+            )}
           </Suspense>
         )
       ))}
-      <div className="flex justify-between mt-4">
-        {currentQuestionIndex > 0 && (
+      <div className="flow-root justify-between mt-4">
+      {isOnFirstPage && (
           <button 
-            onClick={goToPreviousQuestion}>
+            onClick={goToNextQuestion}
+            className="float-right">
+              Let's Go
+          </button>
+        )}
+        {currentQuestionIndex > 0 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+          <button 
+            onClick={goToPreviousQuestion}
+            className="float-left">
               Previous Question
           </button>
         )}
-        {currentQuestionIndex < totalQuestions - 1 && !isOnSubmitPage && (
+        {currentQuestionIndex < totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
           <button 
             onClick={goToNextQuestion}
-            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}>
+            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
+            className="float-right">
               Next Question
           </button>
         )}
-        {currentQuestionIndex === totalQuestions - 1 && !isOnSubmitPage && (
+        {currentQuestionIndex === totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
           <button 
             onClick={goToSubmitPage}
-            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}>
+            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
+            className="float-right">
               Submit
           </button>
         )}
-        {currentQuestionIndex < totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnSubmitPage && (
+        {currentQuestionIndex < totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
               goToNextQuestion();
             }}
+            className="float-right mr-5"
           >
             Skip
           </button>
         )}
-        {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnSubmitPage && (
+        {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
               goToSubmitPage();
             }}
+            className="float-right mr-5"
           >
             Skip and Submit
           </button>
         )}
-        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnSubmitPage && (
+        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
           <button
             onClick={() => {
               let initialValue;
@@ -202,19 +238,43 @@ function FormRenderer({ formObject, params }) {
 
               handleUserInput(initialValue);
             }}
+            className="float-right mr-5"
           >
             Don't Skip
           </button>
         )}
-        {isOnSubmitPage && (
+        {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && (
+          <button 
+            onClick={goToPreviousQuestion}
+            className="float-left"
+          >
+            Not Quite Done Yet
+          </button>
+        )}
+        {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && (
           <button 
             onClick={submitAnswers}
+            className="float-right"
           >
             Submit My Answers
           </button>
         )}
+        {/* Virker ikke
+        https://stackoverflow.com/questions/2076299/how-to-close-current-tab-in-a-browser-window
+        isOnFinalPage && (
+          <button 
+            onClick={() => 
+              window.close()
+            }
+            className="float-right"
+          >
+            Close Page
+          </button>
+        )*/}
       </div>
-      <button onClick={() => console.log(userResponses)}>Log User Responses</button>
+      {/*
+        <button onClick={() => console.log(userResponses)}>Log User Responses</button>
+      */}
     </div>
   );
 }

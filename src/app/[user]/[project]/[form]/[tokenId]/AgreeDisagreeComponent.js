@@ -686,32 +686,12 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
                 step={1}
               />
             </div>
-            <p>DEBUG: Selected value: {sliderValue}</p>
+            {/*
+              <p>DEBUG: Selected value: {sliderValue}</p>
+            */}
           </div>
         </div>
       </div>
     </>
   );
 }
-
-/*
-
-export default function AgreeDisagreeComponent({ jsonData }) {
-  return (
-    <form>
-        <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
-        <div className="flex flex-col space-y-2 w-full">
-            <input type="range" className="w-full" min="1" max={jsonData.range} step="1" value="0"/>
-            <ul className="flex justify-between w-full px-[10px]">
-                <li className="flex justify-center relative"><span className="absolute">1</span></li>
-                <li className="flex justify-center relative"><span className="absolute">2</span></li>
-                <li className="flex justify-center relative"><span className="absolute">3</span></li>
-                <li className="flex justify-center relative"><span className="absolute">4</span></li>
-                <li className="flex justify-center relative"><span className="absolute">5</span></li>
-            </ul>
-          </div>
-    </form>
-  );
-}
-
-*/

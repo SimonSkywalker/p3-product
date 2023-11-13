@@ -6,7 +6,11 @@ export default function SubmitPageComponent({ jsonData }) {
 
   return (
     <form>
-      <h3>Congratulations! You answered all the questions. Please click the submit button when you want to submit your questions.</h3>
+      <h1>Congratulations!</h1>
+      <h3>
+        You answered all the questions.<br></br>
+        Please click the "Submit My Answers"-button when you want to submit your questions.
+      </h3>
     </form>
   );
 }

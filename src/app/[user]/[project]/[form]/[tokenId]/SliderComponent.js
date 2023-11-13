@@ -38,7 +38,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
   return (
     <form>
       <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
-      <div className="w-full px-6">
+      <div className="w-full px-1 mb-7">
         <Slider id="slider"
           onChange={(e) => {
             handleSliderChange(e);
@@ -51,7 +51,9 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           marks={generateMarks(jsonData.range)}
         />
       </div>
-      <p className="mt-5">DEBUG: Selected value: {sliderValue}</p>
+      {/*
+        <p className="mt-5">DEBUG: Selected value: {sliderValue}</p>
+      */}
     </form>
   );
 }

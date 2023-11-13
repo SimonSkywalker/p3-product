@@ -35,6 +35,9 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
           onChange={handleInputChange}
         />
       </div>
+      {/*
+        <p>DEBUG: Inputted text: {inputValue}</p>
+      */}
     </form>
   );
 }
