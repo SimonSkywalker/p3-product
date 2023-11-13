@@ -20,19 +20,19 @@ export default async function handler(req, res) {
 
       if (formObject) {
         // You've found the form object with the desired name
-        console.log("Found form object:", formObject);
+        //console.log("Found form object:", formObject);
 
         // Now, let's find the tokens object with name "tokenId1"
         let tokensObject = formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId));
 
         if (tokensObject) {
           // You've found the tokens object with name "tokenId1"
-          console.log("Found tokens object:", tokensObject);
+          //console.log("Found tokens object:", tokensObject);
 
-          // Set the isUsed property to 1
-          tokensObject.tokenId1.isUsed = 1;
+          // Set the isUsed property to true
+          tokensObject.tokenId1.isUsed = true;
 
-          console.log("Updated tokens object:", tokensObject);
+          //console.log("Updated tokens object:", tokensObject);
         } else {
           console.log("Tokens object with not found with name:", params.tokenId);
         }
