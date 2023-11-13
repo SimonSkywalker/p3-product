@@ -1,7 +1,6 @@
 import * as z from "zod";
 import {registerFormSchema} from '../lib/validations/registerForm';
 import { RegisterException } from "../exceptions/RegisterException";
-import fetch from "node-fetch";
 
 interface FormData {
   username: string;
