@@ -3,6 +3,13 @@ export default class Question {
     private _mandatory: boolean;
     private _userDisplay: boolean;
     private _questionType: QuestionTypes;
+    private _number: number;
+    public get number(): number {
+        return this._number;
+    }
+    public set number(value: number) {
+        this._number = value;
+    }
 
     public get description(): String {
         return this._description;
@@ -32,11 +39,12 @@ export default class Question {
         this._questionType = value;
     }
 
-    constructor(type : QuestionTypes){
+    constructor(type : QuestionTypes, number: number) {
         this._description = "";
         this._mandatory = false;
         this._userDisplay = false;
         this._questionType = type;
+        this._number = number;
 
     }
 
@@ -69,8 +77,8 @@ export class MultipleChoice extends Question {
         this._choiceType = value;
     }
 
-    constructor(){
-        super(QuestionTypes.slider);
+    constructor(number: number){
+        super(QuestionTypes.slider, number);
         this._saveRole = false;
         this._options = [];
         this._choiceType = ChoiceTypes.radio;
@@ -95,8 +103,8 @@ export class Slider extends Question {
         this._range = value;
     }
 
-    constructor(){
-        super(QuestionTypes.slider);
+    constructor(number: number){
+        super(QuestionTypes.slider, number);
         this._sliderType = SliderTypes.agreeDisagree;
         this._range = 7;
     }

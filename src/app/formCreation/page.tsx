@@ -8,10 +8,10 @@ import Form from './form';
 import Question from "./question";
 import DatabaseAccess from './DatabaseAccess';
 import { QuestionTypes, MultipleChoice, Slider } from "./question";
-import { createElement } from "react";
+import { createElement, useState} from "react";
+import { createRoot } from "react-dom/client";
 
 let currForm : Form = new Form();
-
 
 class FormCreator{
   public static updateQuestionBox(form : Form){
@@ -39,12 +39,11 @@ class FormCreator{
       case QuestionTypes.slider: {
         questionBox.push(<><Input type="number" label="Amount of steps" min="3" max="9" defaultValue="5" step="2"/>
         <RadioGroup
-        label="Slider type"
-        >
+        label="Slider type">
           <Radio value="agreeDisagree">Agree/disagree</Radio>
           <Radio value="number">Number</Radio>
-      </RadioGroup></>);
-
+        </RadioGroup></>);
+      break;
       }
     }}
     return questionBox;
@@ -56,9 +55,14 @@ class FormCreator{
 
 }
 
+currForm.addQuestion(QuestionTypes.multipleChoice);
 
 
 export default function Home() {
+  const EmptyAnyArray : Array<any> = [];
+  const [questionBoxes, setQuestionBoxes] = useState(EmptyAnyArray);
+
+
   return (
     <main>
       <h1>New form</h1>
@@ -78,8 +82,7 @@ export default function Home() {
         </DropdownTrigger>
         <DropdownMenu 
           aria-label="Link Actions"
-          onAction={() => {FormCreator.updateQuestionBox}}
-        >
+          >
           <DropdownItem key="mchoice" onClick={async () => {
             currForm.addQuestion(QuestionTypes.multipleChoice);
             console.dir(currForm);
@@ -88,19 +91,20 @@ export default function Home() {
           </DropdownItem>
           <DropdownItem key="slider" onClick={async () => {
             currForm.addQuestion(QuestionTypes.slider);
+            console.dir(currForm);
           }}>
             Slider
           </DropdownItem>
           <DropdownItem key="input" onClick={async () => {
             currForm.addQuestion(QuestionTypes.textInput);
+            console.dir(currForm);
           }}>
             Text input
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
       <div className='flex flex-wrap content-evenly'>
-      {FormCreator.createQuestionBox(QuestionTypes.multipleChoice, 1)}
-      {FormCreator.createQuestionBox(QuestionTypes.slider, 2)}
+      {currForm.questions.map((e) => {return <li> key="{e.number}{FormCreator.createQuestionBox(e.questionType,e.number)}</li>})}
       </div>
     </main>
   )

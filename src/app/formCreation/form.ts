@@ -51,15 +51,15 @@ export default class Form {
     public addQuestion(questionType : QuestionTypes) : void{
         switch (questionType){
             case QuestionTypes.multipleChoice: {
-                this.questions.push(new MultipleChoice());
+                this.questions.push(new MultipleChoice(this.questions.length+1));
                 break;
             }
             case QuestionTypes.slider: {
-                this.questions.push(new Slider());
+                this.questions.push(new Slider(this.questions.length+1));
                 break;
             }
             default: {
-                this.questions.push(new Question(QuestionTypes.textInput));
+                this.questions.push(new Question(QuestionTypes.textInput, this.questions.length+1));
                 break;
             }
         }
