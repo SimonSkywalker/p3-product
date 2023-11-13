@@ -1,6 +1,5 @@
 import userList from '@/app/database/userLogins.json'
 import {promises as fs} from "fs"
-import bcrypt from 'bcrypt';
 import { RegisterException } from '../exceptions/RegisterException';
 
 export class User{

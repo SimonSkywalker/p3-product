@@ -1,83 +1,85 @@
 import * as z from "zod";
 import {registerFormSchema} from '../lib/validations/registerForm';
 import { RegisterException } from "../exceptions/RegisterException";
-import { useRouter } from 'next/navigation';
-
+import fetch from "node-fetch";
 
 interface FormData {
-    username: string;
-    password: string;
-    confirmPassword: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+
 }
 
+export class RegistrationHandler{
 
-class RegistrationHandler extends FormData {
-  
+  private _formData: FormData = {
+  username: '',
+  password: '',
+  confirmPassword: '',
+  }
 
-  private formData: FormData = {
+  public get formData() {
+    return this._formData;
+  }
+  public set formData(value) {
+    this._formData = value;
+  }
+
+  private _validationErrors: FormData = {
     username: '',
     password: '',
     confirmPassword: '',
-  };
+    }
 
-  private validationErrors: Record<string, string> = {
-    username: '',
-    password: '',
-    confirmPassword: '',
-  };
+  public get validationErrors() {
+    return this._validationErrors;
+  }
+  public set validationErrors(value) {
+    this._validationErrors = value;
+  }
 
-  public handleChange(name: string, value: string) {
+  public static cleanData(form: FormData){
+    form.username  = '';
+    form.password = '';
+    form.confirmPassword = '';
+  }
+
+  public handleChange(type: string, value: string) {
+
     this.formData = {
       ...this.formData,
-      [name]: value,
-    };
-  }
-
-  public async handleSubmit(): Promise<void> {
-    try {
-      this.validationErrors = {
-        username: '',
-        password: '',
-        confirmPassword: '',
-      };
-
-      // Perform API request and other logic
-      APIHandle.APIRequestRegister(registerFormSchema.parse(this.formData), this.validationErrors)
-     
-
-    } catch (err) {
-      ErrorCheck.errorValidation(err, this.validationErrors);
-      console.error(err);
+      [type]: value
     }
-  }
-}
+    
+  } 
 
-export default RegistrationHandler;
-
-class ErrorCheck{
-
-public static errorValidation(err: any, validationErrors: any){
-  if (err instanceof z.ZodError) {
-    validationErrors = {};
-
-    err.errors.forEach((validationError) => {
-      const fieldName = validationError.path[0];
-      const errorMessage = validationError.message;
-      validationErrors[fieldName] = errorMessage;
-    });
-  } else if (err instanceof RegisterException) {
-    validationErrors = {
-      ...validationErrors,
-      username: err.message,
-    };
-  }
-} 
-
-
+  
 }
 
 
-class APIHandle{
+export class ErrorCheck{
+
+  public static errorValidation(Error: any, outputError: FormData){
+
+    RegistrationHandler.cleanData(outputError)
+    
+    if(Error instanceof z.ZodError){
+      Error.errors.forEach((validationError) => {
+        // Extract the field name and error message from the validationError.
+        const fieldName = validationError.path[0] as keyof z.infer<typeof registerFormSchema>;
+        const errorMessage = validationError.message;
+
+        outputError[fieldName] = errorMessage;
+        
+      });
+      
+      
+    } 
+    return outputError
+  }  
+}
+
+export class APIHandle{
 
   public static async APIRequestRegister(Data: any, Errors: any){
     await fetch("/api/register", {
@@ -87,21 +89,18 @@ class APIHandle{
       .then((response) => {
         if (response.ok) {
           // Request was successful
-          const router = useRouter();
-          router.push('/login');
-          return response.json().then((data) => {
-            console.log(data);
-             
-          });
-        } else if(RegisterException){
-
-          let a = new RegisterException;
-          Errors = {
-            ...Errors,
-            username: a.message,
-          };
+          console.log('hej');
+          
+          return response.json()
+        }if(response.status == 409){
+         
+          throw new RegisterException
+            
         }
+        
       })
+        
+     
   }
 
 }
