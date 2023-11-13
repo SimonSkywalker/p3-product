@@ -10,6 +10,7 @@ const TextInputComponent = lazy(() => import('./TextInputComponent'));
 const SkippedComponent = lazy(() => import('./SkippedComponent'));
 const SubmitPageComponent = lazy(() => import('./SubmitPageComponent'));
 const FinalPageComponent = lazy(() => import('./FinalPageComponent'));
+const AlreadyUsedPageComponent = lazy(() => import('./AlreadyUsedPageComponent'));
 
 function FormRenderer({ formObject, params }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -21,6 +22,7 @@ function FormRenderer({ formObject, params }) {
   const [isOnFirstPage, setIsOnFirstPage] = useState(true);
   const [isOnSubmitPage, setIsOnSubmitPage] = useState(false);
   const [isOnFinalPage, setIsOnFinalPage] = useState(false);
+  const [isOnAlreadyUsedPage, setIsOnAlreadyUsedPage] = useState(formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId))?.[params.tokenId].isUsed);
 
   useEffect(() => {
     //console.log(Boolean(userResponses[currentQuestionIndex]));
@@ -98,13 +100,13 @@ function FormRenderer({ formObject, params }) {
     <div className="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
       <h1 className="text-2xl font-medium text-center">{formObject.name}</h1>
       <p className="text-l font-medium mb-4 text-center">{formObject.description}</p>
-      {isOnFirstPage || isOnSubmitPage || isOnFinalPage ? (
+      {isOnFirstPage || isOnSubmitPage || isOnFinalPage || isOnAlreadyUsedPage ? (
         <div className="relative flex pb-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
         ) : null // Optional: Render null if none of the conditions are true
       }
-      {!isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+      {!isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
         <div className="relative flex pb-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
             <span className="flex-shrink mx-4 text-gray-400">
@@ -113,13 +115,13 @@ function FormRenderer({ formObject, params }) {
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
       )}
-      {isOnFirstPage && (
+      {isOnFirstPage && !isOnAlreadyUsedPage && (
         <FirstPageComponent/>
       )}
       {formObject.questions.map((question, index) => (
         index === currentQuestionIndex && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
-            {question.questionType === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+            {question.questionType === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <MultipleChoiceComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -127,7 +129,7 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && question.type === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+            {question.questionType === 1 && question.type === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <AgreeDisagreeComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -135,7 +137,7 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && question.type === 1 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+            {question.questionType === 1 && question.type === 1 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <SliderComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -143,7 +145,7 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 2 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+            {question.questionType === 2 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <TextInputComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -151,38 +153,41 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+            {isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <SkippedComponent
               jsonData={question}
               />
             )}
-            {isOnSubmitPage && !isOnFirstPage && !isOnFinalPage && (
+            {isOnSubmitPage && !isOnFirstPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <SubmitPageComponent
               jsonData={formObject}
               />
             )}
-            {!isOnFirstPage && isOnFinalPage && (
+            {!isOnFirstPage && isOnFinalPage && !isOnAlreadyUsedPage && (
               <FinalPageComponent/>
+            )}
+            {isOnAlreadyUsedPage && (
+              <AlreadyUsedPageComponent/>
             )}
           </Suspense>
         )
       ))}
       <div className="flow-root justify-between mt-4">
-      {isOnFirstPage && (
+      {isOnFirstPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToNextQuestion}
             className="float-right">
               Let's Go
           </button>
         )}
-        {currentQuestionIndex > 0 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+        {currentQuestionIndex > 0 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToPreviousQuestion}
             className="float-left">
               Previous Question
           </button>
         )}
-        {currentQuestionIndex < totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+        {currentQuestionIndex < totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToNextQuestion}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
@@ -190,7 +195,7 @@ function FormRenderer({ formObject, params }) {
               Next Question
           </button>
         )}
-        {currentQuestionIndex === totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+        {currentQuestionIndex === totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToSubmitPage}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
@@ -198,7 +203,7 @@ function FormRenderer({ formObject, params }) {
               Submit
           </button>
         )}
-        {currentQuestionIndex < totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+        {currentQuestionIndex < totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
@@ -209,7 +214,7 @@ function FormRenderer({ formObject, params }) {
             Skip
           </button>
         )}
-        {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+        {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
@@ -220,7 +225,7 @@ function FormRenderer({ formObject, params }) {
             Skip and Submit
           </button>
         )}
-        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && (
+        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
               let initialValue;
@@ -243,7 +248,7 @@ function FormRenderer({ formObject, params }) {
             Don't Skip
           </button>
         )}
-        {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && (
+        {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToPreviousQuestion}
             className="float-left"
@@ -251,7 +256,7 @@ function FormRenderer({ formObject, params }) {
             Not Quite Done Yet
           </button>
         )}
-        {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && (
+        {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={submitAnswers}
             className="float-right"
@@ -261,7 +266,7 @@ function FormRenderer({ formObject, params }) {
         )}
         {/* Virker ikke
         https://stackoverflow.com/questions/2076299/how-to-close-current-tab-in-a-browser-window
-        isOnFinalPage && (
+        isOnFinalPage || isOnAlreadyUsedPage ? (
           <button 
             onClick={() => 
               window.close()
@@ -270,7 +275,7 @@ function FormRenderer({ formObject, params }) {
           >
             Close Page
           </button>
-        )*/}
+        ) : null // Optional: Render null if none of the conditions are true */}
       </div>
       {/*
         <button onClick={() => console.log(userResponses)}>Log User Responses</button>

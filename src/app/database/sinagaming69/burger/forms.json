@@ -1,67 +1,93 @@
 {
-    "forms":[
-       {
-         "name": "13-10",
-         "description": "Test",
-         "questions": [{}],
-         "tokens":[
-            {
-               "tokenId":{
-                  "isUsed":0
-               }
-            }
-         ]
-       },
-       {
-         "name": "20-10",
-         "description": "Dette er en beskrivelse af 20-10",
-         "questions": [{
-               "description": "Test af Multiple Choice (radio buttons)",
-               "mandatory": true,
-               "userDisplay": false,
-               "questionType": 0,
-               "saveRole": false, 
-               "options": ["test1", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9", "test10"],
-               "type": 0
-            }, {
-               "description": "Test af Multiple Choice (checkboxes)",
-               "mandatory": false,
-               "userDisplay": false,
-               "questionType": 0,
-               "saveRole": false, 
-               "options": ["test1", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9", "test10"],
-               "type": 1
-            },
-            {
-               "description": "Test af Slider (agreeDisagree)",
-               "mandatory": false,
-               "userDisplay": false,
-               "questionType": 1,
-               "type": 0,
-               "range": 9
-            },
-            {
-               "description": "Test af Slider (values)",
-               "mandatory": false,
-               "userDisplay": false,
-               "questionType": 1,
-               "type": 1,
-               "range": 7
-            },
-            {
-               "description": "Test af Text Input",
-               "mandatory": false,
-               "userDisplay": false,
-               "questionType": 2
-            }
-         ],
-         "tokens":[
-            {
-               "tokenId1":{
-                  "isUsed":0
-               }
-            }
-         ]
-       }
-    ]
- }
+	"forms": [
+		{
+			"name": "13-10",
+			"description": "Test",
+			"questions": [
+				{}
+			],
+			"tokens": [
+				{
+					"tokenId": {
+						"isUsed": false
+					}
+				}
+			]
+		},
+		{
+			"name": "20-10",
+			"description": "Dette er en beskrivelse af 20-10",
+			"questions": [
+				{
+					"description": "Test af Multiple Choice (radio buttons)",
+					"mandatory": true,
+					"userDisplay": false,
+					"questionType": 0,
+					"saveRole": false,
+					"options": [
+						"test1",
+						"test2",
+						"test3",
+						"test4",
+						"test5",
+						"test6",
+						"test7",
+						"test8",
+						"test9",
+						"test10"
+					],
+					"type": 0
+				},
+				{
+					"description": "Test af Multiple Choice (checkboxes)",
+					"mandatory": false,
+					"userDisplay": false,
+					"questionType": 0,
+					"saveRole": false,
+					"options": [
+						"test1",
+						"test2",
+						"test3",
+						"test4",
+						"test5",
+						"test6",
+						"test7",
+						"test8",
+						"test9",
+						"test10"
+					],
+					"type": 1
+				},
+				{
+					"description": "Test af Slider (agreeDisagree)",
+					"mandatory": false,
+					"userDisplay": false,
+					"questionType": 1,
+					"type": 0,
+					"range": 9
+				},
+				{
+					"description": "Test af Slider (values)",
+					"mandatory": false,
+					"userDisplay": false,
+					"questionType": 1,
+					"type": 1,
+					"range": 7
+				},
+				{
+					"description": "Test af Text Input",
+					"mandatory": false,
+					"userDisplay": false,
+					"questionType": 2
+				}
+			],
+			"tokens": [
+				{
+					"tokenId1": {
+						"isUsed": true
+					}
+				}
+			]
+		}
+	]
+}
