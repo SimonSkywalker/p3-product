@@ -3,6 +3,7 @@ import React, { lazy, Suspense, useState, useEffect } from 'react';
 import axios from 'axios'; // Import the axios library
 
 const MultipleChoiceComponent = lazy(() => import('./MultipleChoiceComponent'));
+const AgreeDisagreeComponent = lazy(() => import('./AgreeDisagreeComponent'));
 const SliderComponent = lazy(() => import('./SliderComponent'));
 const TextInputComponent = lazy(() => import('./TextInputComponent'));
 const SkippedComponent = lazy(() => import('./SkippedComponent'));
@@ -105,7 +106,15 @@ function FormRenderer({ formObject, params }) {
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && !isSkippedResponse && !isOnSubmitPage && (
+            {question.questionType === 1 && question.type === 0 && !isSkippedResponse && !isOnSubmitPage && (
+              <AgreeDisagreeComponent
+              jsonData={question}
+              onUserInput={handleUserInput}
+              currentQuestionIndex={currentQuestionIndex}
+              userResponses={userResponses}
+              />
+            )}
+            {question.questionType === 1 && question.type === 1 && !isSkippedResponse && !isOnSubmitPage && (
               <SliderComponent
               jsonData={question}
               onUserInput={handleUserInput}

@@ -16,16 +16,24 @@
          "name": "20-10",
          "description": "Dette er en beskrivelse af 20-10",
          "questions": [{
+               "description": "Test af Multiple Choice (radio buttons)",
+               "mandatory": true,
+               "userDisplay": false,
+               "questionType": 0,
+               "saveRole": false, 
+               "options": ["hej1", "hej2", "hej3", "hej4", "hej5", "hej6", "hej7", "hej8", "hej9", "hej10"],
+               "type": 0
+            }, {
                "description": "Test af Multiple Choice (checkboxes)",
                "mandatory": false,
                "userDisplay": false,
                "questionType": 0,
-               "saveRole": 1, 
+               "saveRole": false, 
                "options": ["hej1", "hej2", "hej3", "hej4", "hej5", "hej6", "hej7", "hej8", "hej9", "hej10"],
                "type": 1
             },
             {
-               "description": "Test af Slider",
+               "description": "Test af Slider (agreeDisagree)",
                "mandatory": false,
                "userDisplay": false,
                "questionType": 1,
@@ -33,19 +41,18 @@
                "range": 9
             },
             {
+               "description": "Test af Slider (values)",
+               "mandatory": false,
+               "userDisplay": false,
+               "questionType": 1,
+               "type": 1,
+               "range": 7
+            },
+            {
                "description": "Test af Text Input",
                "mandatory": false,
                "userDisplay": false,
                "questionType": 2
-            },
-            {
-               "description": "Test af Multiple Choice (radio buttons)",
-               "mandatory": true,
-               "userDisplay": false,
-               "questionType": 0,
-               "saveRole": 1, 
-               "options": ["hej1", "hej2", "hej3", "hej4", "hej5", "hej6", "hej7", "hej8", "hej9", "hej10"],
-               "type": 0
             }
          ],
          "tokens":[

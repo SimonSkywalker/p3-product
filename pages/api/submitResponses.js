@@ -1,4 +1,4 @@
-// app/api/submitResponses.js
+// pages/api/submitResponses.js
 
 import fs from 'fs';
 
@@ -19,7 +19,9 @@ export default async function handler(req, res) {
           //userResponse["roles"] = [];
           userResponse["questions"] = {};
           for (let index = 0; index < userResponses.length; index++) {
-            if (userResponses[index].length === 1) {
+            if (userResponses[index].length === 0) {
+              userResponse["questions"][index] = -1;
+            } else if (userResponses[index].length === 1) {
               userResponse["questions"][index] = userResponses[index][0];
             } else {
               userResponse["questions"][index] = userResponses[index];
