@@ -19,6 +19,10 @@ export default async function handler(req, res) {
           //userResponse["roles"] = [];
           userResponse["questions"] = {};
           for (let index = 0; index < userResponses.length; index++) {
+            if (typeof userResponses[index] === "string") {
+              userResponses[index] = userResponses[index].trim();
+            }
+
             if (userResponses[index].length === 0) {
               userResponse["questions"][index] = -1;
             } else if (userResponses[index].length === 1) {
