@@ -1,3 +1,16 @@
+/* TODO
+
+- få push til at virke.
+- finde ud af klasserne og interface
+- lave handler class med de små funktioner
+- sætte style ind i css
+- sætte enkelte html elementer i filer for sig selv?
+- lave edit og delete
+- lav bedre id / keys
+
+*/
+
+
 
 'use client'
 import React, { useEffect, useState } from "react";
@@ -275,7 +288,7 @@ export default function projectPage() {
                       >+</button>
                   </div>
 
-                  <div id="createProjectDiv" className={(creatingProject ? "block " : "hidden ") + "h-30 w-30 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400"}>
+                  <div id="createProjectDiv" className={(creatingProject ? "block " : "hidden ") + "shadow-xl h-30 w-30 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400"}>
 
                     <form 
                     className="mt-6" 
@@ -326,7 +339,7 @@ export default function projectPage() {
                   </div>
 
                   {projectNamesActive.map((name, i) => 
-                    <div key={i} className="h-30 w-30 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
+                    <div key={i} className="shadow-xl h-30 w-30 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 grid place-items-center">
                       <p key={i+"p"}>{name}</p><br/>
                       <img src={`${URLIconsPath}/${projectIconsActive[projectNamesActive.indexOf(name)]}`} width={50} height={50} className=""/>
                       
@@ -339,7 +352,7 @@ export default function projectPage() {
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"} id="link2">
                   
                   {projectNamesHistory.map((name, i) => 
-                    <div key={i} className="h-30 w-30 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
+                    <div key={i} className="shadow-xl h-30 w-30 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 grid place-items-center">
                       <p key={i+"p"}>{name}</p><br/>
                       <img src={`${URLIconsPath}/${projectIconsHistory[projectNamesHistory.indexOf(name)]}`} width={50} height={50} className=""/>
                       
