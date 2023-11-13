@@ -1,6 +1,10 @@
 'use client'
 
-import {Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, Button, Input, RadioGroup, Radio} from "@nextui-org/react";
+import {Checkbox} from "@nextui-org/checkbox";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem} from "@nextui-org/dropdown"
+import {Button} from "@nextui-org/button"
+import {Input} from "@nextui-org/input"
+import {RadioGroup, Radio} from "@nextui-org/radio"
 import Link from 'next/link'
 import FileSystemService from './FileSystemService';
 import Token from './formCreation'
@@ -10,6 +14,7 @@ import DatabaseAccess from './DatabaseAccess';
 import { QuestionTypes, MultipleChoice, Slider } from "./question";
 import { createElement, useState} from "react";
 import { createRoot } from "react-dom/client";
+import NextUIProvider from "@nextui-org/system"
 
 let currForm : Form = new Form();
 
@@ -60,7 +65,7 @@ currForm.addQuestion(QuestionTypes.multipleChoice);
 
 export default function Home() {
   const EmptyAnyArray : Array<any> = [];
-  const [questionBoxes, setQuestionBoxes] = useState(EmptyAnyArray);
+  const [form, setForm] = useState(currForm);
 
 
   return (
@@ -86,25 +91,28 @@ export default function Home() {
           <DropdownItem key="mchoice" onClick={async () => {
             currForm.addQuestion(QuestionTypes.multipleChoice);
             console.dir(currForm);
+            setForm(currForm);
           }}>
             Multiple choice
           </DropdownItem>
           <DropdownItem key="slider" onClick={async () => {
             currForm.addQuestion(QuestionTypes.slider);
             console.dir(currForm);
+            setForm(currForm);
           }}>
             Slider
           </DropdownItem>
           <DropdownItem key="input" onClick={async () => {
             currForm.addQuestion(QuestionTypes.textInput);
             console.dir(currForm);
+            setForm(currForm);
           }}>
             Text input
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
       <div className='flex flex-wrap content-evenly'>
-      {currForm.questions.map((e) => {return <li key={e.number}> {FormCreator.createQuestionBox(e.questionType,e.number)}</li>})}
+      {currForm.questions.map((e) => {return <div key={e.number}> {FormCreator.createQuestionBox(e.questionType,e.number)}</div>})}
       </div>
     </main>
   )
