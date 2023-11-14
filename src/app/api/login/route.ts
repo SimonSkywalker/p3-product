@@ -6,8 +6,11 @@ import bcrypt from 'bcrypt';
 import userList from '@/app/database/userLogins.json'
 import { redirect } from "next/dist/server/api-utils";
 import { error } from "console";
+import {cookies} from "next/headers"
+const jwt = require("jsonwebtoken");
 
-export async function POST(request: Request) {
+
+export async function POST(request: NextRequest,response: NextResponse) {
   try {
     // Parsing the data yet again on the server-side
     // to guarantee 100% security.
@@ -26,13 +29,19 @@ export async function POST(request: Request) {
 
     let check = await bcrypt.compare(u.password,u2.password)
 
-    if(check){
-        console.log("LoggedIn")
+    if(check){     
+      
+      const token = jwt.sign({ userId: u.username }, process.env.JWT_SECRET, {
+        expiresIn: "1m",
+      });
+
+      return NextResponse.json({token});
     } else {
-        throw Error("Wrong Credentials")
+
+      throw Error;
+      
     }
     
-    return NextResponse.json(200);
   } catch (err: any) {
     return NextResponse.json({error:'Wrong Credentials'},{status:409});
   }
