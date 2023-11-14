@@ -8,7 +8,7 @@ import {APIHandle, ErrorCheck, RegistrationHandler} from './handlerClass';
 
 
 export default function RegisterPage() {
-  const router = useRouter();
+  //const router = useRouter();
   const registrationHandler = new RegistrationHandler();
   const [formData, setFormData] = useState(registrationHandler.formData);
   const [validationErrors, setValidationErrors] = useState(registrationHandler.validationErrors);
@@ -34,7 +34,7 @@ export default function RegisterPage() {
       RegistrationHandler.cleanData(registrationHandler.validationErrors)
       const validatedData = registerFormSchema.parse(registrationHandler.formData);   
       APIHandle.APIRequestRegister(validatedData,registrationHandler.validationErrors)
-      .then(()=>{router.push('/login')})
+      .then(()=>{/* router.push('/login') */})
       .catch((err)=>{
         if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username: err.message})}
       }) 

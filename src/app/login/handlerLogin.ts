@@ -57,7 +57,6 @@ export class ErrorCheck{
   public static errorValidation(Error: any, outputError: FormData){
 
     RegistrationHandler.cleanData(outputError)
-    console.log(Error);
     
     if(Error instanceof z.ZodError){
         
