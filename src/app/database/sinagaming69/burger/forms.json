@@ -23,7 +23,7 @@
 					"mandatory": true,
 					"userDisplay": false,
 					"questionType": 0,
-					"saveRole": false,
+					"saveRole": true,
 					"options": [
 						"test1",
 						"test2",
@@ -43,7 +43,7 @@
 					"mandatory": false,
 					"userDisplay": false,
 					"questionType": 0,
-					"saveRole": false,
+					"saveRole": true,
 					"options": [
 						"test1",
 						"test2",
@@ -84,7 +84,7 @@
 			"tokens": [
 				{
 					"tokenId1": {
-						"isUsed": true
+						"isUsed": false
 					}
 				}
 			]

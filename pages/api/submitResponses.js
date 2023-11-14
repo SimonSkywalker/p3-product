@@ -45,11 +45,20 @@ export default async function handler(req, res) {
         if (userResponseObject.hasOwnProperty(params.tokenId)) {
           let userResponse = userResponseObject[params.tokenId];
           // Tilføj noget til roles her: 
-          //userResponse["roles"] = [];
+          userResponse["roles"] = {};
           userResponse["questions"] = {};
           for (let index = 0; index < userResponses.length; index++) {
             if (typeof userResponses[index] === "string") {
               userResponses[index] = userResponses[index].trim();
+            } else if (Array.isArray(userResponses[index])) {
+              userResponses[index] = userResponses[index].sort();
+            }
+
+            if (formObject["questions"][index]["questionType"] === 0 && 
+                formObject["questions"][index]["saveRole"] === true &&
+                userResponses[index][0] !== -1) {
+              userResponse["roles"][index] = userResponses[index].map(i => formObject["questions"][index]["options"][i]);
+              console.log(userResponse["roles"]);
             }
 
             if (userResponses[index].length === 0) {
