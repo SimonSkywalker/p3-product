@@ -1,3 +1,4 @@
+'use server'
 const jwt = require("jsonwebtoken");
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";

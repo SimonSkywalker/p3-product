@@ -7,18 +7,18 @@ import { loginFormSchema } from '../lib/validations/loginForm';
 import { useRouter } from 'next/navigation';
 import z from 'zod';
 import { LoginException } from '../exceptions/LoginException';
-import {APIHandle, ErrorCheck, RegistrationHandler} from './handlerLogin';
+import {APIHandle, ErrorCheck, LoginHandler} from '../classes/handlerClass';
 
 
 
 export default function LoginPage() {
-  //const router = useRouter();
+  const router = useRouter();
 
-  const registrationHandler = new RegistrationHandler();
+  const loginHandler = new LoginHandler();
 
-  const [formData, setFormData] = useState(registrationHandler.formData);
+  const [formData, setFormData] = useState(loginHandler.formData);
 
-  const [validationErrors, setValidationErrors] = useState(registrationHandler.validationErrors);
+  const [validationErrors, setValidationErrors] = useState(loginHandler.validationErrors);
    
  const handleInput = (e: React.ChangeEvent<HTMLInputElement> )=>{
     const { name, value } = e.target;
@@ -32,25 +32,25 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     
     e.preventDefault()
-    registrationHandler.handleChange('username', formData.username);
-    registrationHandler.handleChange('password', formData.password);
+    loginHandler.handleChange('username', formData.username);
+    loginHandler.handleChange('password', formData.password);
 
     try{
-      setValidationErrors(registrationHandler.validationErrors);
-      RegistrationHandler.cleanData(registrationHandler.validationErrors)
-      const validatedData = loginFormSchema.parse(registrationHandler.formData);   
-      await APIHandle.APIRequestRegister(validatedData).catch((err)=>{
+      setValidationErrors(loginHandler.validationErrors);
+      LoginHandler.cleanData(loginHandler.validationErrors)
+      const validatedData = loginFormSchema.parse(loginHandler.formData);   
+      await APIHandle.APIRequestLogin(validatedData).catch((err)=>{
         if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}
       });
 
-      //router.push('/leaderHome')
+      router.push('/leaderHome')
      
     
     } catch (err: any) {
         
         if (err instanceof z.ZodError) {
         // Handle validation errors
-        setValidationErrors(ErrorCheck.errorValidation(err, registrationHandler.validationErrors));
+        setValidationErrors(ErrorCheck.errorValidationLogin(err, loginHandler.validationErrors));
 
       }
   }

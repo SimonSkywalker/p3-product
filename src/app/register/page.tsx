@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { registerFormSchema } from '../lib/validations/registerForm';
 import { useRouter } from 'next/navigation';
 import { RegisterException } from '../exceptions/RegisterException';
-import {APIHandle, ErrorCheck, RegistrationHandler} from './handlerClass';
+import {APIHandle, ErrorCheck, RegistrationHandler} from '../classes/handlerClass';
 
 
 export default function RegisterPage() {
-  //const router = useRouter();
+  const router = useRouter();
   const registrationHandler = new RegistrationHandler();
   const [formData, setFormData] = useState(registrationHandler.formData);
   const [validationErrors, setValidationErrors] = useState(registrationHandler.validationErrors);
@@ -34,12 +34,12 @@ export default function RegisterPage() {
       RegistrationHandler.cleanData(registrationHandler.validationErrors)
       const validatedData = registerFormSchema.parse(registrationHandler.formData);   
       APIHandle.APIRequestRegister(validatedData,registrationHandler.validationErrors)
-      .then(()=>{/* router.push('/login') */})
+      .then(()=>{router.push('/login')})
       .catch((err)=>{
         if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username: err.message})}
       }) 
     }catch(Error){
-      setValidationErrors(ErrorCheck.errorValidation(Error, registrationHandler.validationErrors));
+      setValidationErrors(ErrorCheck.errorValidationRegister(Error, registrationHandler.validationErrors));
     }
   }
   return (

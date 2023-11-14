@@ -33,5 +33,30 @@
         "Username": "AASS",
         "Password": "$2b$10$JMvyhq.b4S9HnXfrSce0R.Kz2wcrgp3Xq8Th0rr0Ksq24/Mh//lj6",
         "DisplayName": "AASS"
+    },
+    {
+        "Username": "Tester",
+        "Password": "$2b$10$XTLPAzAVI3B/3X3oeY.U5.embAxxdhagBHdgqpcXvMcggtBwNd.s.",
+        "DisplayName": "Tester"
+    },
+    {
+        "Username": "Testere",
+        "Password": "$2b$10$iRpNPwbJ2oQYr3YUE60F0.ghNOSrroMujK3c6Vtp5jfjEJ0vmWPG6",
+        "DisplayName": "Testere"
+    },
+    {
+        "Username": "Finally",
+        "Password": "$2b$10$qqq.r7BZKkwWmD3Ruo.2ZO/6QXlQEozNbSC66xuE6HW/5pGWGi/6u",
+        "DisplayName": "Finally"
+    },
+    {
+        "Username": "Alright",
+        "Password": "$2b$10$zj6W.00Q6QRuU7AxcAlEgOgbZm2pVMMby6lKhNhC6Easm3xDmKjay",
+        "DisplayName": "Alright"
+    },
+    {
+        "Username": "Cookies",
+        "Password": "$2b$10$Sc85OCD51ko0ZFna2ohZ5O1EfKrTtYw1zYH.wro5v5eQd3vVGtyPG",
+        "DisplayName": "Cookies"
     }
 ]

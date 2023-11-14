@@ -1,6 +1,6 @@
 'use server'
 import { NextRequest, NextResponse } from "next/server"
-import { User } from "@/app/register/userClass"
+import { User } from "@/app/classes/userClass"
 import { loginFormSchema } from "@/app/lib/validations/loginForm";
 import bcrypt from 'bcrypt';
 import { RegisterException } from "@/app/exceptions/RegisterException";
