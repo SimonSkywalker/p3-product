@@ -66,21 +66,25 @@ export class User{
 
     public deleteUser(){
 
-
-
     }
 
    
 
 }
 
-
+/**
+ * This class objective is
+ * to go through a list
+ * and check for a specific thing
+ * that is defined through its methods
+ */
 class checkList{
 
      /**
-     * isDuplicate
-        list: list
-        Username: string     */
+      * This method checks  for a duplicate member in a given list 
+        @param list A list of all users
+        @param Username The name user that is to be checked
+        @return true || false     */
 
     public static isDuplicate(list: typeof userList, Username: string):boolean {
 
@@ -102,6 +106,10 @@ class checkList{
 
 class dataManipulation{
 
+    /**
+     * 
+     * @param list 
+     */
     public static saveListData(list: typeof userList){
 
         fs.writeFile(process.cwd() +'/src/app/database/userLogins.json', JSON.stringify(list, null, 4));

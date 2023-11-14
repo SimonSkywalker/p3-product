@@ -8,15 +8,10 @@ import {APIHandle, ErrorCheck, RegistrationHandler} from './handlerClass';
 
 
 export default function RegisterPage() {
-  //const router = useRouter();
+  const router = useRouter();
   const registrationHandler = new RegistrationHandler();
-  const initialValidationErrors = {
-    username: '',
-    password: '',
-    confirmPassword: '',
-  };
   const [formData, setFormData] = useState(registrationHandler.formData);
-  const [validationErrors, setValidationErrors] = useState(initialValidationErrors);
+  const [validationErrors, setValidationErrors] = useState(registrationHandler.validationErrors);
    
  const handleInput = (e: React.ChangeEvent<HTMLInputElement> )=>{
     const { name, value } = e.target;
@@ -27,24 +22,23 @@ export default function RegisterPage() {
     
   };
   
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
     registrationHandler.handleChange('username', formData.username);
     registrationHandler.handleChange('password', formData.password);
     registrationHandler.handleChange('confirmPassword', formData.confirmPassword);    
     
     try{
-      setValidationErrors(initialValidationErrors);
+      setValidationErrors(registrationHandler.validationErrors);
       RegistrationHandler.cleanData(registrationHandler.validationErrors)
       const validatedData = registerFormSchema.parse(registrationHandler.formData);   
-      APIHandle.APIRequestRegister(validatedData,registrationHandler.validationErrors).catch((err)=>{
-        if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username:  err.message})}
-      });
-      
-      //router.push('/login')
-      
+      APIHandle.APIRequestRegister(validatedData,registrationHandler.validationErrors)
+      .then(()=>{router.push('/login')})
+      .catch((err)=>{
+        if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username: err.message})}
+      }) 
     }catch(Error){
-
       setValidationErrors(ErrorCheck.errorValidation(Error, registrationHandler.validationErrors));
     }
   }
