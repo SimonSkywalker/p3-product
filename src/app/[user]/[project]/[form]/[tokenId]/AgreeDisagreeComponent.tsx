@@ -1,14 +1,34 @@
 "use client"
-// AgreeDisagreeComponent.js
+// AgreeDisagreeComponent.tsx
 import React, { useState, useEffect } from 'react';
 
-export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQuestionIndex, userResponses }) {
+interface AgreeDisagreeProps {
+  jsonData: {
+    description: string;
+    mandatory: boolean;
+    userDisplay: boolean;
+    questionType: number;
+    saveRole: boolean;
+    options: any[string];
+    type: number;
+    range: number;
+  };
+  onUserInput: any;
+  currentQuestionIndex: number;
+  userResponses: any[];
+}
 
+export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQuestionIndex, userResponses } : AgreeDisagreeProps) {
+  // State variable to track the slider value
   const [sliderValue, setSliderValue] = useState(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
 
+  // useEffect to handle initial setup and update slider value
   useEffect(() => {
     // Set the initial user response value on component mount
-    if ((Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] !== -1) || typeof userResponses[currentQuestionIndex] == 'undefined') {
+    if ((Array.isArray(userResponses[currentQuestionIndex]) && 
+        !userResponses[currentQuestionIndex] && 
+        userResponses[currentQuestionIndex][0] !== -1) || 
+        typeof userResponses[currentQuestionIndex] == 'undefined') {
       // This will set userResponses[currentQuestionIndex] only if it's not already set
       onUserInput(Math.ceil(jsonData.range / 2));
     }
@@ -17,27 +37,26 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
     setSliderValue(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
   }, [currentQuestionIndex, userResponses]);
 
-  const handleSliderChange = (e) => {
+  // Event handler for slider value change
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     setSliderValue(value);
     // Send the response to the parent component
     onUserInput(value);
   };
 
-  const changeHandler = (e) => {
-    //const slider = document.getElementById("slider");
-    //slider.defaultValue = Math.ceil(jsonData.range / 2);
-    const react1 = document.querySelector("#react1");
-    const react2 = document.querySelector("#react2");
-    const react3 = document.querySelector("#react3");
-    const react4 = document.querySelector("#react4");
-    const react5 = document.querySelector("#react5");
-    const react6 = document.querySelector("#react6");
-    const react7 = document.querySelector("#react7");
-    const react8 = document.querySelector("#react8");
-    const react9 = document.querySelector("#react9");
-    const react10 = document.querySelector("#react10");
-    //const exp = document.querySelector("#exp");
+  // Event handler for additional change
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const react1 = document.querySelector<HTMLElement>("#react1")!;
+    const react2 = document.querySelector<HTMLElement>("#react2")!;
+    const react3 = document.querySelector<HTMLElement>("#react3")!;
+    const react4 = document.querySelector<HTMLElement>("#react4")!;
+    const react5 = document.querySelector<HTMLElement>("#react5")!;
+    const react6 = document.querySelector<HTMLElement>("#react6")!;
+    const react7 = document.querySelector<HTMLElement>("#react7")!;
+    const react8 = document.querySelector<HTMLElement>("#react8")!;
+    const react9 = document.querySelector<HTMLElement>("#react9")!;
+    const react10 = document.querySelector<HTMLElement>("#react10")!;
 
     if (jsonData.range === 9) {
       switch (parseInt(e.target.value)) {
@@ -52,7 +71,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Strongly Disagree";
           break;
         case 2:
           react1.style.display = "none";
@@ -65,7 +83,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Disagree";
           break;
         case 3:
           react1.style.display = "none";
@@ -78,7 +95,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Moderately Disagree";
           break;
         case 4:
           react1.style.display = "none";
@@ -91,7 +107,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Slightly Disagree";
           break;
         case 5:
           react1.style.display = "none";
@@ -104,7 +119,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
         case 6:
           react1.style.display = "none";
@@ -117,7 +131,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Slightly Agree";
           break;
         case 7:
           react1.style.display = "none";
@@ -130,7 +143,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Moderately Agree";
           break;
         case 8:
           react1.style.display = "none";
@@ -143,7 +155,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "block";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Agree";
           break;
         case 9:
           react1.style.display = "none";
@@ -156,7 +167,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "block";
           react10.style.display = "none";
-          //exp.innerText = "Strongly Agree";
           break;
         default:
           react1.style.display = "none";
@@ -169,7 +179,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
       }
     } else if (jsonData.range === 7) {
@@ -185,7 +194,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Strongly Disagree";
           break;
         case 2:
           react1.style.display = "none";
@@ -198,7 +206,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Disagree";
           break;
         case 3:
           react1.style.display = "none";
@@ -211,7 +218,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Somewhat Disagree";
           break;
         case 4:
           react1.style.display = "none";
@@ -224,7 +230,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
         case 5:
           react1.style.display = "none";
@@ -237,7 +242,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Somewhat Agree";
           break;
         case 6:
           react1.style.display = "none";
@@ -250,7 +254,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "block";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Agree";
           break;
         case 7:
           react1.style.display = "none";
@@ -263,7 +266,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "block";
           react10.style.display = "none";
-          //exp.innerText = "Strongly Agree";
           break;
         default:
           react1.style.display = "none";
@@ -276,7 +278,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
       }
     } else if (jsonData.range === 5) {
@@ -292,7 +293,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Strongly Disagree";
           break;
         case 2:
           react1.style.display = "none";
@@ -305,7 +305,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Disagree";
           break;
         case 3:
           react1.style.display = "none";
@@ -318,7 +317,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
         case 4:
           react1.style.display = "none";
@@ -331,7 +329,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Agree";
           break;
         case 5:
           react1.style.display = "none";
@@ -344,7 +341,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "block";
           react10.style.display = "none";
-          //exp.innerText = "Strongly Agree";
           break;
         default:
           react1.style.display = "none";
@@ -357,7 +353,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
       }
     } else if (jsonData.range === 3) {
@@ -373,7 +368,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Disagree";
           break;
         case 2:
           react1.style.display = "none";
@@ -386,7 +380,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
         case 3:
           react1.style.display = "none";
@@ -399,7 +392,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "block";
-          //exp.innerText = "Agree";
           break;
         default:
           react1.style.display = "none";
@@ -412,14 +404,14 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           react8.style.display = "none";
           react9.style.display = "none";
           react10.style.display = "none";
-          //exp.innerText = "Neutral";
           break;
       }
     }
   };
 
+  // Return the JSX structure for the component
   return (
-    <>
+    <form>
       <div>
         <div className="py-12 px-4">
           <div className=" mx-auto container lg:max-w-[356px] md:max-w-[720px] max-w-[343px] py-8 px-8 bg-white shadow rounded-md">
@@ -692,6 +684,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           </div>
         </div>
       </div>
-    </>
+    </form>
   );
 }

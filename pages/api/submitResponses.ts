@@ -1,38 +1,30 @@
-// pages/api/submitResponses.js
+// pages/api/submitResponses.ts
 
+import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       const userResponses = req.body.userResponses;
       const params = req.body.params;
       
-      const formsFilePath = './src/app/database/' + params.user + '/' + params.project + '/forms.json';
-      const responsesFilePath = './src/app/database/' + params.user + '/' + params.project + '/' + params.form + '/responses.json';
+      const formsFilePath = `./src/app/database/${params.user}/${params.project}/forms.json`;
+      const responsesFilePath = `./src/app/database/${params.user}/${params.project}/${params.form}/responses.json`;
 
       let formsFile = JSON.parse(fs.readFileSync(formsFilePath, "utf8"));
       let responsesFile = JSON.parse(fs.readFileSync(responsesFilePath, "utf8"));
 
-      //console.log(formsFile.forms);
-
-      let formObject = formsFile.forms.find((form) => form.name === params.form);
+      let formObject = formsFile.forms.find((form: { name: string }) => form.name === params.form);
 
       if (formObject) {
-        // You've found the form object with the desired name
-        //console.log("Found form object:", formObject);
-
-        // Now, let's find the tokens object with name "tokenId1"
-        let tokensObject = formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId));
+        let tokensObject = formObject.tokens.find((tokens: Record<string, { isUsed: boolean }>) =>
+          tokens.hasOwnProperty(params.tokenId)
+        );
 
         if (tokensObject) {
-          // You've found the tokens object with name "tokenId1"
-          //console.log("Found tokens object:", tokensObject);
-
           // Set the isUsed property to true
           tokensObject.tokenId1.isUsed = true;
-
-          //console.log("Updated tokens object:", tokensObject);
         } else {
           console.log("Tokens object with not found with name:", params.tokenId);
         }
@@ -41,7 +33,7 @@ export default async function handler(req, res) {
       }
 
 
-      responsesFile.forEach((userResponseObject) => {
+      responsesFile.forEach((userResponseObject: Record<string, any>) => {
         if (userResponseObject.hasOwnProperty(params.tokenId)) {
           let userResponse = userResponseObject[params.tokenId];
           // Tilføj noget til roles her: 
@@ -57,7 +49,7 @@ export default async function handler(req, res) {
             if (formObject["questions"][index]["questionType"] === 0 && 
                 formObject["questions"][index]["saveRole"] === true &&
                 userResponses[index][0] !== -1) {
-              userResponse["roles"][index] = userResponses[index].map(i => formObject["questions"][index]["options"][i]);
+              userResponse["roles"][index] = userResponses[index].map((i: number) => formObject["questions"][index]["options"][i]);
               console.log(userResponse["roles"]);
             }
 
@@ -69,14 +61,10 @@ export default async function handler(req, res) {
               userResponse["questions"][index] = userResponses[index];
             }
           }
-          //console.log(userResponse);
         }
       });
 
-      //console.log(responsesFile[1]["tokenId1"]);
-
       // Process and save the user responses on the server
-      // You can use any backend logic to save the responses to a file, database, or perform other actions
       fs.writeFileSync(formsFilePath, JSON.stringify(formsFile, null, "\t"));
       fs.writeFileSync(responsesFilePath, JSON.stringify(responsesFile, null, "\t"));
 
@@ -86,6 +74,6 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Internal server error' });
     }
   } else {
-    res.status(405).end(); // Method Not Allowed
+    res.status(405).end(); // 405: Method Not Allowed
   }
 }

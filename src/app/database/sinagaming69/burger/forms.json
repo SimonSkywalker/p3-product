@@ -84,7 +84,7 @@
 			"tokens": [
 				{
 					"tokenId1": {
-						"isUsed": false
+						"isUsed": true
 					}
 				}
 			]

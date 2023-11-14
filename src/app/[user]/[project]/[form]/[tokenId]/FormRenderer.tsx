@@ -1,7 +1,9 @@
 "use client"
+// FormRenderer.tsx
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import axios from 'axios'; // Import the axios library
 
+// Lazy-loaded components
 const FirstPageComponent = lazy(() => import('./FirstPageComponent'));
 const MultipleChoiceComponent = lazy(() => import('./MultipleChoiceComponent'));
 const AgreeDisagreeComponent = lazy(() => import('./AgreeDisagreeComponent'));
@@ -12,32 +14,77 @@ const SubmitPageComponent = lazy(() => import('./SubmitPageComponent'));
 const FinalPageComponent = lazy(() => import('./FinalPageComponent'));
 const AlreadyUsedPageComponent = lazy(() => import('./AlreadyUsedPageComponent'));
 
-function FormRenderer({ formObject, params }) {
+// Define interfaces
+interface FromRendererProps {
+  formObject: FormObject;
+  params: Params;
+}
+
+interface FormObject {
+  name: string;
+  description: string;
+  questions: Question[];
+  tokens: Token[];
+}
+
+interface Question {
+  description: string;
+  mandatory: boolean;
+  userDisplay: boolean;
+  questionType: number;
+  saveRole: boolean;
+  options: any[string];
+  type: number;
+  range: number;
+}
+
+interface Token {
+  [key: string]: {
+    isUsed: boolean;
+  };
+}
+
+interface Params {
+  user: string; 
+  project: string; 
+  form: string; 
+  tokenId: string
+}
+
+interface UserResponse {
+  [key: number]: any;
+}
+
+export default function FormRenderer({ formObject, params } : FromRendererProps) {
+  // State variables
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userResponses, setUserResponses] = useState([]);
+  const [userResponses, setUserResponses] = useState<UserResponse[]>([]);
   const totalQuestions = formObject.questions.length;
   const [isResponseProvided, setIsResponseProvided] = useState(false);
   const [isSkippedResponse, setIsSkippedResponse] = useState(false);
 
+  // Page state variables
   const [isOnFirstPage, setIsOnFirstPage] = useState(true);
   const [isOnSubmitPage, setIsOnSubmitPage] = useState(false);
   const [isOnFinalPage, setIsOnFinalPage] = useState(false);
-  const [isOnAlreadyUsedPage, setIsOnAlreadyUsedPage] = useState(formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId))?.[params.tokenId].isUsed);
+  const [isOnAlreadyUsedPage, setIsOnAlreadyUsedPage] = useState<boolean>(
+    formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId))?.[params.tokenId]?.isUsed || false
+  );
 
+  // useEffect to check for changes in userResponses and update isResponseProvided and isSkippedResponse
   useEffect(() => {
-    //console.log(Boolean(userResponses[currentQuestionIndex]));
-    const isResponseEmpty = !userResponses[currentQuestionIndex] || userResponses[currentQuestionIndex].length === 0;
+    const isResponseEmpty = !userResponses[currentQuestionIndex] || Object.keys(userResponses[currentQuestionIndex]).length === 0;
     setIsResponseProvided(!isResponseEmpty);
 
     try {
       const isSkippedResponse = Boolean(userResponses[currentQuestionIndex][0] === -1);
       setIsSkippedResponse(isSkippedResponse);
     } catch (error) {
-      
+      // Do nothing
     }
-      
   }, [currentQuestionIndex, userResponses]);
 
+  // Function to navigate to the previous question
   const goToPreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
       if (isOnSubmitPage) {
@@ -48,6 +95,7 @@ function FormRenderer({ formObject, params }) {
     }
   };
 
+  // Function to navigate to the next question or submit page
   const goToNextQuestion = () => {
     if (isOnFirstPage === true) {
       setIsOnFirstPage(false);
@@ -57,37 +105,37 @@ function FormRenderer({ formObject, params }) {
     }
   };
 
+  // Function to navigate to the submit page
   const goToSubmitPage = () => {
     setIsOnSubmitPage(true);
   };
 
+  // Function to navigate to the final page
   const goToFinalPage = () => {
     setIsOnFinalPage(true);
-  };  
+  };
 
+  // Function to submit answers
   const submitAnswers = () => {
     // Show a confirmation dialog to the user
-    const confirmed = window.confirm('Are you sure you want to submit your answers?');
+    const confirm = window.confirm('Are you sure you want to submit your answers?');
 
-    if (confirmed) {
+    if (confirm) {
       // User confirmed, proceed with Axios request
       // Make a POST request to the API route
       axios
         .post('/api/submitResponses', { userResponses, params })
         .then((response) => {
-          console.log(response.data.message); // Output the response from the server
           goToFinalPage();
         })
         .catch((error) => {
-          console.error('Error:', error);
+          alert(`Error: ${error}`);
         });
-    } else {
-      // User canceled the action
-      console.log('Submission canceled.');
     }
   };
 
-  const handleUserInput = (response) => {
+  // Function to handle user input and update userResponses
+  const handleUserInput = (response: UserResponse) => {
     // Update the userResponses array with the latest response
     setUserResponses((prevResponses) => {
       const newResponses = [...prevResponses];
@@ -96,6 +144,7 @@ function FormRenderer({ formObject, params }) {
     });
   };
 
+  // Return the JSX structure for the component
   return (
     <div className="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
       <h1 className="text-2xl font-medium text-center">{formObject.name}</h1>
@@ -104,7 +153,7 @@ function FormRenderer({ formObject, params }) {
         <div className="relative flex pb-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
         </div>
-        ) : null // Optional: Render null if none of the conditions are true
+        ) : null // Render null if none of the conditions are true
       }
       {!isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
         <div className="relative flex pb-5 items-center">
@@ -159,9 +208,7 @@ function FormRenderer({ formObject, params }) {
               />
             )}
             {isOnSubmitPage && !isOnFirstPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
-              <SubmitPageComponent
-              jsonData={formObject}
-              />
+              <SubmitPageComponent/>
             )}
             {!isOnFirstPage && isOnFinalPage && !isOnAlreadyUsedPage && (
               <FinalPageComponent/>
@@ -228,7 +275,7 @@ function FormRenderer({ formObject, params }) {
         {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
-              let initialValue;
+              let initialValue: any;
 
               if (formObject.questions[currentQuestionIndex].questionType === 0) {
                 // For question type 0, set handleUserInput to an empty array
@@ -264,7 +311,7 @@ function FormRenderer({ formObject, params }) {
             Submit My Answers
           </button>
         )}
-        {/* Virker ikke
+        {/* Not working (browser limitation)
         https://stackoverflow.com/questions/2076299/how-to-close-current-tab-in-a-browser-window
         isOnFinalPage || isOnAlreadyUsedPage ? (
           <button 
@@ -275,13 +322,11 @@ function FormRenderer({ formObject, params }) {
           >
             Close Page
           </button>
-        ) : null // Optional: Render null if none of the conditions are true */}
+        ) : null // Render null if none of the conditions are true */}
       </div>
-      {/*
+      {//Can be used to log the userResponses-array
         <button onClick={() => console.log(userResponses)}>Log User Responses</button>
-      */}
+      }
     </div>
   );
 }
-
-export default FormRenderer;

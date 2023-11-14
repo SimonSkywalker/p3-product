@@ -1,38 +1,39 @@
+// page.tsx
 import { Metadata } from 'next';
 import { notFound } from "next/navigation";
-import dynamic from "next/dynamic"; 
-import React, { lazy, Suspense, useState, useEffect } from 'react';
+import React from 'react';
 import FormRenderer from './FormRenderer';
 
-//import formList from '@/app/database/forms.json';
-//import userList from '@/app/database/userLogins.json';
-
-export async function generateMetadata({
-  params,
-}: { 
-  params: { user: string; project: string; form: string; tokenId: string } 
-}): Promise<Metadata> { 
-  return { 
-      title: params.form + ' | Project management survey tool (working title)', 
-  } 
+// Define the type for your JSON data
+interface FormData {
+  forms: FormObject[];
 }
 
-// Define the type for your JSON data
-type FormData = {
-  forms: {
-    name: string;
-    description: string;
-    questions: any[]; // You can define the type for your questions
-    tokens: {
-      [tokenId: string]: {
-        isUsed: number;
-      };
-    }[];
-  }[];
-};
+interface FormObject {
+  name: string;
+  description: string;
+  questions: any[];
+  tokens: Token[];
+}
+
+interface Token {
+  [key: string]: {
+    isUsed: boolean;
+  };
+}
+
+// Define an interface for the params object
+interface FormPageParams {
+  params: {
+    user: string;
+    project: string;
+    form: string;
+    tokenId: string;
+  }
+}
 
 // https://stackoverflow.com/questions/76650404/creating-dynamic-routes-from-local-json-file-nextjs-13
-export default function FormPage({ params }: { params: { user: string; project: string; form: string; tokenId: string } }) {
+export default function FormPage({ params } : FormPageParams) {
   const loadUserProjectData = async () => {
     try {
       // Dynamic import of the JSON file based on the project name
@@ -99,4 +100,12 @@ export default function FormPage({ params }: { params: { user: string; project: 
   };
 
   return renderPage();
+}
+
+// Async function to generate metadata for the page
+export async function generateMetadata({ params }: FormPageParams): Promise<Metadata> {
+  // Return metadata object with <title> based on the form name
+  return {
+    title: `${params.form} | Project management survey tool (working title)`,
+  };
 }

@@ -1,10 +1,28 @@
 "use client"
-// TextInputComponent.js
+// TextInputComponent.tsx
 import React, { useState, useEffect } from 'react';
 
-export default function TextInputComponent({ jsonData, onUserInput, currentQuestionIndex, userResponses }) {
+interface TextInputProps {
+  jsonData: {
+    description: string;
+    mandatory: boolean;
+    userDisplay: boolean;
+    questionType: number;
+    saveRole: boolean;
+    options: any[string];
+    type: number;
+    range: number;
+  };
+  onUserInput: any;
+  currentQuestionIndex: number;
+  userResponses: any[];
+}
+
+export default function TextInputComponent({ jsonData, onUserInput, currentQuestionIndex, userResponses } : TextInputProps) {
+  // State variable to track the input value
   const [inputValue, setInputValue] = useState(userResponses[currentQuestionIndex] || '');
 
+  // useEffect to handle initial setup and update input value
   useEffect(() => {
     // Set the initial user response value on component mount
     if ((Array.isArray(userResponses[currentQuestionIndex]) && !userResponses[currentQuestionIndex] && userResponses[currentQuestionIndex][0] === -1) || typeof userResponses[currentQuestionIndex] == 'undefined') {
@@ -16,7 +34,8 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
     setInputValue(userResponses[currentQuestionIndex] || '');
   }, [currentQuestionIndex, userResponses]);
 
-  const handleInputChange = (e) => {
+  // Event handler for input value change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
 
@@ -24,6 +43,7 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
     onUserInput(newValue);
   };
 
+  // Return the JSX structure for the component
   return (
     <form>
       <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
