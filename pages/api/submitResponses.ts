@@ -36,9 +36,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       responsesFile.forEach((userResponseObject: Record<string, any>) => {
         if (userResponseObject.hasOwnProperty(params.tokenId)) {
           let userResponse = userResponseObject[params.tokenId];
-          // Tilføj noget til roles her: 
+
           userResponse["roles"] = {};
           userResponse["questions"] = {};
+          
           for (let index = 0; index < userResponses.length; index++) {
             if (typeof userResponses[index] === "string") {
               userResponses[index] = userResponses[index].trim();
@@ -49,8 +50,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (formObject["questions"][index]["questionType"] === 0 && 
                 formObject["questions"][index]["saveRole"] === true &&
                 userResponses[index][0] !== -1) {
-              userResponse["roles"][index] = userResponses[index].map((i: number) => formObject["questions"][index]["options"][i]);
-              console.log(userResponse["roles"]);
+              userResponse['roles'][index] = userResponses[index].map((i: number) =>
+                formObject.questions[index].options[i]
+              );
             }
 
             if (userResponses[index].length === 0) {

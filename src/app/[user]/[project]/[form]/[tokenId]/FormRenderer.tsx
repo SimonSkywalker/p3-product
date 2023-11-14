@@ -324,9 +324,9 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
           </button>
         ) : null // Render null if none of the conditions are true */}
       </div>
-      {//Can be used to log the userResponses-array
+      {/* //Can be used to log the userResponses-array
         <button onClick={() => console.log(userResponses)}>Log User Responses</button>
-      }
+      */}
     </div>
   );
 }
