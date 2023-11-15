@@ -1,6 +1,11 @@
 "use client"
 // AgreeDisagreeComponent.tsx
 import React, { useState, useEffect } from 'react';
+// https://www.npmjs.com/package/rc-slider
+// Import Slider component from 'rc-slider' library
+import Slider from "rc-slider";
+// Import styles for the Slider component
+import './rc-slider.css';
 
 interface AgreeDisagreeProps {
   jsonData: {
@@ -38,15 +43,17 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
   }, [currentQuestionIndex, userResponses]);
 
   // Event handler for slider value change
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    setSliderValue(value);
+  const handleSliderChange = (value: number | number[]) => {
+    const sliderValue = Array.isArray(value) ? value[0] : value;
+    setSliderValue(sliderValue);
     // Send the response to the parent component
-    onUserInput(value);
+    onUserInput(sliderValue);
   };
 
   // Event handler for additional change
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = (value: number | number[]) => {
+    const sliderValue = Array.isArray(value) ? value[0] : value;
+
     const react1 = document.querySelector<HTMLElement>("#react1")!;
     const react2 = document.querySelector<HTMLElement>("#react2")!;
     const react3 = document.querySelector<HTMLElement>("#react3")!;
@@ -59,7 +66,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
     const react10 = document.querySelector<HTMLElement>("#react10")!;
 
     if (jsonData.range === 9) {
-      switch (parseInt(e.target.value)) {
+      switch (sliderValue) {
         case 1:
           react1.style.display = "block";
           react2.style.display = "none";
@@ -182,7 +189,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           break;
       }
     } else if (jsonData.range === 7) {
-      switch (parseInt(e.target.value)) {
+      switch (sliderValue) {
         case 1:
           react1.style.display = "block";
           react2.style.display = "none";
@@ -281,7 +288,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           break;
       }
     } else if (jsonData.range === 5) {
-      switch (parseInt(e.target.value)) {
+      switch (sliderValue) {
         case 1:
           react1.style.display = "block";
           react2.style.display = "none";
@@ -356,7 +363,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           break;
       }
     } else if (jsonData.range === 3) {
-      switch (parseInt(e.target.value)) {
+      switch (sliderValue) {
         case 1:
           react1.style.display = "block";
           react2.style.display = "none";
@@ -661,18 +668,25 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       </span>
       </p>
       <div className="slider mt-4 mb-4 mx-auto ">
-        <input
-          id="slider"
-          onChange={(e) => {
-            changeHandler(e);
-            handleSliderChange(e);
+        <Slider
+          onChange={(value) => {
+            changeHandler(value);
+            handleSliderChange(value);
           }}
-          className="w-full cursor-pointer rounded-full "
-          type="range"
           value={sliderValue}
           min={1}
           max={(jsonData.range)}
           step={1}
+          styles={{
+            handle: {
+              borderColor: "#0075ff",
+              backgroundColor: "#0075ff",
+              opacity: 1
+            },
+            track: {
+              backgroundColor: "#0075ff"
+            }
+          }}
         />
       </div>
       {/*
