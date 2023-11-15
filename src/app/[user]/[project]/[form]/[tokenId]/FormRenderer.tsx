@@ -219,18 +219,24 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
           </Suspense>
         )
       ))}
-      <div className="flow-root justify-between mt-4">
+      {(
+        <div className="relative flex items-center mt-5">
+          <div className="flex-grow border-t border-gray-400"></div>
+        </div>
+        )
+      }
+      <div className="flow-root justify-between mt-3">
       {isOnFirstPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToNextQuestion}
-            className="float-right">
+            className="float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded cursor-pointer">
               Let's Go
           </button>
         )}
         {currentQuestionIndex > 0 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToPreviousQuestion}
-            className="float-left">
+            className="float-left bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded cursor-pointer">
               Previous Question
           </button>
         )}
@@ -238,7 +244,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
           <button 
             onClick={goToNextQuestion}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
-            className="float-right">
+            className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
               Next Question
           </button>
         )}
@@ -246,7 +252,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
           <button 
             onClick={goToSubmitPage}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
-            className="float-right">
+            className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
               Submit
           </button>
         )}
@@ -256,9 +262,8 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
               handleUserInput([-1]); // Set the response to -1
               goToNextQuestion();
             }}
-            className="float-right mr-5"
-          >
-            Skip
+            className="float-right mr-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer">
+              Skip
           </button>
         )}
         {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
@@ -267,7 +272,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
               handleUserInput([-1]); // Set the response to -1
               goToSubmitPage();
             }}
-            className="float-right mr-5"
+            className="float-right mr-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer"
           >
             Skip and Submit
           </button>
@@ -290,7 +295,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
 
               handleUserInput(initialValue);
             }}
-            className="float-right mr-5"
+            className="float-right mr-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer"
           >
             Don't Skip
           </button>
@@ -298,7 +303,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
         {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToPreviousQuestion}
-            className="float-left"
+            className="float-left bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded cursor-pointer"
           >
             Not Quite Done Yet
           </button>
@@ -306,7 +311,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
         {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={submitAnswers}
-            className="float-right"
+            className="float-right bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded cursor-pointer"
           >
             Submit My Answers
           </button>

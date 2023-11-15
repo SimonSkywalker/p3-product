@@ -20,9 +20,14 @@ export default function SkippedComponent({ jsonData } : SkippedProps) {
   // Return the JSX structure for the component
   return (
     <>
-      <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
-      <p>
-        You have choosen to skip this question.<br></br>
+      <h3 className="text-center text-base font-bold mb-5">
+        {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+      </h3>
+      <p className="text-center text-base">
+        You have choosen to skip this question.
+      </p>
+      <br></br>
+      <p className="text-center text-base">
         You can click the "Don't Skip"-button if you want to answer the question.
       </p>
     </>

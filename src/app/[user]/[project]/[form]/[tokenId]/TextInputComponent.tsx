@@ -35,7 +35,7 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
   }, [currentQuestionIndex, userResponses]);
 
   // Event handler for input value change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
 
@@ -46,11 +46,12 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
   // Return the JSX structure for the component
   return (
     <form>
-      <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
+      <h3 className="text-center text-base font-bold mb-5">
+        {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+      </h3>
       <div>
-        <input
-          className="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
-          type="text"
+        <textarea
+          className="min-h-[5.5rem] border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
           value={inputValue}
           onChange={handleInputChange}
         />

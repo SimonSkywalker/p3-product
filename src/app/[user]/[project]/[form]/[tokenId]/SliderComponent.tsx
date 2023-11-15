@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 // Import Slider component from 'rc-slider' library
 import Slider from "rc-slider";
 // Import styles for the Slider component
-import 'rc-slider/assets/index.css';
+import './rc-slider.css';
 
 interface SliderProps {
   jsonData: {
@@ -64,8 +64,10 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
   // Return the JSX structure for the component
   return (
     <form>
-      <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
-      <div className="w-full px-1 mb-7">
+      <h3 className="text-center text-base font-bold mb-5">
+        {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+      </h3>
+      <div className="w-full px-1 mb-14 mt-5">
         <Slider
           onChange={(value) => {
             handleSliderChange(value);
@@ -75,6 +77,15 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           max={(jsonData.range)}
           step={1} 
           marks={generateMarks(jsonData.range)}
+          styles={{
+            handle: {
+              borderColor: "#0075ff",
+              backgroundColor: "#0075ff"
+            },
+            track: {
+              backgroundColor: "#0075ff"
+            }
+          }}
         />
       </div>
       {/*

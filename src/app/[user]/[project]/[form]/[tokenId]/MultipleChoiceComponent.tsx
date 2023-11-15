@@ -59,37 +59,42 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
   // Return the JSX structure for the component
   return (
     <form>
-        <h3>{jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}</h3>
-            {jsonData.options.map((option: string, optionIndex: number) => (
-            <div className="mb-[1rem] block min-h-[1.5rem] pl-[1.5rem]" key={optionIndex}>
-                {jsonData.type === 0 ? ( // Display radio buttons if type is 0
-                    <input
-                      type="radio"
-                      onChange={() => handleOptionSelect(optionIndex)}
-                      checked={selectedOptions.includes(optionIndex)}
-                      value={option}
-                      name={jsonData.description}
-                      className="relative float-left -ml-[1.5rem] mr-[0.75rem] mt-0.5 h-5 w-5"
-                    />
-                ) : (
-                    // Display checkboxes if type is 1
-                    <input
-                      type="checkbox"
-                      onChange={() => handleOptionSelect(optionIndex)}
-                      checked={selectedOptions.includes(optionIndex)}
-                      value={option}
-                      name={jsonData.description}
-                      className="relative float-left -ml-[1.5rem] mr-[0.75rem] mt-0.5 h-5 w-5"
-                    />
-                )}
-                <label className="mt-px inline-block hover:cursor-pointer">
-                  {option}
-                </label>
-            </div>
-            ))}
-            {/*
-              <p>DEBUG: Selected options: {selectedOptions.join(', ')}</p>
-            */}
+        <h3 className="text-center text-base font-bold mb-5">
+          {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+        </h3>
+        {jsonData.options.map((option: string, optionIndex: number) => (
+        <div className="mb-[1rem] block min-h-[1.5rem] pl-[1.5rem]" key={optionIndex}>
+          {jsonData.type === 0 ? ( 
+            // Display radio buttons if type is 0
+            <input
+              type="radio"
+              id={`option-${optionIndex}`}
+              onChange={() => handleOptionSelect(optionIndex)}
+              checked={selectedOptions.includes(optionIndex)}
+              value={option}
+              className="relative float-left -ml-[1.5rem] mr-[0.75rem] mt-0.5 h-5 w-5 hover:cursor-pointer"
+            />
+          ) : (
+            // Display checkboxes if type is 1
+            <input
+              type="checkbox"
+              id={`option-${optionIndex}`}
+              onChange={() => handleOptionSelect(optionIndex)}
+              checked={selectedOptions.includes(optionIndex)}
+              value={option}
+              className="relative float-left -ml-[1.5rem] mr-[0.75rem] mt-0.5 h-5 w-5 hover:cursor-pointer"
+            />
+          )}
+          <label 
+            htmlFor={`option-${optionIndex}`} 
+            className="mt-px inline-block hover:cursor-pointer">
+              {option}
+          </label>
+        </div>
+        ))}
+        {/*
+          <p>DEBUG: Selected options: {selectedOptions.join(', ')}</p>
+        */}
     </form>
   );
 }

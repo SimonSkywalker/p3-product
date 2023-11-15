@@ -49,7 +49,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             if (formObject["questions"][index]["questionType"] === 0 && 
                 formObject["questions"][index]["saveRole"] === true &&
-                userResponses[index][0] !== -1) {
+                userResponses[index][0] !== -1 &&
+                userResponses[index].length !== 0) {
               userResponse['roles'][index] = userResponses[index].map((i: number) =>
                 formObject.questions[index].options[i]
               );
