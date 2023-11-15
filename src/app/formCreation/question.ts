@@ -52,7 +52,7 @@ export default class Question {
 
 export class MultipleChoice extends Question {
     private _saveRole: boolean;
-    private _options : Array<String>;
+    private _options : Array<string>;
     private _choiceType : ChoiceTypes;
 
     //Get and set functions for the fields.
@@ -63,10 +63,10 @@ export class MultipleChoice extends Question {
         this._saveRole = value;
     }
 
-    public get options(): Array<String> {
+    public get options(): Array<string> {
         return this._options;
     }
-    public set options(value: Array<String>) {
+    public set options(value: Array<string>) {
         this._options = value;
     }
 
@@ -78,11 +78,24 @@ export class MultipleChoice extends Question {
     }
 
     constructor(number: number){
-        super(QuestionTypes.slider, number);
+        super(QuestionTypes.multipleChoice, number);
         this._saveRole = false;
         this._options = [];
         this._choiceType = ChoiceTypes.radio;
     }
+
+    public addOption(){
+        this._options.push("Option");
+    }
+
+    public renameOption(position: number, name: string){
+        this._options[position] = name;
+    }
+
+    public removeOption(position: number){
+        this._options.splice(position, 1);
+    }
+
 }
 
 export class Slider extends Question {
