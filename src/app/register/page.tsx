@@ -6,14 +6,26 @@ import { useRouter } from 'next/navigation';
 import { RegisterException } from '../exceptions/RegisterException';
 import {APIHandle, ErrorCheck, RegistrationHandler} from '../classes/handlerClass';
 
-
+/**
+ * This page component renders a Registration form for users and
+ * also validates given input, based on defitions given with zod.
+ * If the input is validated, it is then written in the database.
+ * @returns The Markup of the Website incl. The Form for registration, various input fields
+ */
 export default function RegisterPage() {
   const router = useRouter();
+  //Creating the object to handle the data given from input
   const registrationHandler = new RegistrationHandler();
+
+  //States defined to live update data and text.
   const [formData, setFormData] = useState(registrationHandler.formData);
   const [validationErrors, setValidationErrors] = useState(registrationHandler.validationErrors);
-   
- const handleInput = (e: React.ChangeEvent<HTMLInputElement> )=>{
+
+  /**
+   * Function to update data when a change happens in the input fields 
+   * @param e To get the specific element that change happens in
+   */ 
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement> )=>{
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -22,26 +34,43 @@ export default function RegisterPage() {
     
   };
   
+  /**
+   * Function called when the form is submitted
+   * @param e To access deafault behaviour 
+   */
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    //Prevent behaviour of routing to a new page or the same page.
+    e.preventDefault();
+
+    //Updates the objects data with updated data from the change event.
     registrationHandler.handleChange('username', formData.username);
     registrationHandler.handleChange('password', formData.password);
     registrationHandler.handleChange('confirmPassword', formData.confirmPassword);    
     
     try{
+      //Clears ValidationErrors data
       setValidationErrors(registrationHandler.validationErrors);
-      RegistrationHandler.cleanData(registrationHandler.validationErrors)
-      const validatedData = registerFormSchema.parse(registrationHandler.formData);   
-      APIHandle.APIRequestRegister(validatedData,registrationHandler.validationErrors)
-      .then(()=>{router.push('/login')})
+      RegistrationHandler.cleanData(registrationHandler.validationErrors);
+
+      //Validates data up against the RegisterSchema
+      const validatedData = registerFormSchema.parse(registrationHandler.formData);
+
+      //Sents data to server for second validation & possible database input
+      APIHandle.APIRequestRegister(validatedData)
+      .then(()=>{
+        //routes to login page if input if data is validated without problem
+        router.push('/login')})
       .catch((err)=>{
-        if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username: err.message, confirmPassword: ''})}
-      }) 
+        if (err instanceof RegisterException) {
+          setValidationErrors({...validationErrors, username: err.message, confirmPassword: ''});
+        };
+      }); 
+
     }catch(Error){
+      //If Error occurs, this will updates the red error text
       setValidationErrors(ErrorCheck.errorValidationRegister(Error, registrationHandler.validationErrors));
-    }
-  }
+    };
+  };
   return (
   <div 
   className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">

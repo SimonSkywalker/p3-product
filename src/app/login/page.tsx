@@ -14,35 +14,50 @@ import {APIHandle, ErrorCheck, LoginHandler} from '../classes/handlerClass';
 export default function LoginPage() {
   const router = useRouter();
   
-
+  //Constants used to handle data
   const loginHandler = new LoginHandler();
-
   const [formData, setFormData] = useState(loginHandler.formData);
-
   const [validationErrors, setValidationErrors] = useState(loginHandler.validationErrors);
    
- const handleInput = (e: React.ChangeEvent<HTMLInputElement> )=>{
+  /**
+   * Function to update data when a change happens in the input fields 
+   * @param e To get the specific element that change happens in
+   */ 
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement> )=>{
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-    
   };
 
+ /**
+   * Function called when the form is submitted
+   * @param e To access deafault behaviour 
+   */
   const handleSubmit = async (e: React.FormEvent) => {
-    
-    e.preventDefault()
+    //Prevent behaviour of routing to a new page or the same page.
+    e.preventDefault();
+
+    //Updates formData in the class with the values of the fields
     loginHandler.handleChange('username', formData.username);
     loginHandler.handleChange('password', formData.password);
 
+
     try{
+
+      //Clears ValidationErrors data
       setValidationErrors(loginHandler.validationErrors);
-      LoginHandler.cleanData(loginHandler.validationErrors)
-      const validatedData = loginFormSchema.parse(loginHandler.formData);   
+      LoginHandler.cleanData(loginHandler.validationErrors);
+
+      //Validates data up against the LoginSchema
+      const validatedData = loginFormSchema.parse(loginHandler.formData);
+
+      //Sends the data to server validation and handling
       APIHandle.APIRequestLogin(validatedData)
       .then(()=>{router.push('/leaderHome')})
       .catch((err)=>{
+        //Is true if the wrong credentials are inputted
         if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}
       });
 

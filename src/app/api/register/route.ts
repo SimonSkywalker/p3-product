@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { User } from "@/app/classes/userClass"
 import { loginFormSchema } from "@/app/lib/validations/loginForm";
 import bcrypt from 'bcrypt';
-import { RegisterException } from "@/app/exceptions/RegisterException";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,15 +10,19 @@ export async function POST(request: NextRequest) {
     // to guarantee 100% security.
     const { username, password } = loginFormSchema.parse(await request.json());
     
-    // Your server-side logic here...
+    //Hashes password for user security
     let HashedPassword = await bcrypt.hash(password,10);
+
+    //Creates user object with input
     let u:User = new User(username, HashedPassword);
+    //Writes to database
     u.createUser();    
+
     const res = JSON.stringify('it works')
     return new NextResponse(res);
   } catch (err: any) {
     
-    return NextResponse.json({error:'Wrong credentials'},{status: 409});
+    return NextResponse.json({error:'User exists'},{status: 409});
     
   }
 };
