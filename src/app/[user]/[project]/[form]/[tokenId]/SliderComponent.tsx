@@ -76,7 +76,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           min={1}
           max={(jsonData.range)}
           step={1} 
-          dotStyle={{display: 'none'}}
+          //dotStyle={{display: 'none'}}
           marks={generateMarks(jsonData.range)}
           styles={{
             handle: {
