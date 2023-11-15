@@ -58,5 +58,20 @@
         "Username": "Cookies",
         "Password": "$2b$10$Sc85OCD51ko0ZFna2ohZ5O1EfKrTtYw1zYH.wro5v5eQd3vVGtyPG",
         "DisplayName": "Cookies"
+    },
+    {
+        "Username": "ASDASDASD",
+        "Password": "$2b$10$slPKDbLOmvTWbvC5i.gHZuqkwr5eXXThNyDsNvkhrNhiss2BNZNtu",
+        "DisplayName": "ASDASDASD"
+    },
+    {
+        "Username": "Pools",
+        "Password": "$2b$10$WX6VfyYnxeVSxL2Wt7PR1OroGLtlcRypOyU4dHrwa7RYEOSSP8g0S",
+        "DisplayName": "Pools"
+    },
+    {
+        "Username": "Glass",
+        "Password": "$2b$10$rzsjDBb.OtyrruWaKmf9yOiXO/wmxj7NunE4u00CG7PqP4UR4LHbm",
+        "DisplayName": "Glass"
     }
 ]

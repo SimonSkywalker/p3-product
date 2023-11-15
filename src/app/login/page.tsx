@@ -13,6 +13,7 @@ import {APIHandle, ErrorCheck, LoginHandler} from '../classes/handlerClass';
 
 export default function LoginPage() {
   const router = useRouter();
+  
 
   const loginHandler = new LoginHandler();
 
@@ -39,12 +40,13 @@ export default function LoginPage() {
       setValidationErrors(loginHandler.validationErrors);
       LoginHandler.cleanData(loginHandler.validationErrors)
       const validatedData = loginFormSchema.parse(loginHandler.formData);   
-      await APIHandle.APIRequestLogin(validatedData).catch((err)=>{
+      APIHandle.APIRequestLogin(validatedData)
+      .then(()=>{router.push('/leaderHome')})
+      .catch((err)=>{
         if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}
       });
 
-      router.push('/leaderHome')
-     
+      
     
     } catch (err: any) {
         

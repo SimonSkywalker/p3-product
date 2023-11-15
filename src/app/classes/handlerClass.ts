@@ -136,7 +136,6 @@ export class APIHandle{
       .then((response) => {
         if (response.ok) {
           // Request was successful
-          console.log('hej');
           
           return response.json()
         }if(response.status == 409){
@@ -160,8 +159,8 @@ export class APIHandle{
 
             const { token } = await response.json()
             document.cookie = `token=${token}; path=/`;
-         
-            return response.json()
+
+            return { success: true };
           } else if(response.status === 409){
 
             throw new LoginException

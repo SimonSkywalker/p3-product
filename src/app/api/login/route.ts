@@ -37,7 +37,10 @@ export async function POST(request: NextRequest, response: NextResponse) {
       });
 
       
-      
+      return new NextResponse(
+        JSON.stringify({ token }),
+        { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8' } }
+      );
 
       return NextResponse.json({token});
     } else {

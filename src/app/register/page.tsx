@@ -36,7 +36,7 @@ export default function RegisterPage() {
       APIHandle.APIRequestRegister(validatedData,registrationHandler.validationErrors)
       .then(()=>{router.push('/login')})
       .catch((err)=>{
-        if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username: err.message})}
+        if (err instanceof RegisterException) {setValidationErrors({...validationErrors, username: err.message, confirmPassword: ''})}
       }) 
     }catch(Error){
       setValidationErrors(ErrorCheck.errorValidationRegister(Error, registrationHandler.validationErrors));
