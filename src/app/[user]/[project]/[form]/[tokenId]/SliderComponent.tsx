@@ -76,11 +76,13 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           min={1}
           max={(jsonData.range)}
           step={1} 
+          dotStyle={{display: 'none'}}
           marks={generateMarks(jsonData.range)}
           styles={{
             handle: {
               borderColor: "#0075ff",
-              backgroundColor: "#0075ff"
+              backgroundColor: "#0075ff",
+              opacity: 1
             },
             track: {
               backgroundColor: "#0075ff"

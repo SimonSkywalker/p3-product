@@ -237,7 +237,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
           <button 
             onClick={goToPreviousQuestion}
             className="float-left bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded cursor-pointer">
-              Previous Question
+              Previous
           </button>
         )}
         {currentQuestionIndex < totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
@@ -245,7 +245,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
             onClick={goToNextQuestion}
             disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
             className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
-              Next Question
+              Next
           </button>
         )}
         {currentQuestionIndex === totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
@@ -274,7 +274,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
             }}
             className="float-right mr-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer"
           >
-            Skip and Submit
+            Skip{/* and Submit*/}
           </button>
         )}
         {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
@@ -305,7 +305,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
             onClick={goToPreviousQuestion}
             className="float-left bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded cursor-pointer"
           >
-            Not Quite Done Yet
+            Go Back
           </button>
         )}
         {!isOnFirstPage && isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
