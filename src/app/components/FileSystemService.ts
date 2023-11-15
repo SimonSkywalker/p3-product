@@ -61,7 +61,7 @@ export default class FileSystemService {
                   return response.json();
                 })
                 .then((data) => {
-                   console.log("data " + data); // Handle the response data here
+                   //console.log("data " + data); // Handle the response data here
                 })
                 .catch(error => {
                   console.error('There has been a problem with your fetch operation:', error);
