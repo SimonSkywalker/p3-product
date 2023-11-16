@@ -1,8 +1,9 @@
-import Token from "./formCreation";
+import Token from "./Token";
 import WrongTypeException from "../exceptions/WrongTypeException";
 import NoObjectException from "../exceptions/NoObjectException";
 import Question, { MultipleChoice, Slider } from "./question";
 import { QuestionTypes } from "./question";
+import FormValidator from "./FormValidator";
 
 
 export default class Form {
@@ -89,7 +90,13 @@ export default class Form {
     }
 
     public addToDatabase(database : Array<Object>) : void {
-        database.push(this);
+        try{
+            FormValidator.FormTemplate.parse(this)
+            database.push(this);
+        }
+        catch(ValidationError) {
+            alert("Validation failed");
+        }
     }
 
     //Takes as input a Form database

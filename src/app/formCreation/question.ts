@@ -73,7 +73,7 @@ export class MultipleChoice extends Question {
     public get choiceType(): ChoiceTypes {
         return this._choiceType;
     }
-    public set choiceCype(value: ChoiceTypes) {
+    public set choiceType(value: ChoiceTypes) {
         this._choiceType = value;
     }
 
@@ -134,11 +134,11 @@ export class Slider extends Question {
 }
 
 
-enum ChoiceTypes {
+export enum ChoiceTypes {
     radio, checkbox
 }
 
-enum SliderTypes {
+export enum SliderTypes {
     agreeDisagree, values
 }
 
