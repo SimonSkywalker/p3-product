@@ -50,372 +50,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
     onUserInput(sliderValue);
   };
 
-  // Event handler for additional change
-  const changeHandler = (value: number | number[]) => {
-    const sliderValue = Array.isArray(value) ? value[0] : value;
-
-    const react1 = document.querySelector<HTMLElement>("#react1")!;
-    const react2 = document.querySelector<HTMLElement>("#react2")!;
-    const react3 = document.querySelector<HTMLElement>("#react3")!;
-    const react4 = document.querySelector<HTMLElement>("#react4")!;
-    const react5 = document.querySelector<HTMLElement>("#react5")!;
-    const react6 = document.querySelector<HTMLElement>("#react6")!;
-    const react7 = document.querySelector<HTMLElement>("#react7")!;
-    const react8 = document.querySelector<HTMLElement>("#react8")!;
-    const react9 = document.querySelector<HTMLElement>("#react9")!;
-    const react10 = document.querySelector<HTMLElement>("#react10")!;
-
-    if (jsonData.range === 9) {
-      switch (sliderValue) {
-        case 1:
-          react1.style.display = "block";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 2:
-          react1.style.display = "none";
-          react2.style.display = "block";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 3:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "block";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 4:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "block";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 5:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 6:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "block";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 7:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "block";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 8:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "block";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 9:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "block";
-          react10.style.display = "none";
-          break;
-        default:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-      }
-    } else if (jsonData.range === 7) {
-      switch (sliderValue) {
-        case 1:
-          react1.style.display = "block";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 2:
-          react1.style.display = "none";
-          react2.style.display = "block";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 3:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "block";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 4:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 5:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "block";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 6:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "block";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 7:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "block";
-          react10.style.display = "none";
-          break;
-        default:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-      }
-    } else if (jsonData.range === 5) {
-      switch (sliderValue) {
-        case 1:
-          react1.style.display = "block";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 2:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "block";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 3:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 4:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "block";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 5:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "block";
-          react10.style.display = "none";
-          break;
-        default:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-      }
-    } else if (jsonData.range === 3) {
-      switch (sliderValue) {
-        case 1:
-          react1.style.display = "block";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 2:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-        case 3:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "none";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "block";
-          break;
-        default:
-          react1.style.display = "none";
-          react2.style.display = "none";
-          react3.style.display = "none";
-          react4.style.display = "none";
-          react5.style.display = "block";
-          react6.style.display = "none";
-          react7.style.display = "none";
-          react8.style.display = "none";
-          react9.style.display = "none";
-          react10.style.display = "none";
-          break;
-      }
-    }
-  };
-
   // Return the JSX structure for the component
   return (
     <form>
@@ -427,7 +61,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 3 || jsonData.range === 5 || jsonData.range === 7 || jsonData.range === 9) ? (userResponses[currentQuestionIndex] === 1 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.706 61.708" width="61.706" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#D62E45" d="M 30.854 3.117 C 46.174 3.117 58.596 15.531 58.596 30.857 C 58.596 46.177 46.174 58.59 30.854 58.59 C 15.531 58.59 3.111 46.177 3.111 30.857 C 3.111 15.531 15.531 3.117 30.854 3.117"/>
@@ -442,7 +76,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 7 || jsonData.range === 9) ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.706 61.708" width="61.706" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#EB4138" d="M 30.854 3.117 C 46.174 3.117 58.594 15.531 58.594 30.857 C 58.594 46.177 46.174 58.59 30.854 58.59 C 15.531 58.59 3.109 46.177 3.109 30.857 C 3.109 15.531 15.531 3.117 30.854 3.117"/>
@@ -457,7 +91,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 5) ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.702 61.708" width="61.702" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#F1661F" d="M 30.856 3.117 C 46.176 3.117 58.601 15.531 58.601 30.857 C 58.601 46.177 46.176 58.59 30.856 58.59 C 15.539 58.59 3.113 46.177 3.113 30.857 C 3.113 15.531 15.539 3.117 30.856 3.117"/>
@@ -472,7 +106,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 7) ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.708 61.708" width="61.708" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#FF9C00" d="M 30.856 3.117 C 46.181 3.117 58.596 15.531 58.596 30.857 C 58.596 46.177 46.181 58.59 30.856 58.59 C 15.525 58.59 3.116 46.177 3.116 30.857 C 3.116 15.531 15.525 3.117 30.856 3.117"/>
@@ -487,7 +121,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: !userResponses[currentQuestionIndex] ? 'block' : jsonData.range === 3 ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : jsonData.range === 5 ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : jsonData.range === 7 ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.708 61.708" width="61.708" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#FFCE00" d="M 30.852 3.117 C 46.177 3.117 58.603 15.531 58.603 30.857 C 58.603 46.177 46.177 58.59 30.852 58.59 C 15.542 58.59 3.113 46.177 3.113 30.857 C 3.112 15.531 15.542 3.117 30.852 3.117"/>
@@ -502,7 +136,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 7) ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 6 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.703 61.708" width="61.703" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#FFEC01" d="M 30.852 3.117 C 46.166 3.117 58.591 15.531 58.591 30.857 C 58.591 46.177 46.166 58.59 30.852 58.59 C 15.526 58.59 3.101 46.177 3.101 30.857 C 3.101 15.531 15.525 3.117 30.852 3.117"/>
@@ -517,7 +151,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 5) ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 7 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.714 61.708" width="61.714" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#E6EB00" d="M 30.862 3.117 C 46.176 3.117 58.602 15.531 58.602 30.857 C 58.602 46.177 46.176 58.59 30.862 58.59 C 15.526 58.59 3.122 46.177 3.122 30.857 C 3.122 15.531 15.526 3.117 30.862 3.117"/>
@@ -532,7 +166,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 7) ? (userResponses[currentQuestionIndex] === 6 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 8 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.703 61.708" width="61.703" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#C6E605" d="M 30.852 3.117 C 46.177 3.117 58.591 15.531 58.591 30.857 C 58.591 46.177 46.177 58.59 30.852 58.59 C 15.537 58.59 3.112 46.177 3.112 30.857 C 3.112 15.531 15.537 3.117 30.852 3.117"/>
@@ -550,7 +184,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 5) ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : jsonData.range === 7 ? (userResponses[currentQuestionIndex] === 7 ? 'block' : 'none') : jsonData.range === 9 ? (userResponses[currentQuestionIndex] === 9 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.713 61.708" width="61.713" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#AAEA0D" d="M 30.861 3.117 C 46.176 3.117 58.601 15.531 58.601 30.857 C 58.601 46.177 46.176 58.59 30.861 58.59 C 15.525 58.59 3.122 46.177 3.122 30.857 C 3.121 15.531 15.525 3.117 30.861 3.117"/>
@@ -565,7 +199,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         style={{
           display: (jsonData.range === 3) ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : 'none',
         }}
-        className="border  mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
+        className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
         <svg viewBox="0 0 61.704 61.708" width="61.704" height="61.708" xmlns="http://www.w3.org/2000/svg">
           <path fill="#83E828" d="M 30.852 3.117 C 46.177 3.117 58.602 15.531 58.602 30.857 C 58.602 46.177 46.177 58.59 30.852 58.59 C 15.537 58.59 3.112 46.177 3.112 30.857 C 3.111 15.531 15.536 3.117 30.852 3.117"/>
@@ -670,7 +304,6 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div className="slider mt-4 mb-4 mx-auto ">
         <Slider
           onChange={(value) => {
-            changeHandler(value);
             handleSliderChange(value);
           }}
           value={sliderValue}
