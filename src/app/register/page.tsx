@@ -5,6 +5,9 @@ import { registerFormSchema } from '../lib/validations/registerForm';
 import { useRouter } from 'next/navigation';
 import { RegisterException } from '../exceptions/RegisterException';
 import {APIHandle, ErrorCheck, RegistrationHandler} from '../classes/handlerClass';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { fork } from 'child_process';
 
 /**
  * This page component renders a Registration form for users and
@@ -41,7 +44,6 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     //Prevent behaviour of routing to a new page or the same page.
     e.preventDefault();
-
     //Updates the objects data with updated data from the change event.
     registrationHandler.handleChange('username', formData.username);
     registrationHandler.handleChange('password', formData.password);
@@ -59,14 +61,18 @@ export default function RegisterPage() {
       APIHandle.APIRequestRegister(validatedData)
       .then(()=>{
         //routes to login page if input if data is validated without problem
+        toast.success('Registered '+formData.username)
         router.push('/login')})
       .catch((err)=>{
         if (err instanceof RegisterException) {
+          
           setValidationErrors({...validationErrors, username: err.message, confirmPassword: ''});
         };
       }); 
 
     }catch(Error){
+
+      toast.error('Registration failed, try again')
       //If Error occurs, this will updates the red error text
       setValidationErrors(ErrorCheck.errorValidationRegister(Error, registrationHandler.validationErrors));
     };
@@ -74,8 +80,9 @@ export default function RegisterPage() {
   return (
   <div 
   className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
+  <ToastContainer />
   <div 
-    className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
+    className="w-full p-6 rounded-md shadow-md lg:max-w-xl bg-palette-300">
     <h1 className="text-3xl font-bold text-center text-gray-700">Register</h1>
     <form 
       className="mt-6" 
@@ -98,7 +105,7 @@ export default function RegisterPage() {
             />
             {validationErrors.username && (
               <div 
-                className="text-red-500 text-sm">
+                className="text-palette-100 text-sm">
                 {validationErrors.username}
               </div>
             )}
@@ -119,7 +126,7 @@ export default function RegisterPage() {
         />
           {validationErrors.password && (
             <div 
-              className="text-red-500 text-sm">
+              className="text-palette-100 text-sm">
               {validationErrors.password}
             </div>
           )}
@@ -140,7 +147,7 @@ export default function RegisterPage() {
           />
           {validationErrors.confirmPassword && (
             <div 
-              className="text-red-500 text-sm">
+              className="text-palette-100 text-sm">
               {validationErrors.confirmPassword}
             </div>
           )}
@@ -160,7 +167,7 @@ export default function RegisterPage() {
         Already have an account?{" "}
         <Link
           href="/login"
-          className="font-medium text-blue-600 hover:underline">
+          className="font-medium text-palette-500 hover:underline">
           Log in
         </Link>
       </p>
