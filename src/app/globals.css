@@ -20,8 +20,8 @@ footer{
   --bar-width: 30px;
   --bar-height: 3.5px;
   --hamburger-gap: 7px;
-  --background: #374151;
-  --foreground: white;
+  --background: #F2F2F2;
+  --foreground: black;
   --hamburger-margin: 25px;
   --animation-timing: 300ms ease-in-out;
   --hamburger-height: calc(var(--bar-height) * 3 + var(--hamburger-gap)*2);

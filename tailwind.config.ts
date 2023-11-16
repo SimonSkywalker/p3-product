@@ -51,6 +51,7 @@ const config: Config = {
         },
         white: {
           DEFAULT: "#FFF",
+          300: "#F2F2F2",
           400: "#A3B3BC",
           500: "#A4B8D5",
           800: "#D0DFFF",

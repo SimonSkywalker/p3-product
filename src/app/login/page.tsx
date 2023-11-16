@@ -77,7 +77,7 @@ export default function LoginPage() {
     <div 
       className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div 
-        className="w-full p-6 rounded-md shadow-md lg:max-w-xl bg-palette-300 shadow-2xl">
+        className="w-full p-6 rounded-md shadow-md lg:max-w-xl bg-white-300 shadow-2xl">
         <h1 
           className="text-3xl font-bold text-center text-gray-700">
           Login

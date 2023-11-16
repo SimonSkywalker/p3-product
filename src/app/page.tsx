@@ -7,9 +7,7 @@ import Link from 'next/link'
  */
 export default function Home() {
   return (
-    <main className="flex-center paddings mx-auto w-full max-w-screen-2xl flex-col">
-      <section className="nav-padding w-full">
-        <div className="flex-center relative min-h-[274px] w-full flex-col rounded-xl bg-banner bg-cover bg-center text-center">
+        <div className="className='relative flex flex-col items-center justify-center min-h-screen overflow-hidden'">
           <h1>Welcome to Project survey tool</h1>
           <Link 
             className="border-white border-2 p-2" 
@@ -27,7 +25,5 @@ export default function Home() {
               Register
           </Link><br />
         </div>
-      </section>
-    </main>
   )
 }
