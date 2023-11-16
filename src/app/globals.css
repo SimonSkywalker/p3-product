@@ -27,6 +27,12 @@ footer{
   --hamburger-height: calc(var(--bar-height) * 3 + var(--hamburger-gap)*2);
 }
 
+.error{
+  color: red;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
 .hamburger-menu {
   --x-width: calc(var(--hamburger-height)*1.41421356237);
 

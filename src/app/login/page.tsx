@@ -97,7 +97,7 @@ export default function LoginPage() {
             />
             {validationErrors.username && (
               <div 
-                className="text-palette-100 text-sm">
+                className="error">
                 {validationErrors.username}
               </div>
             )}
@@ -119,7 +119,7 @@ export default function LoginPage() {
             />
             {validationErrors.password && (
               <div 
-                className="text-palette-100 text-sm">
+                className="error">
                 {validationErrors.password}
               </div>
             )}
