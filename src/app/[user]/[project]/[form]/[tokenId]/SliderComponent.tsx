@@ -67,7 +67,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
       <h3 className="text-center text-base font-bold mb-5">
         {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
       </h3>
-      <div className="w-full px-1 mb-14 mt-5">
+      <div className="w-full px-1 mb-10 mt-5">
         <Slider
           onChange={(value) => {
             handleSliderChange(value);
@@ -76,6 +76,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           min={1}
           max={(jsonData.range)}
           step={1} 
+          dots
           //dotStyle={{display: 'none'}}
           marks={generateMarks(jsonData.range)}
           styles={{

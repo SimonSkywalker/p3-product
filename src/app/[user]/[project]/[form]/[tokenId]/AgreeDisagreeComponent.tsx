@@ -260,6 +260,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           onChange={(value) => {
             handleSliderChange(value);
           }}
+          dots
           value={sliderValue}
           min={1}
           max={(jsonData.range)}
