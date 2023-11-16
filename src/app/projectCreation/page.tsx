@@ -7,11 +7,17 @@
 - lav bedre id / keys
 - færre div'er
 
+IN PROGRESS
+
+- projekter skrevet omvendt ud
+
+MERE TO DO
+
 - same title check når nyt projekt bliver lavet + (når title bliver ændret)
 - icons tom check når project bliver oprrettet + defalt icon + ændrer icon under create new når nyt er valgt.
 - projekter skrevet omvendt ud
 
-- lave active og history om til bare project og så lave check på idActive.
+- /lave active og history om til bare project og så lave check på idActive.
 
 - upload icon selv
 - exceptions
@@ -53,11 +59,9 @@ export default function projectPage() {
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [icons, setIcons] = useState<string[]>([]);
   const [projects, setProjects] = useState<ProjectInterface[]>([]);
-  const [projectIconsActive, setProjectIcons] = useState<String[]>([]);
-  const [projectNamesActive, setProjectNames] = useState<String[]>([]);
+  
   const [projectbeingEditedActive, setProjectEdited] = useState<boolean[]>([]);
-  const [projectIconsHistory, setProjectIconsHistory] = useState<String[]>([]);
-  const [projectNamesHistory, setProjectNamesHistory] = useState<String[]>([]);
+
   const [user, setUser] = useState<string>("Mka16");
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
   const [newProject, setNewProject] = useState<Project>(new Project);
@@ -70,50 +74,25 @@ export default function projectPage() {
     async function getProjects() {
         const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
         setProjects(data);
-        
-        let projectNamesActiveLength = projectNamesActive.length;
-        for(let i= 0; i< projectNamesActiveLength; i++){
-          projectNamesActive.pop();
-        }
-
-        let projectsIconActiveLength = projectIconsActive.length;
-        for(let i= 0; i< projectsIconActiveLength; i++){
-          projectIconsActive.pop();
-        }
-
+     
         let projectsEditActiveLength = projectbeingEditedActive.length;
         for(let i= 0; i< projectsEditActiveLength; i++){
           projectbeingEditedActive.pop();
         }
 
-        let projectNamesHistoryLength = projectNamesHistory.length;
-        for(let i= 0; i< projectNamesHistoryLength; i++){
-          projectNamesHistory.pop();
-        }
-
-        let projectsIconHistoryLength = projectIconsHistory.length;
-        for(let i= 0; i< projectsIconHistoryLength; i++){
-          projectIconsHistory.pop();
-        }
 
         let index = 0;
         data.forEach(project => {
           
           if(project.isActive){
             
-            projectNamesActive.push(project.title);
-            projectIconsActive.push(project.icon);
             if (index == editIndex){
                 projectbeingEditedActive.push(true);
             } else {
                 projectbeingEditedActive.push(false);
             }
-            index++;            
-          } else {
-            
-            projectNamesHistory.push(project.title);
-            projectIconsHistory.push(project.icon);
-            
+            index++;       
+
           }
         })
 
@@ -136,12 +115,16 @@ export default function projectPage() {
   async function handleSubmit(){
 
     //console.log(newProject);
-    projects.push(newProject.getProject() as ProjectInterface);
+
+    let updatedProjects = projects;
+    updatedProjects.unshift(newProject.getProject() as ProjectInterface);
     //console.log(projects);
-    await FileSystemService.writeToJSONFile(projects, ServerSidePaths.getProjectsPath(user));
+    await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user));
 
     setCreating(false);
     setTrigger(true);
+
+    
   }
 
   function deleteProject(title: String){
@@ -272,6 +255,11 @@ export default function projectPage() {
               </a>
             </li>
           </ul>
+
+
+          
+
+
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
@@ -290,9 +278,7 @@ export default function projectPage() {
 
                   <div id="createProjectDiv" className={(creatingProject ? "block " : "hidden ") + "shadow-xl h-30 w-30 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400"}>
 
-                    <form 
-                    className="mt-6" 
-                    onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className="mt-6">
                       <div 
                         className="mb-4">
                           <input
@@ -309,7 +295,7 @@ export default function projectPage() {
                       
                       <div 
                         className="mt-2 grid place-items-center">
-                        <button type="submit">
+                        <button type="button">
                           <img className="w-10 h-10 hover:scale-125" src="icons/upload.png" 
                           onClick={ e => {
                           e.preventDefault();
@@ -328,79 +314,95 @@ export default function projectPage() {
                           e.preventDefault();
                           setCreating(false);
                           
-                        }}>
-                        </img>
+                        }}></img>
                         <img 
                         onClick={() => {
                           handleSubmit();
 
                         }} className="w-6 h-6 float-right hover:scale-125" src="icons/checkmark.png"></img>
-
+                        
                       </div>
                       
                     </form>
 
                   </div>
 
-                  {projectNamesActive.map((name, i) => 
-                    <div key={"DivActive" + name + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
-                      <form onSubmit={(e) => {e.preventDefault(); editProject(name);}}>
-                        { (edit && projectbeingEditedActive[i]) ? (
-                          <input
-                          type="text" 
-                          id="projectnameEdit" 
-                          value={editTitle as string}
-                          onChange={(e) => setEditTitle(e.target.value)}
-                          name="title"
-                          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                        />
-                          
-                        ) : (
-                          <p key={"ProjectActive" + name + i}>{name}</p>
-                        ) }
-                        
-                        <br/>
-                        <img src={`${URLIconsPath}/${projectIconsActive[projectNamesActive.indexOf(name)]}`} width={50} height={50} className=""/>
-                        
-                        <div>
-                          <br/>
-                          <img className="w-4 h-6 float-left hover:scale-125" src="icons/trash.png"
-                          onClick={ e => {
+                  {projects.map((project, i) => 
+                  
+                    project.isActive ? (
+
+                      <div key={"DivActive" + project.title + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
+                        <form key={"Form" + project.title + i} onSubmit={(e) => {e.preventDefault(); editProject(project.title);}}>
+                          { (edit && projectbeingEditedActive[i]) ? (
+                            <input
+                            type="text" 
+                            key={"inputField" + i}
+                            value={editTitle as string}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            name="title"
+                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                          />
                             
-                            deleteProject(name);
-      
-                          }}>
-                          </img>
-                          <img className="w-4 h-6 float-right hover:scale-125" src="icons/edit.png"
-                          onClick={ e => {
-                            if(!edit){
-                              e.preventDefault();
-                              setEdit(true);
-                              setEditTitle(name);
-                              setEditIndex(i);
-                              setTrigger(true);
-                            }
+                          ) : (
+                            <p key={"TitleActive" + project.title + i}>{project.title}</p>
+                          ) }
+                          
+                          
+                          <img key={"Icon" + project.icon + i} src={`${URLIconsPath}/${project.icon}`} width={50} height={50} className="m-4"/>
+                          
+                          <div key={"buttonsDiv" + i}>
+                            <br/>
+                            <img className="w-4 h-6 float-left hover:scale-125" src="icons/trash.png"
+                            onClick={ e => {
+                              
+                              deleteProject(project.title);
+        
+                            }}>
+                            </img>
+                            <img className="w-4 h-6 float-right hover:scale-125" src="icons/edit.png"
+                            onClick={ e => {
+                              if(!edit){
+                                e.preventDefault();
+                                setEdit(true);
+                                setEditTitle(project.title);
+                                setEditIndex(i);
+                                setTrigger(true);
+                              }
 
-                            //editProject(name);
-      
-                          }}>
-                          </img>
+                              //editProject(name);
+        
+                            }}>
+                            </img>
 
-                        </div>
-                      </form>
-                      
+                          </div>
+                        </form>
+                      </div>  
 
-                    </div>  
+                      ) : (
+
+                        <p key={project.title + "" + i} className="hidden"/>
+
+                      )
+                  
+
+                    
                   )}
 
                 </div>
  
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"} id="link2">
                   
-                  {projectNamesHistory.map((name, i) => 
-                    <div key={"DivHistory" + name + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
-                      <p key={"ProjectHistory" + name + i}>{name}</p><br/>
-                      <img src={`${URLIconsPath}/${projectIconsHistory[projectNamesHistory.indexOf(name)]}`} width={50} height={50} className=""/>
+                  {projects.map((project, i) => 
+
+                    project.isActive ? (
+
+                      <p key={project.title + "" + i} className="hidden"/>
+
+                    ) : (
+
+                      <div key={"DivHistory" + project.title + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
+                      <p key={"ProjectHistory" + project.title + i}>{project.title}</p><br/>
+                      <img src={`${URLIconsPath}/${project.icon}`} width={50} height={50} className=""/>
                       
                       <div>
                         <br/>
@@ -415,6 +417,7 @@ export default function projectPage() {
                       </div>
 
                     </div>  
+                    )
                   )}
 
                 </div>  
