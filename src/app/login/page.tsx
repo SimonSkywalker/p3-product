@@ -77,7 +77,7 @@ export default function LoginPage() {
     <div 
       className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div 
-        className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
+        className="w-full p-6 rounded-md shadow-md lg:max-w-xl bg-palette-300 shadow-2xl">
         <h1 
           className="text-3xl font-bold text-center text-gray-700">
           Login
@@ -97,7 +97,7 @@ export default function LoginPage() {
             />
             {validationErrors.username && (
               <div 
-                className="text-red-500 text-sm">
+                className="text-palette-100 text-sm">
                 {validationErrors.username}
               </div>
             )}
@@ -119,7 +119,7 @@ export default function LoginPage() {
             />
             {validationErrors.password && (
               <div 
-                className="text-red-500 text-sm">
+                className="text-palette-100 text-sm">
                 {validationErrors.password}
               </div>
             )}
@@ -136,7 +136,7 @@ export default function LoginPage() {
 
         <p className="mt-4 text-sm text-center text-gray-700">
           Don't have an account?{" "}
-          <Link href="/register" className="font-medium text-blue-600 hover:underline">
+          <Link href="/register" className="font-medium text-palette-500 hover:underline">
             Sign up
           </Link>
         </p>

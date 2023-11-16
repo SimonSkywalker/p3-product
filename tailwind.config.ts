@@ -30,6 +30,13 @@ const config: Config = {
       },
       colors: {
         primary: "#2190FF",
+        palette:{
+          100: "#c8703d",
+          200:"#f5a564",
+          300:"#a7cdf2",
+          400:"#68aee6",
+          500:"#3e84ba",
+        },
         black: {
           DEFAULT: "#000",
           100: "#0D1117",
