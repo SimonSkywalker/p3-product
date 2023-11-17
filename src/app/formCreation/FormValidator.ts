@@ -14,13 +14,13 @@ export default class FormValidator {
     static FormTemplate = z.object({
         _name: z.string().min(1, { message: "Name required" })
                         .max(nameMax, { message: "No more than " + nameMax + " characters" })
-                        .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed'),
+                        .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed'),
         _description: z.string().max(descMax)
-                        .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed'),
+                        .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed'),
         _questions: z.array(z.object({
             _description: z.string().min(1, { message: "Text required" })
                             .max(descMax, { message: "No more than " + descMax + " characters" })
-                            .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed'),
+                            .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed'),
             _mandatory: z.boolean(),
             _userDisplay : z.boolean(),
             _questionType : z.number(),
@@ -31,35 +31,30 @@ export default class FormValidator {
             _saveRoles : z.boolean().optional(),
             _options : z.array(z.string().min(1, { message: "Text required" })
             .max(descMax, { message: "No more than " + descMax + " characters" })
-            .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed')).optional()
+            .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed')).optional()
         })),
         _tokens: z.array(z.string()).optional()
     })    
 
     static nameTemplate = z.string().min(1, { message: "Name required" })
     .max(nameMax, { message: "No more than " + nameMax + " characters" })
-    .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed')
+    .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed')
 
     static descTemplate = z.string()
     .max(descMax, { message: "No more than " + descMax + " characters" })
-    .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed');
+    .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed');
 
-    static questionTemplae = z.string().min(1, { message: "Name required" })
+    static questionTemplate = z.string().min(1, { message: "Name required" })
     .max(descMax, { message: "No more than " + descMax + " characters" })
-    .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed');
+    .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed');
 
     static optionTemplate = z.string().min(1, { message: "Text required" })
                         .max(descMax, { message: "No more than " + descMax + " characters" })
-                        .regex(new RegExp(/^[a-zA-Z0-9]+$/),'Special characters not allowed')
+                        .regex(new RegExp(/^$|^[a-zA-Z0-9 ]+$/),'Special characters not allowed')
 
     static sliderTemplate = z.number().gte(3).lte(9).refine((data) => data % 2 == 1)
 
     static validateForm(form: Form) : void {
-        try{
-            this.FormTemplate.parse(form)   
-        } catch (Error) {
-            throw new ValidationError;
-        }
+        this.FormTemplate.parse(form)   
     }
-
 }

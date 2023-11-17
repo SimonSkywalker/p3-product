@@ -11,6 +11,7 @@ export default class Form {
     private _description: String;
     private _questions: Array<Question>;
     private _tokens: Array<Token>;
+    private _isActive: boolean;
 
     //Get and set functions for the fields.
     public get name(): String {
@@ -46,6 +47,7 @@ export default class Form {
         this._description = "";
         this._questions = [];
         this._tokens = [];
+        this._isActive = true;
     }
 
     
@@ -94,8 +96,9 @@ export default class Form {
             FormValidator.FormTemplate.parse(this)
             database.push(this);
         }
-        catch(ValidationError) {
-            alert("Validation failed");
+        catch(e: any) {
+            console.log(e.message);
+            alert(e.message);
         }
     }
 

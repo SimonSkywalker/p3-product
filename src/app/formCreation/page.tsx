@@ -6,6 +6,13 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem} 
 import {Button} from "@nextui-org/button"
 import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
+import {
+  Modal, 
+  ModalContent, 
+  ModalHeader, 
+  ModalBody, 
+  ModalFooter
+} from "@nextui-org/react";
 import Link from 'next/link'
 import FileSystemService from './FileSystemService';
 import Token from './Token'
@@ -18,9 +25,15 @@ import { createRoot } from "react-dom/client";
 import NextUIProvider from "@nextui-org/system"
 import { createConnection } from "net";
 import { describe } from "node:test";
+import { modal } from "@nextui-org/react";
+import TokenBuilder from "./TokenBuilder";
 
 let currForm : Form = new Form();
+let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
+const username : string = "sinagaming69";
+const project : string = "f-kult";
+const rootLink : string = "https://www.testwebsite.com"
 
 class FormCreator{
   public static updateQuestionBox(form : Form){
@@ -48,7 +61,7 @@ class FormCreator{
   public static renderSwitch(question: Question, updateState: () => void){
     switch(question.questionType){
       case QuestionTypes.slider: {
-        return <><Input type="number" label="Amount of steps" min="3" max="9" defaultValue="5" step="2" onValueChange={(value) => {
+        return <><Input type="number" label="Amount of steps" min="3" max="9" step="2" onValueChange={(value) => {
           (question as Slider).range = parseInt(value);
         }}/>
         <RadioGroup
@@ -61,6 +74,7 @@ class FormCreator{
             }
             case "number":{
               (question as Slider).sliderType = SliderTypes.values;
+              break;
             }
           }
         }}>
@@ -87,7 +101,10 @@ class FormCreator{
 
   public static createQuestionBox(question : Question, updateState: () => void) {
     return <><p> Question number {question.number}</p>
-    <Input label="Question name" id={"questionID" + question.number.toString}></Input>
+    <Input label="Question name" id={"questionID" + question.number.toString} onValueChange={(value) => {
+        question.description = value;
+        updateState();
+      }}></Input>
     <Checkbox onValueChange={(check) => {
         question.mandatory = check;
         updateState();
@@ -104,7 +121,11 @@ class FormCreator{
 
 export default function Home() {
   const [questions, setQuestions] = useState(currForm.questions);
+  const [active, setActive] = useState(currForm)
   const [count, setCount] = useState(0);
+  const [validationErrors, setValidationErrors] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [tokens, setTokens] = useState(new Array<Token>);
 
   
   function updateState() : void {
@@ -167,31 +188,42 @@ export default function Home() {
           {questions.map((e, index) => {return <li key={index}> {FormCreator.createQuestionBox(e, updateState)}</li>})}
         </ul>
         <Button onClick={async () => {
-          /*
+
+        try {
+          FormValidator.FormTemplate.parse(currForm);
+          setModalOpen(true);
+        } catch(e: any) {
+          console.log(e.message);
+          alert(e.message);
+        }
+
+          
           let database : DatabaseAccess = new DatabaseAccess('src/app');
-          let testForm : Form = new Form();
-          currForm.tokens = Token.createTokenArray(5,10);
-          currForm.name = "test";
-          currForm.description = "test";
-          console.log("looking for file");
           let file : string = await database.findJSONFile(["database"], "forms");
-          console.log("file found " + file);
           let forms : Array<Object> = await FileSystemService.getJSONFile(file);
-          console.log("file extracted");
-          console.dir(forms);
-          testForm.addToDatabase(forms);
-          console.log("added to database");
-          console.log(forms);
+          currForm.addToDatabase(forms);
           FileSystemService.writeToJSONFile(forms, file);
-          console.log("wrote to file");
-          */
-         try{
-          const validatedForm = FormValidator.FormTemplate.parse(currForm)
-         }
-         catch{Error}
-         console.log(currForm);
+          console.log(currForm);
+
         }}>SUMBIT form</Button>
       </div>
+      <Modal isOpen={modalOpen}>
+        <ModalContent>
+          <Input type="number" label="How many people should answer this form?" min="1" max="1024" step="1" onValueChange={(value) => {
+            tokenBuilder.setTokens(parseInt(value));
+          }}/>
+          <Button onClick={() => {
+            console.dir(tokenBuilder);
+            setTokens(tokenBuilder.getTokens());
+          }}>Publish form</Button>
+
+          <Button>Save without publishing</Button>
+          <Button onClick={() => {
+              setModalOpen(false);
+          }}>Fuck go back</Button>
+          {tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+token.tokenID}</li>})}
+        </ModalContent>
+      </Modal>
     </main>
   )
 }

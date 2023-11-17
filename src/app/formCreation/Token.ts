@@ -27,23 +27,7 @@ class Token {
         this._isUsed = false;
     }
 
-    //This function takes as input two numbers, amount and length
-    //It returns as 
-    public static createTokenArray(amount:number, length:number) : Array<Token> {
-        let tokens = new Array<Token>;
-
-        const characters : String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for(let i = 0; i < amount ; i++) {
-            let randomString : String = "";
-            for(let j = 0; j < length; j++){
-                randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            let newToken : Token = new Token(randomString);
-            tokens.push(newToken);
-        }
-        return tokens;
-    }
-
 }
+
 
 export default Token;
