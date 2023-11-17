@@ -1,38 +1,80 @@
-import { ProjectInterface } from '../interfaces/interfaces';
+import { ProjectInterface, projectObject } from '../interfaces/interfaces';
 
-class Project implements ProjectInterface {
-    title: string = '';
-    isActive: boolean = true;
-    icon: string = '';
-    beingEdited: boolean = false;
+
+export class Project {
+
+    protected _projectdata: ProjectInterface = {
+        title: '',
+        isActive: true,
+        icon: '',
+    }
+
+    constructor() {
+        this._projectdata.title = '';
+        this._projectdata.isActive = true;
+        this._projectdata.icon = '';
+        
+    }
 
     public setTitle(title: string){
-        this.title = title;
+        this._projectdata.title = title;
     }
 
     public setIcon(icon: string){
-        this.icon = icon;
+        this._projectdata.icon = icon;
     }
 
     public getTitle(){
-        return this.title;
+        return this._projectdata.title;
     }
 
     public getIcon(){
-        return this.icon;
+        return this._projectdata.icon;
     }
 
     public getIsActive(){
-        return this.isActive;
+        return this._projectdata.isActive;
     }
 
-    public getProject(){
-        return {
-            title: this.title,
-            isActive: this.isActive,
-            icon: this.icon,
-        };
+    public get project(){
+        return this._projectdata;
+    }
+    
+    public set project(value: ProjectInterface) {
+        this._projectdata = value;
     }
 }
 
-export default Project;
+export class ProjectObject extends Project {
+
+    constructor(objectA: ProjectInterface) {
+
+        super();
+        this._projectdata.title = objectA.title;
+        this._projectdata.isActive = objectA.isActive;
+        this._projectdata.icon = objectA.icon;
+        
+    }
+
+     _projectdata: projectObject = {
+        ...this._projectdata,
+        beingEdited: false,
+        
+    };
+
+    
+
+    public get projectO(): projectObject {
+        return this._projectdata;
+    }
+    
+    public set projectO(value: projectObject) {
+        this._projectdata = value;
+    }
+        
+
+  
+}
+
+
+//export default Project;

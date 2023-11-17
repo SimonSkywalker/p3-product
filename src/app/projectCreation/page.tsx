@@ -31,8 +31,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import FileSystemService from '../components/FileSystemService';
 import ServerSidePaths from '../components/ServerSidePaths';
-import Project from '../components/projectClass';
-import {ProjectInterface} from '../interfaces/interfaces';
+import {Project, ProjectObject} from '../components/projectClass';
+import {ProjectInterface, projectObject} from '../interfaces/interfaces';
 
 
 const customStyles = {
@@ -58,46 +58,29 @@ export default function projectPage() {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [icons, setIcons] = useState<string[]>([]);
-  const [projects, setProjects] = useState<ProjectInterface[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   
-  const [projectbeingEditedActive, setProjectEdited] = useState<boolean[]>([]);
+  
+  const [projectsO, setProjectsO] = useState<ProjectObject[]>([]);
+  const [projectO, setProjectO] = useState<ProjectObject>();
+  
+  //const [projectbeingEditedActive, setProjectEdited] = useState<boolean[]>([]);
 
   const [user, setUser] = useState<string>("Mka16");
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
   const [newProject, setNewProject] = useState<Project>(new Project);
-  const [edit, setEdit] = useState<boolean>(false);
-  const [editIndex, setEditIndex] = useState<number>(-1);
-  const [editTitle, setEditTitle] = useState<String>("");
-  //const inputRef = useRef<HTMLInputElement>(null);
+  //const [edit, setEdit] = useState<boolean>(false);
+  //const [editIndex, setEditIndex] = useState<number>(-1);
+  //const [editTitle, setEditTitle] = useState<String>("");
+  
+  async function getProjects() {
+    const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
+    
+    setProjects(data);
+    console.log(projects[0]);
+  }
 
   useEffect(() => {
-    async function getProjects() {
-        const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
-        setProjects(data);
-     
-        let projectsEditActiveLength = projectbeingEditedActive.length;
-        for(let i= 0; i< projectsEditActiveLength; i++){
-          projectbeingEditedActive.pop();
-        }
-
-
-        let index = 0;
-        data.forEach(project => {
-          
-          if(project.isActive){
-            
-            if (index == editIndex){
-                projectbeingEditedActive.push(true);
-            } else {
-                projectbeingEditedActive.push(false);
-            }
-            index++;       
-
-          }
-        })
-
-    }
-     
     const appElement: HTMLElement | null = document.getElementById('outerDiv');
     if (appElement) {
       Modal.setAppElement(appElement);
@@ -108,6 +91,8 @@ export default function projectPage() {
     });
 
     getProjects();
+    console.log("Before Lort",projects)
+    createLort();
     if (trigger) setTrigger(false);
   }, [trigger]);
 
@@ -117,7 +102,9 @@ export default function projectPage() {
     //console.log(newProject);
 
     let updatedProjects = projects;
-    updatedProjects.unshift(newProject.getProject() as ProjectInterface);
+    console.log(updatedProjects)
+    updatedProjects.unshift(newProject.project);
+    console.log(updatedProjects)
     //console.log(projects);
     await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user));
 
@@ -142,7 +129,32 @@ export default function projectPage() {
     
   }
 
+  function createLort() {
+
+    let arrayObjects: ProjectObject[];
+    console.log(projects);
+    
+    projects.map(project => {
+      
+      console.log("The project ", project.project);
+      const EditHandler = new ProjectObject(project);
+      console.log("New Object with edit field noget : ", EditHandler);
+      arrayObjects.push(EditHandler);
+      
+    });
+
+    //console.log(arrayObjects);
+
+    //setProjectsO(arrayObjects);
   
+
+    
+   console.log("hej");
+
+  }
+
+  
+  /*
   function editProject(title : String){
     
     
@@ -154,7 +166,7 @@ export default function projectPage() {
     setEdit(false);
     setEditIndex(-1);
     setTrigger(true);  
-  }
+  }*/
 
 
   return (
@@ -213,7 +225,7 @@ export default function projectPage() {
           </Modal>
 
           <ul key="ul1" 
-            className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+            className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row max-w-screen-2xl mx-auto"
             role="tablist"
           >
             <li key="activeTab" className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -260,12 +272,14 @@ export default function projectPage() {
           
 
 
-          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+          <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
-                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"}  id="link1">
+                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
                   
-                  <div id="newProjectDiv" className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
+                  <div 
+                    id="newProjectDiv" 
+                    className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
                       <h3>Create New</h3>
                       <button className={"text-5xl text-align-center hover:scale-125"}
                       onClick={ e => {
@@ -276,7 +290,9 @@ export default function projectPage() {
                       >+</button>
                   </div>
 
-                  <div id="createProjectDiv" className={(creatingProject ? "block " : "hidden ") + "shadow-xl h-30 w-30 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400"}>
+                  <div 
+                  id="createProjectDiv" 
+                  className={(creatingProject ? "block " : "hidden ") + "grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400"}>
 
                     <form onSubmit={handleSubmit} className="mt-6">
                       <div 
@@ -289,7 +305,7 @@ export default function projectPage() {
                             name="titleInput"
                             onChange={(e) => newProject.setTitle(e.target.value)}
                             onSubmit={(e) => e.currentTarget.value=""}
-                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                            className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                       </div>
                       
@@ -327,49 +343,60 @@ export default function projectPage() {
 
                   </div>
 
+
+                  
+                  
+                  
+                  
                   {projects.map((project, i) => 
                   
                     project.isActive ? (
 
                       <div key={"DivActive" + project.title + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
-                        <form key={"Form" + project.title + i} onSubmit={(e) => {e.preventDefault(); editProject(project.title);}}>
-                          { (edit && projectbeingEditedActive[i]) ? (
+                        <form key={"Form" + project.title + i} onSubmit={(e) => {e.preventDefault(); }}>
+                          
+                          
+                          
+                          
+                          { (false) ? (
                             <input
                             type="text" 
                             key={"inputField" + i}
-                            value={editTitle as string}
-                            onChange={(e) => setEditTitle(e.target.value)}
+                            
                             name="title"
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                             
                           ) : (
-                            <p key={"TitleActive" + project.title + i}>{project.title}</p>
+                            <p 
+                            key={"TitleActive" + project.title + i}
+                            className="text-center pb-4">{project.title}</p>
                           ) }
                           
                           
-                          <img key={"Icon" + project.icon + i} src={`${URLIconsPath}/${project.icon}`} width={50} height={50} className="m-4"/>
+                          <img 
+                            key={"Icon" + project.icon + i} 
+                            src={`${URLIconsPath}/${project.icon}`} 
+                            width={50} 
+                            height={50} 
+                            className="mt-4 mx-auto block"/>
                           
-                          <div key={"buttonsDiv" + i}>
-                            <br/>
-                            <img className="w-4 h-6 float-left hover:scale-125" src="icons/trash.png"
+                          <div 
+                            key={"buttonsDiv" + i}
+                            className="flex justify-between items-center ">
+                            <img className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
                             onClick={ e => {
                               
                               deleteProject(project.title);
         
                             }}>
                             </img>
-                            <img className="w-4 h-6 float-right hover:scale-125" src="icons/edit.png"
+                            <img className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src="icons/edit.png"
                             onClick={ e => {
-                              if(!edit){
+                              
                                 e.preventDefault();
-                                setEdit(true);
-                                setEditTitle(project.title);
-                                setEditIndex(i);
                                 setTrigger(true);
-                              }
-
-                              //editProject(name);
+                      
         
                             }}>
                             </img>

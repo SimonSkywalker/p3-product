@@ -19,3 +19,6 @@ export interface ProjectInterface {
     icon: String;
 }
 
+export interface projectObject extends ProjectInterface {
+    beingEdited: boolean;
+  }
