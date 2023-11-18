@@ -1,0 +1,23 @@
+[
+	{
+		"_name": "Sinas form",
+		"_description": "Description",
+		"_questions": [
+			{
+				"_description": "Question",
+				"_mandatory": false,
+				"_userDisplay": false,
+				"_questionType": 0,
+				"_number": 1,
+				"_saveRole": false,
+				"_options": [
+					"Option 1",
+					"Option 2"
+				],
+				"_choiceType": 0
+			}
+		],
+		"_tokens": [],
+		"_isActive": true
+	}
+]

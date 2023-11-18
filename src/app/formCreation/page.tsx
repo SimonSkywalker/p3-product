@@ -121,7 +121,7 @@ class FormCreator{
 
 export default function Home() {
   const [questions, setQuestions] = useState(currForm.questions);
-  const [active, setActive] = useState(currForm)
+  const [active, setActive] = useState(currForm.isActive)
   const [count, setCount] = useState(0);
   const [validationErrors, setValidationErrors] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -132,7 +132,7 @@ export default function Home() {
     setCount(count + 1);
   }
 
-  return (
+  return ( active ? (
     <main>
       <h1>New form</h1>
       <Input
@@ -214,16 +214,24 @@ export default function Home() {
           }}/>
           <Button onClick={() => {
             console.dir(tokenBuilder);
+            currForm.tokens = tokenBuilder.getTokens();
+            currForm.isActive = false;
+            setActive(false);
             setTokens(tokenBuilder.getTokens());
           }}>Publish form</Button>
-
           <Button>Save without publishing</Button>
           <Button onClick={() => {
               setModalOpen(false);
           }}>Fuck go back</Button>
-          {tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+token.tokenID}</li>})}
+          {tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+currForm.name+"/"+token.tokenID}</li>})}
         </ModalContent>
       </Modal>
-    </main>
+    </main>)
+    :
+    (
+      <main>
+      {tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+currForm.name+"/"+token.tokenID}</li>})}
+      </main>
+    )
   )
 }

@@ -13,6 +13,14 @@ export default class Form {
     private _tokens: Array<Token>;
     private _isActive: boolean;
 
+    public set isActive(value: boolean) {
+        this._isActive = value;
+    }
+
+    public get isActive(): boolean {
+        return this._isActive;
+    }
+
     //Get and set functions for the fields.
     public get name(): String {
         return this._name;
