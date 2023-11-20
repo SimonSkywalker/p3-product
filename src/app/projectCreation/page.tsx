@@ -34,6 +34,7 @@ import ServerSidePaths from '../components/ServerSidePaths';
 import {Project, ProjectObject} from '../components/projectClass';
 import {ProjectInterface, projectObject} from '../interfaces/interfaces';
 import { log } from "console";
+import { set } from "zod";
 
 
 const customStyles = {
@@ -52,132 +53,121 @@ const customStyles = {
 
 
 
-export default function projectPage() {
-
+export default function ProjectPage() {
   const [trigger, setTrigger] = useState(true);
-  
   const [openTab, setOpenTab] = useState<number>(1);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [icons, setIcons] = useState<string[]>([]);
-  const [projects, setProjects] = useState<ProjectObject[]>([]);
-  
-  
-  const [projectsO, setProjectsO] = useState<ProjectObject[]>([]);
-
-  const [projectO, setProjectO] = useState<ProjectObject>();
-  
-  //const [projectbeingEditedActive, setProjectEdited] = useState<boolean[]>([]);
-
-  const [user, setUser] = useState<string>("Mka16");
-  const URLIconsPath = ServerSidePaths.getURLIconsPath();
+  const [projects, setProjects] = useState<ProjectObject[]>([]); 
   const [newProject, setNewProject] = useState<Project>(new Project);
-  //const [edit, setEdit] = useState<boolean>(false);
-  //const [editIndex, setEditIndex] = useState<number>(-1);
-  //const [editTitle, setEditTitle] = useState<String>("");
+  
+  console.log(newProject);
+  //let CreatedProject: ProjectObject = new ProjectObject(newProject.getproject());
 
 
+  //Todo - Get username from cookie
+  const user = "Mka16"
+  const URLIconsPath = ServerSidePaths.getURLIconsPath();
+
+ 
+ 
+  
+
+  console.log("test");
 
   async function getProjects() {
-    console.log("Getting Projects from File");
+    
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
     const projectsWithBeingEdited: ProjectObject[] = data.map((projectData) => {return new ProjectObject(projectData)});
     setProjects(projectsWithBeingEdited)
-    console.log("Done Getting Projects from File");
   }
 
   useEffect(() => {
-      console.log("UseEffect Started");
-      const appElement: HTMLElement | null = document.getElementById('outerDiv');
-      if (appElement) {
-        Modal.setAppElement(appElement);
-      }
-  
-      FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
-          setIcons(iconFiles);
-      });
 
+    const appElement: HTMLElement | null = document.getElementById('outerDiv');
+    if (appElement) {
+      Modal.setAppElement(appElement);
+    }
+
+    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
+      setIcons(iconFiles);
+    });
+
+    getProjects();
+  }, []);
+
+
+  useEffect(() => {
+    console.log("nicolaj er det sjivt");
       const edit = projects.filter(project => project.getBeingEdited() === true);
-      console.log("Project being editing now: ", edit);
-      getProjects();
-      console.log("After GetProjects Call");
+
   }, [trigger]);
 
-  
-  async function handleSubmit(){
 
+  
+ /*  async function handleSubmit(){
+
+    
+
+    //console.log(nProject);
+    console.log(newProject);
+    //projects.unshift(newProject);
     console.log("Projects in handleSubmit: ", projects);
     const updatedProjects = projects.map((projectsData => {return projectsData.getproject()}));
     
-    console.log("Projects getting written in handleSubmit Projects:", projects);
+    console.log("Projects getting written in handleSubmit Projects:", updatedProjects);
     await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
+    
+  } */
+
+  async function handleSubmit(){
+
+
+    newProject?.setIsActive(true);
+   
+
+    setNewProject(newProject);
+    console.log(newProject);
+    
+    
+     
+    
+
   }
 
-  async function handleChange(project: ProjectObject){
+  async function handleCreation(project: ProjectObject){
 
-    //console.log(newProject);
+    /*
+    let x: boolean = false;
+    projects.map(project => project.getTitle() === newProject.getTitle() ? x = true : x = false);
+
+    if (x === true){
+      console.log("kæmpe fejl");
+    } else {
+      console.log("ej det fint, videre");
+    }
+    */
+
+
     const updatedProjects = projects.map((projectsData => {return projectsData.getproject()}));
     project.setBeingEdited(false)
     await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
-    const initialValue: ProjectObject = new ProjectObject(project.getproject());
-    setProjectO(initialValue);
   }
 
-  /* function deleteProject(title: String){
-
-    console.log("Title to delete:", title);
-    console.log("Before deletion:", projects);
-
-    let updatedProjects = projects.filter(project => project.title !== title);
-
-    console.log("After deletion:", updatedProjects);
-    
-    FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user));
-
-    setTrigger(true);
-    
-  } */
-
-  /* function createLort() {
-
-    let arrayObjects: ProjectObject[];
-    console.log(projects);
-    
-    projects.map(project => {
-      
-      console.log("The project ", project.project);
-      const EditHandler = new ProjectObject(project);
-      console.log("New Object with edit field noget : ", EditHandler);
-      arrayObjects.push(EditHandler);
-      
-    });
-
-    //console.log(arrayObjects);
-
-    //setProjectsO(arrayObjects);
   
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    const { name, value } = e.target;
+    setNewProject((prevProject) => ({
+      ...prevProject,
+      [name]: [value],
+    }) as Project);
+    console.log("After Change: ", newProject);
     
-   console.log("hej");
+    
 
-  } */
-
+  }  
   
-  /*
-  function editProject(title : String){
-    
-    
-    let updatedProjects = projects.map((project) => (project.title === title ? { ...project, title: editTitle } : project));
-  
-     
-    FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user));
-
-    setEdit(false);
-    setEditIndex(-1);
-    setTrigger(true);  
-  }*/
-
-
   return (
     <>
       <div className="flex flex-wrap">
@@ -203,7 +193,7 @@ export default function projectPage() {
 
                   <div key={icon + "Div"}>
                     <label>
-                      <input onChange={(e) => newProject.setIcon(e.target.value)} id={icon + "Select"} type="radio" name="icon" value={icon}></input>
+                      <input type="radio" onChange={handleChange} name="icon" value={icon} className="hidden"></input>
                       <img src={`${URLIconsPath}/${icon}`} alt={icon} width={50} height={50} className="hover:scale-125"/>
                     </label>
                   </div>
@@ -311,9 +301,8 @@ export default function projectPage() {
                             id="projectname" 
                             placeholder="Project Name" 
                             autoComplete="Project Name" 
-                            name="titleInput"
-                            onChange={(e) => newProject.setTitle(e.target.value)}
-                            onSubmit={(e) => e.currentTarget.value=""}
+                            name="title"
+                            onChange={handleChange}
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                       </div>
@@ -362,7 +351,7 @@ export default function projectPage() {
                     project.getIsActive() ? (
 
                       <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
-                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) => {e.preventDefault(); handleChange(project); }}>
+                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) => {e.preventDefault(); setNewProject(newProject); }}>
                           
                           
                           
@@ -372,8 +361,7 @@ export default function projectPage() {
                             type="text" 
                             key={"inputField" + i}
                             onChange={(e)=>{
-                            projectO?.setTitle(e.target.value)
-                            console.log(projectO);
+                            project?.setTitle(e.target.value)
                             }}
                             name="title"
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -394,12 +382,13 @@ export default function projectPage() {
                             className="mt-4 mx-auto block"/>
                           
                           <div 
+                            
                             key={"buttonsDiv" + i}
                             className="flex justify-between items-center ">
                             <img className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
                             onClick={ e => {
                               console.log(project.getTitle())
-                              //deleteProject(project.getTitle());
+                              
         
                             }}>
                             </img>
@@ -407,10 +396,10 @@ export default function projectPage() {
                             onClick={ e => {
                                 
                                 
-                                console.log(project.getBeingEdited());
+                                
                                 project.setBeingEdited(true);
-                                console.log(project.getBeingEdited());
-                                setProjectO(project)
+                                
+                                setTrigger(!trigger)
                                 
                             }}>
                             </img>
@@ -450,7 +439,7 @@ export default function projectPage() {
                         <img className="w-4 h-6 float-left hover:scale-125" src="icons/trash.png"
                         onClick={ e => {
                           e.preventDefault();
-                          setCreating(false);
+                          
     
                         }}>
                         </img>

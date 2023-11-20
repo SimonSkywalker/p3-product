@@ -9,13 +9,12 @@ export class Project {
         icon: '',
     }
 
-    constructor() {
+    public constructor() {
         this._projectdata.title = '';
         this._projectdata.isActive = true;
-        this._projectdata.icon = '';
-        
+        this._projectdata.icon = '';   
     }
-
+    
     public setTitle(title: string){
         this._projectdata.title = title;
     }
@@ -37,7 +36,7 @@ export class Project {
     }
 
     public getIsActive(){
-        console.log("Render: ",this._projectdata)
+
         return this._projectdata.isActive;
     }
 
