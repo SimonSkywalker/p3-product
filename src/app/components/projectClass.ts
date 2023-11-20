@@ -24,6 +24,10 @@ export class Project {
         this._projectdata.icon = icon;
     }
 
+    public setIsActive(isActive: boolean){
+        this._projectdata.isActive = isActive;
+    }
+
     public getTitle(){
         return this._projectdata.title;
     }
@@ -33,46 +37,39 @@ export class Project {
     }
 
     public getIsActive(){
+        console.log("Render: ",this._projectdata)
         return this._projectdata.isActive;
     }
 
-    public get project(){
+    public getproject(){
         return this._projectdata;
     }
     
-    public set project(value: ProjectInterface) {
+    public setproject(value: ProjectInterface) {
         this._projectdata = value;
     }
 }
 
 export class ProjectObject extends Project {
 
-    constructor(objectA: ProjectInterface) {
+    
+    private _beingEdited: boolean;
 
+    constructor(objectA: ProjectInterface) {
         super();
         this._projectdata.title = objectA.title;
         this._projectdata.isActive = objectA.isActive;
         this._projectdata.icon = objectA.icon;
-        
-    }
-
-     _projectdata: projectObject = {
-        ...this._projectdata,
-        beingEdited: false,
-        
+        this._beingEdited = false;    
     };
 
-    
-
-    public get projectO(): projectObject {
-        return this._projectdata;
+    public getBeingEdited() {
+        return this._beingEdited;
     }
-    
-    public set projectO(value: projectObject) {
-        this._projectdata = value;
-    }
-        
 
+    public setBeingEdited(beingEdited: boolean) {
+        this._beingEdited = beingEdited;
+    }
   
 }
 

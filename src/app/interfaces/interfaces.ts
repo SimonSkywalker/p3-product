@@ -14,9 +14,9 @@ interface Nameable {
 }
 
 export interface ProjectInterface {
-    title: String;
-    isActive: Boolean;
-    icon: String;
+    title: string;
+    isActive: boolean;
+    icon: string;
 }
 
 export interface projectObject extends ProjectInterface {

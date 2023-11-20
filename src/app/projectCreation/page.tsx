@@ -33,6 +33,7 @@ import FileSystemService from '../components/FileSystemService';
 import ServerSidePaths from '../components/ServerSidePaths';
 import {Project, ProjectObject} from '../components/projectClass';
 import {ProjectInterface, projectObject} from '../interfaces/interfaces';
+import { log } from "console";
 
 
 const customStyles = {
@@ -53,15 +54,17 @@ const customStyles = {
 
 export default function projectPage() {
 
-  const [trigger, setTrigger] = useState(false);
+  const [trigger, setTrigger] = useState(true);
+  
   const [openTab, setOpenTab] = useState<number>(1);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [icons, setIcons] = useState<string[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ProjectObject[]>([]);
   
   
   const [projectsO, setProjectsO] = useState<ProjectObject[]>([]);
+
   const [projectO, setProjectO] = useState<ProjectObject>();
   
   //const [projectbeingEditedActive, setProjectEdited] = useState<boolean[]>([]);
@@ -72,49 +75,55 @@ export default function projectPage() {
   //const [edit, setEdit] = useState<boolean>(false);
   //const [editIndex, setEditIndex] = useState<number>(-1);
   //const [editTitle, setEditTitle] = useState<String>("");
-  
+
+
+
   async function getProjects() {
+    console.log("Getting Projects from File");
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
-    
-    setProjects(data);
-    console.log(projects[0]);
+    const projectsWithBeingEdited: ProjectObject[] = data.map((projectData) => {return new ProjectObject(projectData)});
+    setProjects(projectsWithBeingEdited)
+    console.log("Done Getting Projects from File");
   }
 
   useEffect(() => {
-    const appElement: HTMLElement | null = document.getElementById('outerDiv');
-    if (appElement) {
-      Modal.setAppElement(appElement);
-    }
+      console.log("UseEffect Started");
+      const appElement: HTMLElement | null = document.getElementById('outerDiv');
+      if (appElement) {
+        Modal.setAppElement(appElement);
+      }
+  
+      FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
+          setIcons(iconFiles);
+      });
 
-    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
-        setIcons(iconFiles);
-    });
-
-    getProjects();
-    console.log("Before Lort",projects)
-    createLort();
-    if (trigger) setTrigger(false);
+      const edit = projects.filter(project => project.getBeingEdited() === true);
+      console.log("Project being editing now: ", edit);
+      getProjects();
+      console.log("After GetProjects Call");
   }, [trigger]);
 
-
+  
   async function handleSubmit(){
 
-    //console.log(newProject);
-
-    let updatedProjects = projects;
-    console.log(updatedProjects)
-    updatedProjects.unshift(newProject.project);
-    console.log(updatedProjects)
-    //console.log(projects);
-    await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user));
-
-    setCreating(false);
-    setTrigger(true);
-
+    console.log("Projects in handleSubmit: ", projects);
+    const updatedProjects = projects.map((projectsData => {return projectsData.getproject()}));
     
+    console.log("Projects getting written in handleSubmit Projects:", projects);
+    await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
   }
 
-  function deleteProject(title: String){
+  async function handleChange(project: ProjectObject){
+
+    //console.log(newProject);
+    const updatedProjects = projects.map((projectsData => {return projectsData.getproject()}));
+    project.setBeingEdited(false)
+    await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
+    const initialValue: ProjectObject = new ProjectObject(project.getproject());
+    setProjectO(initialValue);
+  }
+
+  /* function deleteProject(title: String){
 
     console.log("Title to delete:", title);
     console.log("Before deletion:", projects);
@@ -127,9 +136,9 @@ export default function projectPage() {
 
     setTrigger(true);
     
-  }
+  } */
 
-  function createLort() {
+  /* function createLort() {
 
     let arrayObjects: ProjectObject[];
     console.log(projects);
@@ -151,7 +160,7 @@ export default function projectPage() {
     
    console.log("hej");
 
-  }
+  } */
 
   
   /*
@@ -294,7 +303,7 @@ export default function projectPage() {
                   id="createProjectDiv" 
                   className={(creatingProject ? "block " : "hidden ") + "grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400"}>
 
-                    <form onSubmit={handleSubmit} className="mt-6">
+                    <form className="mt-6">
                       <div 
                         className="mb-4">
                           <input
@@ -350,33 +359,36 @@ export default function projectPage() {
                   
                   {projects.map((project, i) => 
                   
-                    project.isActive ? (
+                    project.getIsActive() ? (
 
-                      <div key={"DivActive" + project.title + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
-                        <form key={"Form" + project.title + i} onSubmit={(e) => {e.preventDefault(); }}>
+                      <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
+                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) => {e.preventDefault(); handleChange(project); }}>
                           
                           
                           
                           
-                          { (false) ? (
+                          { (project.getBeingEdited()) ? (
                             <input
                             type="text" 
                             key={"inputField" + i}
-                            
+                            onChange={(e)=>{
+                            projectO?.setTitle(e.target.value)
+                            console.log(projectO);
+                            }}
                             name="title"
                             className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                             
                           ) : (
                             <p 
-                            key={"TitleActive" + project.title + i}
-                            className="text-center pb-4">{project.title}</p>
+                            key={"TitleActive" + project.getTitle() + i}
+                            className="text-center pb-4">{project.getTitle()}</p>
                           ) }
                           
                           
                           <img 
-                            key={"Icon" + project.icon + i} 
-                            src={`${URLIconsPath}/${project.icon}`} 
+                            key={"Icon" + project.getIcon() + i} 
+                            src={`${URLIconsPath}/${project.getIcon()}`} 
                             width={50} 
                             height={50} 
                             className="mt-4 mx-auto block"/>
@@ -386,18 +398,20 @@ export default function projectPage() {
                             className="flex justify-between items-center ">
                             <img className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
                             onClick={ e => {
-                              
-                              deleteProject(project.title);
+                              console.log(project.getTitle())
+                              //deleteProject(project.getTitle());
         
                             }}>
                             </img>
                             <img className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src="icons/edit.png"
                             onClick={ e => {
-                              
-                                e.preventDefault();
-                                setTrigger(true);
-                      
-        
+                                
+                                
+                                console.log(project.getBeingEdited());
+                                project.setBeingEdited(true);
+                                console.log(project.getBeingEdited());
+                                setProjectO(project)
+                                
                             }}>
                             </img>
 
@@ -407,7 +421,7 @@ export default function projectPage() {
 
                       ) : (
 
-                        <p key={project.title + "" + i} className="hidden"/>
+                        <p key={project.getTitle() + "" + i} className="hidden"/>
 
                       )
                   
@@ -420,16 +434,16 @@ export default function projectPage() {
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"} id="link2">
                   
                   {projects.map((project, i) => 
+                    
+                    project.getIsActive() ? (
 
-                    project.isActive ? (
-
-                      <p key={project.title + "" + i} className="hidden"/>
+                      <p key={project.getTitle() + "" + i} className="hidden"/>
 
                     ) : (
 
-                      <div key={"DivHistory" + project.title + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
-                      <p key={"ProjectHistory" + project.title + i}>{project.title}</p><br/>
-                      <img src={`${URLIconsPath}/${project.icon}`} width={50} height={50} className=""/>
+                      <div key={"DivHistory" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
+                      <p key={"ProjectHistory" + project.getTitle() + i}>{project.getTitle()}</p><br/>
+                      <img src={`${URLIconsPath}/${project.getIcon()}`} width={50} height={50} className=""/>
                       
                       <div>
                         <br/>
