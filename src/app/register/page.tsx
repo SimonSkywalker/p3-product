@@ -7,7 +7,6 @@ import { RegisterException } from '../exceptions/RegisterException';
 import {APIHandle, ErrorCheck, RegistrationHandler} from '../classes/handlerClass';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fork } from 'child_process';
 
 /**
  * This page component renders a Registration form for users and
@@ -16,7 +15,7 @@ import { fork } from 'child_process';
  * @returns The Markup of the Website incl. The Form for registration, various input fields
  */
 export default function RegisterPage() {
-  const router = useRouter();
+  //const router = useRouter();
   //Creating the object to handle the data given from input
   const registrationHandler = new RegistrationHandler();
 
@@ -62,7 +61,7 @@ export default function RegisterPage() {
       .then(()=>{
         //routes to login page if input if data is validated without problem
         toast.success('Registered '+formData.username)
-        router.push('/login')})
+        /* router.push('/login') */})
       .catch((err)=>{
         if (err instanceof RegisterException) {
           

@@ -12,6 +12,8 @@ export class User{
     private _password: string;
     
     private _displayName: string;
+
+       
     /**
      * constructor to define classes values
      * @param username Username given from input
@@ -122,7 +124,7 @@ class dataManipulation{
      * @param list of users that is to be save to the database
      */
     public static saveListData(list: typeof userList){
-        fs.writeFile(process.cwd() +'/src/app/database/userLogins.json', JSON.stringify(list, null, 4));
+        fs.writeFile(process.cwd() +'/src/app/(database)/userLogins.json', JSON.stringify(list, null, 4));
     }
 
     /**
@@ -130,7 +132,7 @@ class dataManipulation{
      * @param user to be made a folder for
      */
     public static makeUserFolder(user: string){
-        fs.mkdir(process.cwd() +'/src/app/database/'+user);
+        fs.mkdir(process.cwd() +'/src/app/(database)/'+user);
         
     }
 }
