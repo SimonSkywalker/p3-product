@@ -257,7 +257,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       </span>
       </p>
       <div className="slider mt-4 mb-4 mx-auto ">
-        { /* // New Slider
+        { // New Slider
         <Slider
           onChange={(value) => {
             handleSliderChange(value);
@@ -278,8 +278,8 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
             }
           }}
         />
-        */ }
-        { // Change For Jest
+        }
+        {/* // Change For Jest
         <input
           onChange={(e) => {
             handleSliderChange(Number(e.target.value));
@@ -292,7 +292,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
           max={(jsonData.range)}
           step={1}
         />
-        }
+        */}
       </div>
       {/*
         <p>DEBUG: Selected value: {sliderValue}</p>

@@ -68,7 +68,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
         {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
       </h3>
       <div className="w-full px-1 mb-10 mt-5">
-        {/*
+        { // New Slider
         <Slider
           onChange={(value) => {
             handleSliderChange(value);
@@ -91,8 +91,8 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
             }
           }}
         />
-        */}
-        { // Change For Jest
+        }
+        {/* // Change For Jest
         <input
           onChange={(e) => {
             handleSliderChange(Number(e.target.value));
@@ -105,7 +105,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           max={(jsonData.range)}
           step={1}
         />
-        }
+        */ }
       </div>
       {/*
         <p className="mt-5">DEBUG: Selected value: {sliderValue}</p>
