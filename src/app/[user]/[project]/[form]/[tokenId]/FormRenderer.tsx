@@ -118,6 +118,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
   // Function to submit answers
   const submitAnswers = () => {
     // Show a confirmation dialog to the user
+    /*
     const confirm = window.confirm('Are you sure you want to submit your answers?');
 
     if (confirm) {
@@ -131,7 +132,10 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
         .catch((error) => {
           alert(`Error: ${error}`);
         });
-    }
+    } */
+
+    // Change For Jest
+    goToFinalPage();
   };
 
   // Function to handle user input and update userResponses

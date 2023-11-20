@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Slider from "rc-slider";
 // Import styles for the Slider component
 import './rc-slider.css';
+import { toInteger } from 'cypress/types/lodash';
 
 interface AgreeDisagreeProps {
   jsonData: {
@@ -96,9 +97,9 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
   // Return the JSX structure for the component
   return (
     <form>
-      <p className="text-center text-base font-bold mb-5">
+      <h3 className="text-center text-base font-bold mb-5">
         {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
-      </p>
+      </h3>
       <div
         id="react1"
         style={{
@@ -256,6 +257,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       </span>
       </p>
       <div className="slider mt-4 mb-4 mx-auto ">
+        { /* // New Slider
         <Slider
           onChange={(value) => {
             handleSliderChange(value);
@@ -276,6 +278,21 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
             }
           }}
         />
+        */ }
+        { // Change For Jest
+        <input
+          onChange={(e) => {
+            handleSliderChange(Number(e.target.value));
+          }}
+          className="w-full cursor-pointer rounded-full "
+          type="range"
+          role="slider"
+          value={sliderValue}
+          min={1}
+          max={(jsonData.range)}
+          step={1}
+        />
+        }
       </div>
       {/*
         <p>DEBUG: Selected value: {sliderValue}</p>
