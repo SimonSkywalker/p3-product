@@ -20,5 +20,5 @@ export interface ProjectInterface {
 }
 
 export interface projectObject extends ProjectInterface {
-    beingEdited: boolean;
+    beingEdited?: boolean;
   }

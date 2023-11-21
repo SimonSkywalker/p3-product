@@ -60,7 +60,7 @@ export default function ProjectPage() {
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [icons, setIcons] = useState<string[]>([]);
   const [projects, setProjects] = useState<ProjectObject[]>([]); 
-  const [newProject, setNewProject] = useState<Project>(new Project);
+  const [newProject, setNewProject] = useState<Project>(new Project());
   
   console.log(newProject);
   //let CreatedProject: ProjectObject = new ProjectObject(newProject.getproject());
@@ -122,15 +122,25 @@ export default function ProjectPage() {
   } */
 
   async function handleSubmit(){
+    
+    const projectObject: ProjectObject = newProject.convertToProjectObject();
+    projects.unshift(projectObject);
+    const data = projects.map((project) => project.getProjectDataArray()); 
+    
+    const transformedData = data.map(([title, isActive, icon]) => ({
+      title,
+      isActive,
+      icon,
+  }));
 
+ 
 
-    newProject?.setIsActive(true);
+  await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
+    
    
-
-    setNewProject(newProject);
-    console.log(newProject);
     
-    
+    setCreating(false);
+    setTrigger(true);
      
     
 
@@ -154,20 +164,6 @@ export default function ProjectPage() {
     project.setBeingEdited(false)
     await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
   }
-
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
-    const { name, value } = e.target;
-    setNewProject((prevProject) => ({
-      ...prevProject,
-      [name]: [value],
-    }) as Project);
-    console.log("After Change: ", newProject);
-    
-    
-
-  }  
-  
   return (
     <>
       <div className="flex flex-wrap">
@@ -193,7 +189,7 @@ export default function ProjectPage() {
 
                   <div key={icon + "Div"}>
                     <label>
-                      <input type="radio" onChange={handleChange} name="icon" value={icon} className="hidden"></input>
+                      <input type="radio" onChange={(e) => newProject.setIcon(e.target.value)} name="icon" value={icon} className="hidden"></input>
                       <img src={`${URLIconsPath}/${icon}`} alt={icon} width={50} height={50} className="hover:scale-125"/>
                     </label>
                   </div>
@@ -302,7 +298,8 @@ export default function ProjectPage() {
                             placeholder="Project Name" 
                             autoComplete="Project Name" 
                             name="title"
-                            onChange={handleChange}
+                            onChange={(e) => newProject.setTitle(e.target.value)}
+                            onSubmit={(e) => e.currentTarget.value=""}
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                       </div>
@@ -351,7 +348,7 @@ export default function ProjectPage() {
                     project.getIsActive() ? (
 
                       <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
-                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) => {e.preventDefault(); setNewProject(newProject); }}>
+                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) => {e.preventDefault(); }}>
                           
                           
                           

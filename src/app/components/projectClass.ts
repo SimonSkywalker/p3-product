@@ -10,9 +10,6 @@ export class Project {
     }
 
     public constructor() {
-        this._projectdata.title = '';
-        this._projectdata.isActive = true;
-        this._projectdata.icon = '';   
     }
     
     public setTitle(title: string){
@@ -47,6 +44,12 @@ export class Project {
     public setproject(value: ProjectInterface) {
         this._projectdata = value;
     }
+
+    public convertToProjectObject(): ProjectObject {
+        const projectObject = new ProjectObject(this._projectdata);
+        // Additional setup or customization for ProjectObject if needed
+        return projectObject;
+    }
 }
 
 export class ProjectObject extends Project {
@@ -70,6 +73,11 @@ export class ProjectObject extends Project {
         this._beingEdited = beingEdited;
     }
   
+    public getProjectDataArray(): [string, boolean, string] {
+        const { title, isActive, icon } = this._projectdata;
+        return [title, isActive, icon];
+    }
+
 }
 
 
