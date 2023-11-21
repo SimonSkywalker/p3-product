@@ -1,6 +1,6 @@
 "use client"
 // page.tsx
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import React, { useState, useEffect } from 'react';
 import FormRenderer from './FormRenderer';
 import { generateMetadata } from './metadata';
@@ -40,11 +40,12 @@ export default function FormPage({ params } : FormPageParams) {
   const loadUserProjectData = async () => {
     try {
       // Dynamic import of the projects JSON file based on the project name
-      //const dataModule = await import(`@/app/database/${params.user}/projects.json`);
-      const dataModule = await import(`../../../../database/${params.user}/projects.json`); // For Jest
+      const dataModule = await import(`@/app/database/${params.user}/projects.json`);
+      // Change For Jest
+      //const dataModule = await import(`../../../../database/${params.user}/projects.json`);
       return dataModule.default;
     } catch (error) {
-      console.log(params.user)
+      // Errors should, in theory, not be displayed to the user
       console.error("Error loading projects JSON data:", error);
       return null;
     }
@@ -53,10 +54,12 @@ export default function FormPage({ params } : FormPageParams) {
   const loadUserFormData = async () => {
     try {
       // Dynamic import of the forms JSON file based on the user and project names
-      //const dataModule = await import(`@/app/database/${params.user}/${params.project}/forms.json`);
-      const dataModule = await import(`../../../../database/${params.user}/${params.project}/forms.json`); // For Jest
+      const dataModule = await import(`@/app/database/${params.user}/${params.project}/forms.json`);
+      // Change For Jest
+      //const dataModule = await import(`../../../../database/${params.user}/${params.project}/forms.json`); // For Jest
       return dataModule.default;
     } catch (error) {
+      // Errors should, in theory, not be displayed to the user
       console.error("Error loading forms JSON data:", error);
       return null;
     }
@@ -103,7 +106,10 @@ export default function FormPage({ params } : FormPageParams) {
           </div>
         );
       } catch (error) {
+        // Errors should, in theory, not be displayed to the user
         console.error('Error rendering page:', error);
+
+        notFound();
         return null;
       }
     };
@@ -117,7 +123,7 @@ export default function FormPage({ params } : FormPageParams) {
   useEffect(() => {
     const setMetadata = async () => {
       const metadata = await generateMetadata({ params });
-      document.title = metadata.title?.toString() || '';
+      document.title = metadata.title?.toString() || 'Project management survey tool (working title)';
     };
 
     setMetadata();

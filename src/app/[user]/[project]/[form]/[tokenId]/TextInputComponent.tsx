@@ -1,6 +1,6 @@
 "use client"
 // TextInputComponent.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 interface TextInputProps {
   jsonData: {
@@ -38,10 +38,22 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
+    adjustHeight();
 
     // Send the response to the parent component
     onUserInput(newValue);
   };
+
+  const textbox = useRef<HTMLTextAreaElement | null>(null);
+
+  const adjustHeight = () => {
+    if (textbox.current) {
+      textbox.current.style.height = "inherit";
+      textbox.current.style.height = `${textbox.current.scrollHeight}px`;
+    }
+  }
+
+  useLayoutEffect(adjustHeight, []);
 
   // Return the JSX structure for the component
   return (
@@ -51,9 +63,11 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
       </h3>
       <div>
         <textarea
+          ref={textbox}
           className="min-h-[5.5rem] border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400"
           value={inputValue}
           onChange={handleInputChange}
+          placeholder="Enter your answer here."
         />
       </div>
       {/*

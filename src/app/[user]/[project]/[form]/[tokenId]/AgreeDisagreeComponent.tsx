@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Slider from "rc-slider";
 // Import styles for the Slider component
 import './rc-slider.css';
-import { toInteger } from 'cypress/types/lodash';
 
 interface AgreeDisagreeProps {
   jsonData: {

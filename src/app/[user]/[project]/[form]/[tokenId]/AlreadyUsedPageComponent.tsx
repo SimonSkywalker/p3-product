@@ -7,7 +7,9 @@ export default function AlreadyUsedPageComponent() {
   // Return the JSX structure for the component
   return (
     <>
-      <h1 className="text-center text-xl font-bold">This link has already submitted answers!</h1>
+      <h1 className="text-center text-xl font-bold">
+        This link has already submitted answers!
+      </h1>
       <br></br>
       <h3 className="text-center text-base">
         If you have not yet answered, you should contact your project leader for a new link.

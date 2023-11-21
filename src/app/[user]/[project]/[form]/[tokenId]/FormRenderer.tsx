@@ -57,19 +57,20 @@ interface UserResponse {
 
 export default function FormRenderer({ formObject, params } : FromRendererProps) {
   // State variables
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [userResponses, setUserResponses] = useState<UserResponse[]>([]);
-  const totalQuestions = formObject.questions.length;
-  const [isResponseProvided, setIsResponseProvided] = useState(false);
-  const [isSkippedResponse, setIsSkippedResponse] = useState(false);
+  const [isResponseProvided, setIsResponseProvided] = useState<boolean>(false);
+  const [isSkippedResponse, setIsSkippedResponse] = useState<boolean>(false);
 
   // Page state variables
-  const [isOnFirstPage, setIsOnFirstPage] = useState(true);
-  const [isOnSubmitPage, setIsOnSubmitPage] = useState(false);
-  const [isOnFinalPage, setIsOnFinalPage] = useState(false);
+  const [isOnFirstPage, setIsOnFirstPage] = useState<boolean>(true);
+  const [isOnSubmitPage, setIsOnSubmitPage] = useState<boolean>(false);
+  const [isOnFinalPage, setIsOnFinalPage] = useState<boolean>(false);
   const [isOnAlreadyUsedPage, setIsOnAlreadyUsedPage] = useState<boolean>(
     formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId))?.[params.tokenId]?.isUsed || false
   );
+
+  const totalQuestions = formObject.questions.length;
 
   // useEffect to check for changes in userResponses and update isResponseProvided and isSkippedResponse
   useEffect(() => {
