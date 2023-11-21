@@ -23,6 +23,18 @@ MERE TO DO
 - exceptions
 - test
 
+New To Do
+
+Reset Project Creation after creation Carmen
+Cancel Edit - Nicolaj
+Checks(same title) - Nicolaj
+  - ved create new
+  - ved edit project
+Default icon
+Merete - Change icon under create new when nyt er valgt
+Merete - Delete confirmation modal
+
+
 
 */
 
@@ -61,26 +73,19 @@ export default function ProjectPage() {
   const [icons, setIcons] = useState<string[]>([]);
   const [projects, setProjects] = useState<ProjectObject[]>([]); 
   const [newProject, setNewProject] = useState<Project>(new Project());
-  
-  console.log(newProject);
-  //let CreatedProject: ProjectObject = new ProjectObject(newProject.getproject());
-
 
   //Todo - Get username from cookie
   const user = "Mka16"
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
 
- 
- 
-  
-
-  console.log("test");
 
   async function getProjects() {
     
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
     const projectsWithBeingEdited: ProjectObject[] = data.map((projectData) => {return new ProjectObject(projectData)});
-    setProjects(projectsWithBeingEdited)
+    
+    setProjects(projectsWithBeingEdited);
+    console.log("first" + projects);
   }
 
   useEffect(() => {
@@ -99,8 +104,8 @@ export default function ProjectPage() {
 
 
   useEffect(() => {
-    console.log("nicolaj er det sjivt");
-      const edit = projects.filter(project => project.getBeingEdited() === true);
+    
+   // const edit = projects.filter(project => project.getBeingEdited() === true);
 
   }, [trigger]);
 
@@ -121,34 +126,50 @@ export default function ProjectPage() {
     
   } */
 
-  async function handleSubmit(){
+  
+  async function formattingProjectData() {
     
-    const projectObject: ProjectObject = newProject.convertToProjectObject();
-    projects.unshift(projectObject);
     const data = projects.map((project) => project.getProjectDataArray()); 
-    
+
     const transformedData = data.map(([title, isActive, icon]) => ({
       title,
       isActive,
       icon,
-  }));
+    }));
 
- 
+    await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
 
-  await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+
+    e.preventDefault();
     
+    const projectObject: ProjectObject = newProject.convertToProjectObject();
+    projects.unshift(projectObject);
    
-    
-    setCreating(false);
-    setTrigger(true);
-     
-    
+    formattingProjectData();
 
+    setCreating(false);
+    
+  } 
+
+  async function handleDelete(index: number){
+  
+    // Has to .splice since useState value doesnt change
+    // immediately but only schedules a change. 
+    projects.splice(index, 1);
+
+    await formattingProjectData();
+    
   }
 
   async function handleCreation(project: ProjectObject){
 
     /*
+
+    contains
+
     let x: boolean = false;
     projects.map(project => project.getTitle() === newProject.getTitle() ? x = true : x = false);
 
@@ -160,10 +181,11 @@ export default function ProjectPage() {
     */
 
 
-    const updatedProjects = projects.map((projectsData => {return projectsData.getproject()}));
+    const updatedProjects = projects.map((projectsData => {return projectsData.getProject()}));
     project.setBeingEdited(false)
     await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
   }
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -289,7 +311,7 @@ export default function ProjectPage() {
                   id="createProjectDiv" 
                   className={(creatingProject ? "block " : "hidden ") + "grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400"}>
 
-                    <form className="mt-6">
+                    <form className="mt-6" onSubmit={e => handleSubmit(e)}>
                       <div 
                         className="mb-4">
                           <input
@@ -299,7 +321,6 @@ export default function ProjectPage() {
                             autoComplete="Project Name" 
                             name="title"
                             onChange={(e) => newProject.setTitle(e.target.value)}
-                            onSubmit={(e) => e.currentTarget.value=""}
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                       </div>
@@ -326,11 +347,16 @@ export default function ProjectPage() {
                           setCreating(false);
                           
                         }}></img>
-                        <img 
-                        onClick={() => {
-                          handleSubmit();
-
-                        }} className="w-6 h-6 float-right hover:scale-125" src="icons/checkmark.png"></img>
+                        <button
+                          type="submit"
+                          className="p-0 m-0 float-right border-none bg-none cursor-pointer"
+                        >
+                          <img
+                            className="w-6 h-6 float-right hover:scale-125"
+                            src="icons/checkmark.png"
+                            alt="Submit"
+                          />
+                        </button>
                         
                       </div>
                       
@@ -354,16 +380,22 @@ export default function ProjectPage() {
                           
                           
                           { (project.getBeingEdited()) ? (
-                            <input
-                            type="text" 
-                            key={"inputField" + i}
-                            onChange={(e)=>{
-                            project?.setTitle(e.target.value)
-                            }}
-                            name="title"
-                            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                          />
-                            
+                            <div className="relative ">
+                              <input
+                              type="text" 
+                              key={"inputField" + i}
+                              onChange={(e)=>{
+                              project?.setTitle(e.target.value)
+                              }}
+                              name="title"
+                              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                              />
+                              <button 
+                                onClick={() => console.log("surt show")}
+                                className="absolute right-0 top-1/2 transform -translate-y-1/2 px-4 py-2 text-black rounded-md">
+                                X
+                              </button>
+                            </div>
                           ) : (
                             <p 
                             key={"TitleActive" + project.getTitle() + i}
@@ -384,6 +416,7 @@ export default function ProjectPage() {
                             className="flex justify-between items-center ">
                             <img className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
                             onClick={ e => {
+                              handleDelete(i);
                               console.log(project.getTitle())
                               
         

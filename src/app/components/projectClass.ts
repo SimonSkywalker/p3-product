@@ -37,11 +37,11 @@ export class Project {
         return this._projectdata.isActive;
     }
 
-    public getproject(){
+    public getProject(){
         return this._projectdata;
     }
     
-    public setproject(value: ProjectInterface) {
+    public setProject(value: ProjectInterface) {
         this._projectdata = value;
     }
 
