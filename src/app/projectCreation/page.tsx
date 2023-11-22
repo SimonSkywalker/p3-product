@@ -158,6 +158,22 @@ export default function ProjectPage() {
     
   } 
 
+  async function handleUploadIcon(e:React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+
+
+    const file = e.target.files[0];
+    
+    console.log("name " + file.name);
+    console.log("type " + file.type);
+    console.log("size " + file.size);
+
+    
+
+
+
+  }
+
   async function handleDelete(){
   
     // Has to .splice since useState value doesnt change
@@ -166,6 +182,10 @@ export default function ProjectPage() {
 
     await formattingProjectData();
     
+    setProjectToDelete({projectTitle:"", projectIndex: -1});
+
+    setDeleteIsOpen(false);
+
   }
 
   function isTitleUnique (title: string, creation: boolean) {
@@ -188,6 +208,8 @@ export default function ProjectPage() {
 
   }
 
+
+  
   return (
     <>
       <div className="flex flex-wrap">
