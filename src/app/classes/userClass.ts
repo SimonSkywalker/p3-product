@@ -1,9 +1,33 @@
 import userList from '@/app/(database)/userLogins.json'
-import {promises as fs} from "fs"
+import * as fs from "fs/promises";
 import { RegisterException } from '../exceptions/RegisterException';
 
+interface Question {
+    description: string;
+    mandatory: boolean;
+    userDisplay: boolean;
+    questionType: number;
+    saveRole: boolean;
+    options?: string[]; // options is an optional array of strings
+    type?: number;
+    range?: number;
+  }
+  
+  interface Token {
+    [key: string]: {
+      isUsed: boolean;
+    };
+  }
+  
+  interface FormObject {
+    name: string;
+    description: string;
+    questions: Question[];
+    tokens: Token[];
+  }
+
 /**
- * Class to make a User with a usename,password
+ * Class to make a User with a usename,password & 
  */
 export class User{
 
@@ -95,7 +119,7 @@ export class User{
  * and check for a specific thing
  * that is defined through its methods
  */
-class checkList{
+export class checkList{
 
      /**
       * This method checks  for a duplicate member in a given list 
@@ -112,6 +136,49 @@ class checkList{
         });
         return bool;
     }
+
+    public static findForms(userId: string, project: string) {
+        const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
+    
+        // Return the Promise
+        return fs.readFile(formsFilePath, "utf8")
+            .then((formsFile) => {
+                const formsFileparsed = JSON.parse(formsFile);
+                return formsFileparsed.forms.map((form: { name: string }) => form.name);
+            })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error reading forms:', error);
+                return [];
+            });
+    }
+
+    public static findRoles(userId: string, project: string, Form: string) {
+        const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
+    
+        // Return the Promise
+        return fs.readFile(formsFilePath, "utf8")
+            .then((formsFile) => {
+                const formsFileparsed = JSON.parse(formsFile);
+                const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === '20-10');
+                
+                // Find questions where saveRole is true and get options as an array
+                const questionsWithSaveRoleAndIndex = formObject.questions
+                .filter((question: Question) => question.saveRole)
+                .reduce((result: Record<string, string[]>, question: Question, index: number) => {
+                    const options = question.options as string[]; // Type assertion
+                    result[index] = options;
+                    return result;
+                }, {});
+
+                console.log(questionsWithSaveRoleAndIndex);
+            })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error reading forms:', error);
+                return [];
+            });
+    }
 }
 
 /**
@@ -124,7 +191,7 @@ class dataManipulation{
      * @param list of users that is to be save to the database
      */
     public static saveListData(list: typeof userList){
-        fs.writeFile(process.cwd() +'/src/app/(database)/userLogins.json', JSON.stringify(list, null, 4));
+        fs.writeFile(process.cwd() +'/src/app/(database)/userLogins.json', JSON.stringify(list, null, "\t"));
     }
 
     /**
