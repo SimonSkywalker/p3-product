@@ -159,7 +159,7 @@ export default function ProjectPage() {
   } 
 
   async function handleUploadIcon(e:React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
+    /*e.preventDefault();*/
 
     const fileInput = e.target;
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
