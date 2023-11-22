@@ -63,19 +63,40 @@ const customStyles = {
   },
 };
 
+const customStyles2 = {
+  content: {
+    
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    height: 300, width: 400,
+
+  },
+};
+
+interface deleteProject {
+  projectTitle: String,
+  projectIndex: number,
+}
+
 
 
 export default function ProjectPage() {
   const [trigger, setTrigger] = useState(true);
   const [openTab, setOpenTab] = useState<number>(1);
-  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [iconModalIsOpen, setIconIsOpen] = useState<boolean>(false);
+  const [deleteModalIsOpen, setDeleteIsOpen] = useState<boolean>(false);
+  const [projectToDelete, setProjectToDelete] = useState<deleteProject>({projectTitle:"", projectIndex: -1});
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [icons, setIcons] = useState<string[]>([]);
   const [projects, setProjects] = useState<ProjectObject[]>([]); 
   const [newProject, setNewProject] = useState<Project>(new Project());
   
   //Todo - Get username from cookie
-  const user = "Mka16"
+  const user = "Mka16";
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
 
   
@@ -131,15 +152,17 @@ export default function ProjectPage() {
    
     formattingProjectData();
 
+    newProject.setIcon("");
+
     setCreating(false);
     
   } 
 
-  async function handleDelete(index: number){
+  async function handleDelete(){
   
     // Has to .splice since useState value doesnt change
     // immediately but only schedules a change. 
-    projects.splice(index, 1);
+    projects.splice(projectToDelete.projectIndex, 1);
 
     await formattingProjectData();
     
@@ -173,16 +196,16 @@ export default function ProjectPage() {
 
           <Modal
             
-            isOpen={modalIsOpen}
-            onRequestClose={() => setIsOpen(false)}
+            isOpen={iconModalIsOpen}
+            onRequestClose={() => setIconIsOpen(false)}
             contentLabel="Choose Icon Modal"
             style={customStyles}
           >
-            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setIsOpen(false)}></img>
+            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setIconIsOpen(false)}></img>
             
             <form 
             className="mt-6" 
-            onSubmit={() => setIsOpen(false)}>
+            onSubmit={() => setIconIsOpen(false)}>
               <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
               <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
 
@@ -206,18 +229,51 @@ export default function ProjectPage() {
                 <label htmlFor="file-input">
                   <img className="w-10 h-10 hover:scale-125" src="icons/upload.png"/>
                 </label>
-                <input id="file-input" type="file" className="hidden"/>
+                <input id="file-input" type="file" onChange={e => handleUploadIcon(e)} className="hidden"/>
 
               </div>
  
               <button 
                 type="submit"
                 title="submitButton"
+                onClick={() => setIconIsOpen(false)}
                 className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
                 Submit
               </button>
 
             </form>
+          </Modal>
+
+          <Modal
+            
+            isOpen={deleteModalIsOpen}
+            onRequestClose={() => setDeleteIsOpen(false)}
+            contentLabel="Delete confirm modal"
+            style={customStyles2}
+          >
+            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setDeleteIsOpen(false)}></img>
+            
+            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete {projectToDelete?.projectTitle} ?</p>
+            
+            <p className="mt-8 mb-8 text-l text-center">Deleted objects can never be recovered</p>
+
+            <button 
+                type="button"
+                title="deleteButton"
+                onClick={handleDelete}
+                className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
+                Delete
+              </button>
+            <button 
+                type="button"
+                title="cancelButton"
+                onClick={() => setDeleteIsOpen(false)}
+                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
+                Cancel
+              </button>
+
+
+
           </Modal>
 
           <ul key="ul1" 
@@ -318,16 +374,28 @@ export default function ProjectPage() {
                           />
                       </div>
                       
-                      <div 
-                        className="mt-2 grid place-items-center">
-                        <button type="button">
-                          <img className="w-10 h-10 hover:scale-125" src="icons/upload.png" 
+                      <div className="mt-2 grid place-items-center">
+                        {(newProject.getIcon() === "") ? 
+                        (
+                          <button type="button">
+                            <img className="w-10 h-10 hover:scale-125" src="icons/upload.png" 
+                            onClick={ e => {
+                              e.preventDefault();
+                              setIconIsOpen(true);
+                            }}></img>
+                        </button>
+                        ) : (
+                          <button type="button">
+                          <img className="w-10 h-10 hover:scale-125" src={"icons/" + newProject.getIcon()}
                           onClick={ e => {
                           e.preventDefault();
-                          setIsOpen(true);
+                          setIconIsOpen(true);
     
                         }}></img>
                         </button>
+                        )
+                        }
+                        
                         
                         
                       </div>
@@ -442,7 +510,9 @@ export default function ProjectPage() {
                             className="flex justify-between items-center ">
                             <img className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
                             onClick={ e => {
-                              handleDelete(i);
+                              setDeleteIsOpen(true);
+                              setProjectToDelete({projectTitle: project.getTitle(), projectIndex: i});
+                              //handleDelete(i);
                               console.log(project.getTitle())
                               
         
