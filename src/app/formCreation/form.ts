@@ -4,11 +4,12 @@ import NoObjectException from "../exceptions/NoObjectException";
 import Question, { MultipleChoice, Slider } from "./question";
 import { QuestionTypes } from "./question";
 import FormValidator from "./FormValidator";
+import FileFinder from "./FileFinder";
 
 
 export default class Form {
-    private _name: String;
-    private _description: String;
+    private _name: string;
+    private _description: string;
     private _questions: Array<Question>;
     private _tokens: Array<Token>;
     private _isActive: boolean;
@@ -22,17 +23,17 @@ export default class Form {
     }
 
     //Get and set functions for the fields.
-    public get name(): String {
+    public get name(): string {
         return this._name;
     }
-    public set name(value: String) {
+    public set name(value: string) {
         this._name = value;
     }
 
-    public get description(): String {
+    public get description(): string {
         return this._description;
     }
-    public set description(value: String) {
+    public set description(value: string) {
         this._description = value;
     }
 
@@ -52,7 +53,7 @@ export default class Form {
 
     public constructor(){
         this._name = "Untitled form";
-        this._description = "";
+        this._description = "babababababa";
         this._questions = [];
         this._tokens = [];
         this._isActive = true;
@@ -76,58 +77,22 @@ export default class Form {
         }
     }
 
-
-    public checkDuplicate(database : Array<Object>) : boolean {
-        return (database.some((form) => {return form == this}));
-    }
-
-
-    //Takes an object array and a string as input.
-    //If the array is a Form array, and it has an object with the name, return the object
-    //If not, throw an exception.
-    public static getIndexFromDatabase(database : Array<Object>, name : String) : number {
-
-        for (let i in database) {
-            if (database[i] instanceof Form) {
-                if ((database[i] as Form).name == name){
-                    return parseInt(i);
-                }
-            }
-            else throw new WrongTypeException;
-        }
-        //If the database is looped through with no object.
-        throw new NoObjectException;
-    }
-
-    public addToDatabase(database : Array<Object>) : void {
-        try{
-            FormValidator.FormTemplate.parse(this)
-            database.push(this);
-        }
-        catch(e: any) {
-            console.log(e.message);
-            alert(e.message);
+    public removeQuestion(index: number) : void{
+        this.questions.splice(index, 1);
+        for (let i = 0; i < this.questions.length; i++){
+            this.questions[i].number = i+1;
         }
     }
 
-    //Takes as input a Form database
-    //Finds a Form with the given name
-    //Returns the database without this form
-    //Have to catch WrongTypeException
-    public static removeFromDatabase(database : Array<Object>, name : String) : Array<Form> {
-        let i = -1
-        //Gets index of object with the desired name
-        try {
-            i = Form.getIndexFromDatabase(database, name);
-        }
-        //If the object does not exist, return with no change
-        catch (NoObjectException) {
-            return database as Array<Form>
-        }
-
-        //Removes object at index i
-        database.splice(i, 1);
-        return database as Array<Form>
+    /**
+     * Replaces space with dash
+     */
+    public cleanName() : void{
+        this.name = this.name.replace(/ /g, "-");
     }
 
+    public getUncleanName() : string{
+        let newName : string = this.name;
+        return newName.replace(/-/g," ");
+    }
 }

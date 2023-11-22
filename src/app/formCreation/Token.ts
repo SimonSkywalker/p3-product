@@ -1,7 +1,7 @@
 import Link from "next/link";
 import NoObjectException from "../exceptions/NoObjectException";
 import WrongTypeException from "../exceptions/WrongTypeException";
-import DatabaseAccess from "./DatabaseAccess";
+import FileFinder from "./FileFinder";
 import FileSystemService from "./FileSystemService";
 
 class Token {

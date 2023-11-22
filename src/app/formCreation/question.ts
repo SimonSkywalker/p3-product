@@ -1,5 +1,5 @@
 export default class Question {
-    private _description: String;
+    private _description: string;
     private _mandatory: boolean;
     private _userDisplay: boolean;
     private _questionType: QuestionTypes;
@@ -11,10 +11,10 @@ export default class Question {
         this._number = value;
     }
 
-    public get description(): String {
+    public get description(): string {
         return this._description;
     }
-    public set description(value: String) {
+    public set description(value: string) {
         this._description = value;
     }
 
