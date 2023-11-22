@@ -191,6 +191,21 @@ export default function ProjectPage() {
     
   }
 
+  async function handleUploadIcon(e:React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+
+    const file = e.target.files[0];
+    
+    console.log("name " + file.name);
+    console.log("type " + file.type);
+    console.log("size " + file.size);
+
+    
+
+
+
+  }
+
   async function handleCreation(project: ProjectObject){
 
     /*
@@ -254,13 +269,14 @@ export default function ProjectPage() {
                 <label htmlFor="file-input">
                   <img className="w-10 h-10 hover:scale-125" src="icons/upload.png"/>
                 </label>
-                <input id="file-input" type="file" className="hidden"/>
+                <input id="file-input" type="file" onChange={e => handleUploadIcon(e)} className="hidden"/>
 
               </div>
  
               <button 
                 type="submit"
                 title="submitButton"
+                onClick={() => setIconIsOpen(false)}
                 className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
                 Submit
               </button>
