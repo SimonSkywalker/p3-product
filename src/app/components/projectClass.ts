@@ -6,7 +6,7 @@ export class Project {
     protected _projectdata: ProjectInterface = {
         title: '',
         isActive: true,
-        icon: '',
+        icon: "upload.png",
     }
 
     public constructor() {
