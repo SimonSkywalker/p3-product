@@ -45,9 +45,9 @@ import FileSystemService from '../components/FileSystemService';
 import ServerSidePaths from '../components/ServerSidePaths';
 import {Project, ProjectObject} from '../components/projectClass';
 import {ProjectInterface, projectObject} from '../interfaces/interfaces';
-import { log } from "console";
-import { set } from "zod";
-
+import { TitleDuplicateException } from "../exceptions/TitleDuplicateException";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const customStyles = {
   content: {
@@ -73,12 +73,12 @@ export default function ProjectPage() {
   const [icons, setIcons] = useState<string[]>([]);
   const [projects, setProjects] = useState<ProjectObject[]>([]); 
   const [newProject, setNewProject] = useState<Project>(new Project());
-
+  
   //Todo - Get username from cookie
   const user = "Mka16"
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
 
-
+  
   async function getProjects() {
     
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
@@ -103,28 +103,9 @@ export default function ProjectPage() {
   }, []);
 
 
-  useEffect(() => {
-    
-   // const edit = projects.filter(project => project.getBeingEdited() === true);
-
-  }, [trigger]);
-
-
-  
- /*  async function handleSubmit(){
-
-    
-
-    //console.log(nProject);
-    console.log(newProject);
-    //projects.unshift(newProject);
-    console.log("Projects in handleSubmit: ", projects);
-    const updatedProjects = projects.map((projectsData => {return projectsData.getproject()}));
-    
-    console.log("Projects getting written in handleSubmit Projects:", updatedProjects);
-    await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
-    
-  } */
+  const forceRerender = () => {
+    setTrigger((prevTrigger) => !prevTrigger);
+  };
 
   
   async function formattingProjectData() {
@@ -164,32 +145,30 @@ export default function ProjectPage() {
     
   }
 
-  async function handleCreation(project: ProjectObject){
+  function isTitleUnique (title: string, creation: boolean) {
 
-    /*
+    try {
 
-    contains
+      //zod validate
+      const notUniqueTitle = projects.filter(project => {return project.getTitle() === title });
+      const maxIndex = (creation) ? 0 : 1;
+      if(notUniqueTitle.length > maxIndex){
+        throw new TitleDuplicateException()
+      }
 
-    let x: boolean = false;
-    projects.map(project => project.getTitle() === newProject.getTitle() ? x = true : x = false);
+    } catch(err) {
 
-    if (x === true){
-      console.log("kæmpe fejl");
-    } else {
-      console.log("ej det fint, videre");
+      throw err;
+
     }
-    */
 
 
-    const updatedProjects = projects.map((projectsData => {return projectsData.getProject()}));
-    project.setBeingEdited(false)
-    await FileSystemService.writeToJSONFile(updatedProjects, ServerSidePaths.getProjectsPath(user)); 
   }
 
   return (
     <>
       <div className="flex flex-wrap">
-        
+      <ToastContainer />
         <div id="outerDiv" className="w-full">
 
           <Modal
@@ -311,7 +290,20 @@ export default function ProjectPage() {
                   id="createProjectDiv" 
                   className={(creatingProject ? "block " : "hidden ") + "grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400"}>
 
-                    <form className="mt-6" onSubmit={e => handleSubmit(e)}>
+                    <form className="mt-6" onSubmit={e => {
+                      e.preventDefault()
+                      try {
+                        console.log(creatingProject)
+                        isTitleUnique(newProject.getTitle(),creatingProject)
+                        handleSubmit(e)
+                        toast.success("Created Project: " + newProject.getTitle())
+                      } catch(err) {
+                        if (err instanceof TitleDuplicateException){
+
+                          toast.error(err.message);
+                          
+                        }
+                      }}}>
                       <div 
                         className="mb-4">
                           <input
@@ -320,6 +312,7 @@ export default function ProjectPage() {
                             placeholder="Project Name" 
                             autoComplete="Project Name" 
                             name="title"
+                            
                             onChange={(e) => newProject.setTitle(e.target.value)}
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
@@ -343,9 +336,7 @@ export default function ProjectPage() {
                         <br/>
                         <img className="w-6 h-6 float-left hover:scale-125" src="icons/cross.png"
                         onClick={ e => {
-                          e.preventDefault();
-                          setCreating(false);
-                          
+                          e.preventDefault(); // Prevent the form submission
                         }}></img>
                         <button
                           type="submit"
@@ -374,7 +365,20 @@ export default function ProjectPage() {
                     project.getIsActive() ? (
 
                       <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
-                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) => {e.preventDefault(); }}>
+                        <div 
+                          className="flex justify-end items-center">
+                            <img className="w-4 h-6 hover:scale-125 hover:cursor-pointer" src="icons/arhieve.png"
+                            onClick={ e => {
+                                project.setIsActive(false);
+                                formattingProjectData();
+                                //setTrigger(!trigger)
+                            }}>
+                            </img>
+                        </div>
+                        <form key={"Form" + project.getTitle() + i} onSubmit={(e) =>{
+                          e.preventDefault()
+                          project.setBeingEdited(false)
+                        }}>
                           
                           
                           
@@ -385,14 +389,36 @@ export default function ProjectPage() {
                               type="text" 
                               key={"inputField" + i}
                               onChange={(e)=>{
-                              project?.setTitle(e.target.value)
+                              project.setTitle(e.target.value)
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault(); // Prevent the form submission
+                                  try {
+                                    isTitleUnique(project.getTitle(),creatingProject)
+                                    project.setBeingEdited(false);
+                                    formattingProjectData();
+                                    //setTrigger(!trigger);
+                                  } catch(err) {
+                                    if (err instanceof TitleDuplicateException){
+
+                                      toast.error(err.message);
+                                      
+                                    }
+                                  }
+                                }
                               }}
                               name="title"
-                              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                              className="block w-full px-4 pr-9 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                               />
                               <button 
-                                onClick={() => console.log("surt show")}
-                                className="absolute right-0 top-1/2 transform -translate-y-1/2 px-4 py-2 text-black rounded-md">
+                                type="button"
+                                onClick={() => {
+                                  project.setTitle(project.getpreviousTitle())
+                                  project.setBeingEdited(false);
+                                  forceRerender()
+                                }}
+                                className="absolute right-0 top-1/2 transform -translate-y-1/2 px-[8px] py-[3px] text-black rounded-md border hover:text-white border-black-300 hover:bg-black-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                 X
                               </button>
                             </div>
@@ -424,13 +450,10 @@ export default function ProjectPage() {
                             </img>
                             <img className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src="icons/edit.png"
                             onClick={ e => {
-                                
-                                
-                                
+
+                                project.setpreviousTitle(project.getTitle());
                                 project.setBeingEdited(true);
-                                
-                                setTrigger(!trigger)
-                                
+                                forceRerender()
                             }}>
                             </img>
 

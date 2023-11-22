@@ -56,6 +56,8 @@ export class ProjectObject extends Project {
 
     
     private _beingEdited: boolean;
+    private _previousTitle: string;
+   
 
     constructor(objectA: ProjectInterface) {
         super();
@@ -63,6 +65,7 @@ export class ProjectObject extends Project {
         this._projectdata.isActive = objectA.isActive;
         this._projectdata.icon = objectA.icon;
         this._beingEdited = false;    
+        this._previousTitle = "";
     };
 
     public getBeingEdited() {
@@ -71,6 +74,13 @@ export class ProjectObject extends Project {
 
     public setBeingEdited(beingEdited: boolean) {
         this._beingEdited = beingEdited;
+    }
+
+    public getpreviousTitle(): string {
+        return this._previousTitle;
+    }
+    public setpreviousTitle(previousTitle: string) {
+        this._previousTitle = previousTitle;
     }
   
     public getProjectDataArray(): [string, boolean, string] {
