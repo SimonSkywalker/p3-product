@@ -161,8 +161,13 @@ export default function ProjectPage() {
   async function handleUploadIcon(e:React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
+    const fileInput = e.target;
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+      // Handle the case where there are no files selected
+      return;
+    }
 
-    const file = e.target.files[0];
+    const file = fileInput.files[0];
     
     console.log("name " + file.name);
     console.log("type " + file.type);
