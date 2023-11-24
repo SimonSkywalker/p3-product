@@ -35,7 +35,7 @@ export default class FormErrorHandler {
         this._validationErrors = value;
       }
 
-      public static errorValidationLogin(Error: any, outputError: FormFormData){
+      public errorValidation(Error: any){
         
         //True if validation error occurs
         if(Error instanceof z.ZodError){
@@ -44,13 +44,25 @@ export default class FormErrorHandler {
           Error.errors.forEach((validationError) => {
     
             // Extract the field name and error message from the validationError.
-            const fieldName = validationError.path[0] as keyof z.infer<typeof FormValidator.FormTemplate>;
+            const fieldName : string = validationError.path[0] as keyof z.infer<typeof FormValidator.FormTemplate>;
             const errorMessage = validationError.message;
-    
-            outputError[fieldName] = errorMessage;  
+            if (fieldName == "_questions"){
+                const questionNumber : number = parseInt(validationError.path[1] as keyof z.infer<typeof FormValidator.FormTemplate>);
+                const questionField : string = validationError.path[2] as keyof z.infer<typeof FormValidator.FormTemplate>;
+                if (questionField == "_options"){
+                    const optionNumber : number = parseInt(validationError.path[3] as keyof z.infer<typeof FormValidator.FormTemplate>);
+                    this._validationErrors._questions[questionNumber]._options[optionNumber] = errorMessage;
+                } else {
+                    this._validationErrors._questions[questionNumber]._description = errorMessage;
+                }
+            } else if (fieldName == "_name") {
+                this._validationErrors._name = errorMessage;
+            } else if (fieldName == "_description") {
+                this._validationErrors._description = errorMessage;
+            }
           });
         } 
-        return outputError;
+        return this._validationErrors;
       }  
 
 

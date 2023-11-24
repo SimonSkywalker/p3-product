@@ -19,19 +19,10 @@ export default class FormValidator {
         _questions: z.array(z.object({
             _description: z.string().min(1, { message: "Text required" })
                             .max(descMax, { message: "No more than " + descMax + " characters" }),
-            _mandatory: z.boolean(),
-            _userDisplay : z.boolean(),
-            _questionType : z.number(),
-            _number : z.number().optional(),
-            _sliderType : z.number().optional(),
-            _range : z.number().gte(3).lte(9).refine((data) => data % 2 == 1).optional(),
-            _choiceType : z.number().optional(),
-            _saveRoles : z.boolean().optional(),
             _options : z.array(z.string().min(1, { message: "Text required" })
             .max(descMax, { message: "No more than " + descMax + " characters" }))
             .optional()
-        })),
-        _tokens: z.array(z.string()).optional()
+        }))
     })    
 
     static nameTemplate = z.string().min(1, { message: "Name required" })

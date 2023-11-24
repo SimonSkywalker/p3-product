@@ -20,6 +20,7 @@ import TokenBuilder from "./TokenBuilder";
 import DatabaseAccess from "./DatabaseAccess";
 import _, { update } from 'lodash';
 import FormBuilder from "./FormBuilder";
+import FormErrorHandler, { FormFormData } from "./FormErrorHandler";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
@@ -225,6 +226,7 @@ export default function Home() {
           FormValidator.FormTemplate.parse(form);
           setModalOpen(true);
         } catch(e: any) {
+          FormErrorHandler.errorValidation(e, new FormFormData())
           console.log(e.message);
           alert(e.message);
         }
