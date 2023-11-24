@@ -48,6 +48,7 @@ import {ProjectInterface, projectObject} from '../interfaces/interfaces';
 import { TitleDuplicateException } from "../exceptions/TitleDuplicateException";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Console } from "console";
 
 const customStyles = {
   content: {
@@ -145,7 +146,7 @@ export default function ProjectPage() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>){
 
-    /*e.preventDefault();*/
+    e.preventDefault();
     
     const projectObject: ProjectObject = newProject.convertToProjectObject();
     projects.unshift(projectObject);
@@ -200,6 +201,8 @@ export default function ProjectPage() {
       //zod validate
       const notUniqueTitle = projects.filter(project => {return project.getTitle() === title });
       const maxIndex = (creation) ? 0 : 1;
+      console.log(maxIndex);
+      console.log(notUniqueTitle);
       if(notUniqueTitle.length > maxIndex){
         throw new TitleDuplicateException()
       }
@@ -379,6 +382,11 @@ export default function ProjectPage() {
                         console.log(creatingProject)
                         isTitleUnique(newProject.getTitle(),creatingProject)
                         handleSubmit(e)
+                        setNewProject((prevProject) => {
+                          const updatedProject = new Project();
+                          updatedProject.setProject({ ...prevProject.getProject(), title: '' });
+                          return updatedProject;
+                        });
                         toast.success("Created Project: " + newProject.getTitle())
                       } catch(err) {
                         if (err instanceof TitleDuplicateException){
@@ -395,8 +403,13 @@ export default function ProjectPage() {
                             placeholder="Project Name" 
                             autoComplete="Project Name" 
                             name="title"
-                            
-                            onChange={(e) => newProject.setTitle(e.target.value)}
+                            value={newProject.getTitle()} 
+                            onChange={(e) => setNewProject((prevProject) => {
+                              const updatedProject = new Project();
+                              updatedProject.setProject({ ...prevProject.getProject(), title: e.target.value });
+                              return updatedProject;
+                            })}
+
                             className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
                           />
                       </div>
@@ -431,6 +444,8 @@ export default function ProjectPage() {
                         <br/>
                         <img className="w-6 h-6 float-left hover:scale-125" src="icons/cross.png"
                         onClick={ e => {
+                          newProject.setTitle("")
+                          setCreating(false)
                           e.preventDefault(); // Prevent the form submission
                         }}></img>
                         <button
