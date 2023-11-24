@@ -136,7 +136,12 @@ export class checkList{
         });
         return bool;
     }
-
+    /**
+     * 
+     * @param userId 
+     * @param project 
+     * @returns 
+     */
     public static findForms(userId: string, project: string) {
         const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
     
@@ -152,7 +157,13 @@ export class checkList{
                 return [];
             });
     }
-
+    /**
+     * findRoles
+     * @param userId 
+     * @param project 
+     * @param Form 
+     * @returns 
+     */
     public static findRoles(userId: string, project: string, Form: string) {
         const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
     
@@ -160,7 +171,7 @@ export class checkList{
         return fs.readFile(formsFilePath, "utf8")
             .then((formsFile) => {
                 const formsFileparsed = JSON.parse(formsFile);
-                const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === '20-10');
+                const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === Form);
                 
                 // Find questions where saveRole is true and get options as an array
                 const questionsWithSaveRoleAndIndex = formObject.questions
@@ -168,10 +179,37 @@ export class checkList{
                 .reduce((result: Record<string, string[]>, question: Question, index: number) => {
                     const options = question.options as string[]; // Type assertion
                     result[index] = options;
+
                     return result;
                 }, {});
 
-                console.log(questionsWithSaveRoleAndIndex);
+                return questionsWithSaveRoleAndIndex;
+            })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error reading forms:', error);
+                return [];
+            });
+
+        
+    }
+    /**
+     * 
+     * @param userId 
+     * @param project 
+     * @param Form 
+     * @returns 
+     */
+    public static getQuestions(userId: string, project: string, Form: string) {
+        const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
+    
+        // Return the Promise
+        return fs.readFile(formsFilePath, "utf8")
+            .then((formsFile) => {
+                const formsFileparsed = JSON.parse(formsFile);
+                const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === Form);
+                
+                return formObject.questions;
             })
             .catch((error) => {
                 // Handle errors

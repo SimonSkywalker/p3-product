@@ -7,24 +7,11 @@ import Cookies from "js-cookie";
 import { FetchError } from "node-fetch";
 import { checkList } from "../classes/userClass";
 import Menu1 from "./Menu1";
+import { object } from "zod";
 
 export default function VisPage() {
   const router = useRouter();
-  const [user, setUser] = useState({Id:"", project: "", forms:[], roles:[]});
-
-  const handleSelect =  (e: React.ChangeEvent<HTMLSelectElement>) => {
-    
-    fetch("/api/getRoles", {
-        method: "POST",
-        body: JSON.stringify(e.target.value)
-    }).then(async (response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        alert(`Error: ${error}`);
-      });
-        
-  } 
+  const [user, setUser] = useState({Id:"", project: "", forms:[], roles:[], questions:[]});
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -40,7 +27,7 @@ export default function VisPage() {
     });
 
     APIHandle.APIRequestUser()
-      .then(async (data) => {
+      .then(async(data) => {
         if (data) {
           setUser(await data);
         }
@@ -49,6 +36,28 @@ export default function VisPage() {
         console.error(error);
       });
   }, [router]);
+
+  const handleSelect =  (e: React.ChangeEvent<HTMLSelectElement>) => {
+    
+    fetch("/api/getFormdata", {
+        method: "POST",
+        body: JSON.stringify(e.target.value)
+    }) 
+    .then((response) => response.json())
+    .then((data) => {
+        setUser({
+          ...user,
+          roles: data.roles,
+          questions: data.questions
+        })        
+      })
+      .catch((error) => {
+        alert(`Error: ${error}`);
+      });
+        
+  } 
+
+  console.log(user)
 
   const listForm = user?.forms.map((form: any) => (
     <option key={form}>{form}</option>
