@@ -4,10 +4,8 @@ import { useRouter } from "next/navigation";
 import { APIHandle } from "../classes/handlerClass";
 import { Token } from "../classes/tokenClass";
 import Cookies from "js-cookie";
-import { FetchError } from "node-fetch";
-import { checkList } from "../classes/userClass";
 import Menu1 from "./Menu1";
-import { object } from "zod";
+import Menu2 from "./Menu2";
 
 export default function VisPage() {
   const router = useRouter();
@@ -47,7 +45,7 @@ export default function VisPage() {
     .then((data) => {
         setUser({
           ...user,
-          roles: data.roles,
+          roles: data.roles[0],
           questions: data.questions
         })        
       })
@@ -62,39 +60,46 @@ export default function VisPage() {
   const listForm = user?.forms.map((form: any) => (
     <option key={form}>{form}</option>
   ));
-  /* const listRoles = user?.roles.map((role: any, i: number) => (
-    <div key={i}>
-      <input type="checkbox" id={role} name={role} />
-      <label htmlFor={role}>{role}</label>
-    </div>
-    )); */
- 
+  const listRoles = user?.roles?.map((role: any, i: number) => (
+      <div key={i}>
+        <input type="checkbox" id={role} name="rolePicks" />
+        <label htmlFor={role}> {role} </label>
+      </div>
+    ));
+    const listQuestions = user?.questions?.map((question: any, i: number) => (
+      <div key={i}>
+        <input type="checkbox" id={question} name="questionPicks" />
+        <label htmlFor={question}> Question {i+1}: {question.description} </label>
+      </div>
+    ));
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-      <ul className="space-y-5 flex flex-col justify-center text-center">
-        <li>
-          <h3>Select form for visualization</h3>
-          <select defaultValue={'DEFAULT'} 
+      <div className="formDefault">
+      <form className="space-y-5 flex flex-col justify-center text-center">
+        <div>
+          <h3 className="block text-sm font-semibold text-gray-800">Select form for visualization</h3>
+          <select className="bg-white-300" defaultValue={'DEFAULT'} 
           onChange={handleSelect}>
             <option disabled value="DEFAULT">-- select option --</option>
             {listForm}
           </select>
-        </li>
-        <li>
-          <h3>Select other form for comparison (optional)</h3>
-          <select defaultValue={'DEFAULT'} 
-          onChange={handleSelect}>
+        </div>
+        <div>
+          <h3 className="block text-sm font-semibold text-gray-800">Select other form for comparison (optional)</h3>
+          <select className="bg-white-300" defaultValue={'DEFAULT'}>
           <option disabled value="DEFAULT">-- select option --</option>
             {listForm}
           </select>
-        </li>
-        <li>
-          {/* <Menu1
+        </div>
+          <Menu1
           roles = {listRoles}
-          /> */}
-        </li>
-      </ul>
+          />
+          <Menu2
+          questions={listQuestions}
+          />
+      </form>
+      </div>
     </div>
   );
 }

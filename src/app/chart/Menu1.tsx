@@ -6,9 +6,11 @@ interface Menu1Props {
 
 export default function Menu1(props: Menu1Props) {
   return (
-    <>
-      <h3>Select roles to get data from</h3>
-      <form className="flex flex-col">{props.roles}</form>
-    </>
+    <div className="roleContainer">
+      <h3 className="block text-sm font-semibold text-gray-800">Select roles to get data from</h3>
+      <div className="roleResults">
+      {props.roles}
+      </div>
+    </div>
   );
 }
