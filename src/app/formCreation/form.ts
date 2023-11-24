@@ -5,9 +5,10 @@ import Question, { MultipleChoice, Slider } from "./question";
 import { QuestionTypes } from "./question";
 import FormValidator from "./FormValidator";
 import FileFinder from "./FileFinder";
+import Nameable from "./Nameable";
 
 
-export default class Form {
+export default class Form implements Nameable {
     private _name: string;
     private _description: string;
     private _questions: Array<Question>;
@@ -26,6 +27,11 @@ export default class Form {
     public get name(): string {
         return this._name;
     }
+
+    public getName(): string {
+        return this._name;
+    }
+
     public set name(value: string) {
         this._name = value;
     }
@@ -53,7 +59,7 @@ export default class Form {
 
     public constructor(){
         this._name = "Untitled form";
-        this._description = "babababababa";
+        this._description = "";
         this._questions = [];
         this._tokens = [];
         this._isActive = true;

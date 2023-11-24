@@ -35,6 +35,15 @@ class TokenBuilder{
     public getTokens() : Array<Token> {
         return this._tokens;
     }
+
+    public TokenFromObjects(objects : Array<any>) : Array<Token> {
+        this.setTokens(objects.length);
+        for(let i = 0; i < this._tokens.length; i++){
+            this._tokens[i].tokenID = objects[i]._tokenID;
+            this._tokens[i].isUsed = objects[i]._isUsed;
+        }
+        return this.getTokens();
+    }
 }
 
 export default TokenBuilder;
