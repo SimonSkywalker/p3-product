@@ -46,6 +46,9 @@ import ServerSidePaths from '../components/ServerSidePaths';
 import {Project, ProjectObject} from '../components/projectClass';
 import {ProjectInterface, projectObject} from '../interfaces/interfaces';
 import { TitleDuplicateException } from "../exceptions/TitleDuplicateException";
+import { CreateWhileEdit } from "../exceptions/CreateWhileEditException";
+import { EditWhileCreating } from "../exceptions/EditWhileCreating";
+import { EditingAlreadyActive } from "../exceptions/EditingAlreadyActiveException";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Console } from "console";
@@ -212,12 +215,9 @@ export default function ProjectPage() {
   function isTitleUnique (title: string, creation: boolean) {
 
     try {
-
       //zod validate
-      const notUniqueTitle = projects.filter(project => {return project.getTitle() === title });
+      const notUniqueTitle = projects.filter(project => {return project.getTitle() === title});
       const maxIndex = (creation) ? 0 : 1;
-      console.log(maxIndex);
-      console.log(notUniqueTitle);
       if(notUniqueTitle.length > maxIndex){
         throw new TitleDuplicateException()
       }
@@ -341,7 +341,7 @@ export default function ProjectPage() {
             <button 
                 type="button"
                 title="cancelButton"
-                onClick={() => setIsOpen(false)}
+                onClick={() => setArchiveIsOpen(false)}
                 className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
                 Cancel
               </button>
@@ -411,8 +411,18 @@ export default function ProjectPage() {
                       <button className={"text-5xl text-align-center hover:scale-125"}
                       onClick={ e => {
                         e.preventDefault();
-                        setCreating(true);
+                        try {
+                          const editingProject = projects.filter(project => {return project.getBeingEdited()});
 
+                          if(editingProject.length){
+                            throw new CreateWhileEdit();
+                          }
+                          setCreating(true);
+                        } catch(err) {
+                          if(err instanceof CreateWhileEdit)
+                          toast.warning(err.message)
+                        }
+                        
                       }}
                       >+</button>
                   </div>
@@ -608,10 +618,34 @@ export default function ProjectPage() {
                             </img>
                             <img className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src="icons/edit.png"
                             onClick={ e => {
+                              try {
+
+                                const editingProject = projects.filter(project => {return project.getBeingEdited()});
+                                
+                                if(creatingProject){
+                                  throw new EditWhileCreating();
+                                }
+                                
+                                if(editingProject.length) {
+                                  throw new EditingAlreadyActive();
+                                }
 
                                 project.setpreviousTitle(project.getTitle());
                                 project.setBeingEdited(true);
                                 forceRerender()
+
+                              } catch (err){
+                                
+                                if(err instanceof EditWhileCreating) {
+                                  toast.warning(err.message);
+                                }
+
+                                if(err instanceof EditingAlreadyActive) {
+                                  toast.warning(err.message)
+                                }
+
+                              }
+
                             }}>
                             </img>
 
