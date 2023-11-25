@@ -52,6 +52,8 @@ import { EditingAlreadyActive } from "../exceptions/EditingAlreadyActiveExceptio
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Console } from "console";
+import { validateProjectData } from "../lib/validation/project";
+import { z } from "zod";
 
 const customStyles = {
   content: {
@@ -434,7 +436,8 @@ export default function ProjectPage() {
                     <form className="mt-6" onSubmit={e => {
                       e.preventDefault()
                       try {
-                        console.log(creatingProject)
+                        let validatedTitle = validateProjectData.parse({title: newProject.getTitle()});
+                        newProject.setTitle(validatedTitle.title);
                         isTitleUnique(newProject.getTitle(),creatingProject)
                         handleSubmit(e)
                         setNewProject((prevProject) => {
@@ -444,11 +447,21 @@ export default function ProjectPage() {
                         });
                         toast.success("Created Project: " + newProject.getTitle())
                       } catch(err) {
+
+                        if(err instanceof z.ZodError){
+
+                          err.errors.forEach((validationError)=> {
+                            toast.error(validationError.message)
+                          })  
+                        
+                      }
+
                         if (err instanceof TitleDuplicateException){
 
                           toast.error(err.message);
                           
                         }
+
                       }}}>
                       <div 
                         className="mb-4">
@@ -561,17 +574,29 @@ export default function ProjectPage() {
                                 if (e.key === 'Enter') {
                                   e.preventDefault(); // Prevent the form submission
                                   try {
+                                    let validatedTitle = validateProjectData.parse({title: project.getTitle()});
+                                    project.setTitle(validatedTitle.title);
                                     isTitleUnique(project.getTitle(),creatingProject)
                                     project.setBeingEdited(false);
                                     formattingProjectData();
                                     //setTrigger(!trigger);
                                   } catch(err) {
+
+                                    if(err instanceof z.ZodError){
+
+                                      err.errors.forEach((validationError)=> {
+                                        toast.error(validationError.message)
+                                      })  
+                                    
+                                  }
+
                                     if (err instanceof TitleDuplicateException){
 
                                       toast.error(err.message);
                                       
                                     }
                                   }
+
                                 }
                               }}
                               name="title"
@@ -619,7 +644,7 @@ export default function ProjectPage() {
                             <img className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src="icons/edit.png"
                             onClick={ e => {
                               try {
-
+                                  
                                 const editingProject = projects.filter(project => {return project.getBeingEdited()});
                                 
                                 if(creatingProject){
