@@ -1,0 +1,85 @@
+[
+	{
+		"_name": "Sinas form",
+		"_description": "Description",
+		"_questions": [
+			{
+				"_description": "Question",
+				"_mandatory": false,
+				"_userDisplay": false,
+				"_questionType": 0,
+				"_number": 1,
+				"_saveRole": false,
+				"_options": [
+					"Option 1",
+					"Option 2"
+				],
+				"_choiceType": 0
+			}
+		],
+		"_tokens": [],
+		"_isActive": true
+	},
+	{
+		"_name": "Untitled form",
+		"_description": "",
+		"_questions": [],
+		"_tokens": [],
+		"_isActive": true
+	},
+	{
+		"_name": "Test-form",
+		"_description": "Hej jeg er en prut.",
+		"_questions": [
+			{
+				"_description": "Hvem er det bedste gruppemedlem",
+				"_mandatory": false,
+				"_userDisplay": false,
+				"_questionType": 0,
+				"_number": 1,
+				"_saveRole": false,
+				"_options": [
+					"Sina",
+					"Carmen",
+					"Merete",
+					"Allan",
+					"Nicolaj",
+					"Simon",
+					"Kamilla"
+				],
+				"_choiceType": 0
+			}
+		],
+		"_tokens": [
+			{
+				"_tokenID": "PptPOwICcw",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "7GH6PF4Bam",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "QTHjKZT1KL",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "bVaxNipyo3",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "Zgq4NwF1H5",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "cIyzMJVTx8",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "0a1wvktabG",
+				"_isUsed": false
+			}
+		],
+		"_isActive": true
+	}
+]
