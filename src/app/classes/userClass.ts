@@ -174,16 +174,13 @@ export class checkList{
                 const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === Form);
                 
                 // Find questions where saveRole is true and get options as an array
-                const questionsWithSaveRoleAndIndex = formObject.questions
+                const questionsWithSaveRole = formObject.questions
                 .filter((question: Question) => question.saveRole)
-                .reduce((result: Record<string, string[]>, question: Question, index: number) => {
-                    const options = question.options as string[]; // Type assertion
-                    result[index] = options;
+                .flatMap((question: Question) => question.options || []);
 
-                    return result;
-                }, {});
+                const uniqueQuestions = Array.from(new Set(questionsWithSaveRole));
 
-                return questionsWithSaveRoleAndIndex;
+                return uniqueQuestions;
             })
             .catch((error) => {
                 // Handle errors
