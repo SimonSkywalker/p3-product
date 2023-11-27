@@ -148,7 +148,7 @@ const pathToSrc : string = "../../../..";
     const getForm = async () => {
       const database : FileFinder = new FileFinder(pathToSrc);
       console.log(database.directoryPath);
-      databaseFile = await database.findJSONFile(["database"], "forms");
+      databaseFile = await database.findJSONFile(["database", username, project], "forms");
       let formsArray : Array<Form> = [];
       let objectsArray : Array<Object> = await FileSystemService.getJSONFile(database.directoryPath, databaseFile);
       for(let i = 0; i < objectsArray.length; i++){
