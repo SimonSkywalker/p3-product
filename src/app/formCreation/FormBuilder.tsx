@@ -3,6 +3,7 @@ import Form from "./form";
 import Question from "./question";
 import TokenBuilder from "./TokenBuilder";
 import QuestionBuilder from "./QuestionBuilder";
+import WrongTypeException from "../exceptions/WrongTypeException";
 
 export default class FormBuilder {
     private form : Form = new Form();
@@ -38,19 +39,26 @@ export default class FormBuilder {
     }
 
 
+    /**
+     * Takes any object, and if it has the same fields as a Form, return a new Form object
+     * @param object An object that is known to have the same fields as Form
+     * @returns A new Form object with the same values as the initial object
+     */
     public formFromObject(object : any) : Form {
-        this.addName(object._name).addDescription(object._description).addActiveStatus(object._isActive);
-        this.addTokens((new TokenBuilder).TokenFromObjects(object._tokens));
-        for(let i = 0; i < object._questions.length; i++){
-            let questionBuilder : QuestionBuilder = new QuestionBuilder(object._questions[i]._questionType);
-            console.log("Heeelp");
-            console.dir(questionBuilder);
-            console.dir(object._questions[i]);
-            this.addQuestion(questionBuilder.questionFromObject(object._questions[i]));   
+        try{
+            this.addName(object._name).addDescription(object._description).addActiveStatus(object._isActive);
+            this.addTokens((new TokenBuilder).TokenFromObjects(object._tokens));
+            for(let i = 0; i < object._questions.length; i++){
+                let questionBuilder : QuestionBuilder = new QuestionBuilder(object._questions[i]._questionType);
+                this.addQuestion(questionBuilder.questionFromObject(object._questions[i]));   
+            }
+            for (let i = 0; i < this.form.questions.length; i++){
+                this.form.questions[i].number = i+1;
+            }
+            return this.getForm();
         }
-        for (let i = 0; i < this.form.questions.length; i++){
-            this.form.questions[i].number = i+1;
+        catch (e: any){
+            throw new WrongTypeException();
         }
-        return this.getForm();
     }
 }

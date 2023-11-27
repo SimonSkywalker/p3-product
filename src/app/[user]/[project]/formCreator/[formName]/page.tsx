@@ -1,6 +1,6 @@
 'use client'
 
-import FormValidator from "./FormValidator";
+import FormValidator from "../../../../formCreation/FormValidator";
 import {Checkbox} from "@nextui-org/checkbox";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/dropdown"
 import {Button} from "@nextui-org/button"
@@ -9,24 +9,22 @@ import {RadioGroup, Radio} from "@nextui-org/radio"
 import {
   Modal, 
   ModalContent} from "@nextui-org/react";
-import FileSystemService from './FileSystemService';
-import Token from './Token'
-import Form from './form';
-import Question from "./question";
-import FileFinder from './FileFinder';
-import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "./question";
+import FileSystemService from '../../../../formCreation/FileSystemService';
+import Token from '../../../../formCreation/Token'
+import Form from '../../../../formCreation/form';
+import Question from "../../../../formCreation/question";
+import FileFinder from '../../../../formCreation/FileFinder';
+import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "../../../../formCreation/question";
 import { useEffect, useState} from "react";
-import TokenBuilder from "./TokenBuilder";
-import DatabaseAccess from "./DatabaseAccess";
+import TokenBuilder from "../../../../formCreation/TokenBuilder";
+import DatabaseAccess from "../../../../formCreation/DatabaseAccess";
 import _, { update } from 'lodash';
-import FormBuilder from "./FormBuilder";
-import FormErrorHandler, { FormFormData } from "./FormErrorHandler";
+import FormBuilder from "../../../../formCreation/FormBuilder";
+import FormErrorHandler, { FormFormData } from "../../../../formCreation/FormErrorHandler";
+import ObjectAlreadyExistsException from "../../../../exceptions/ObjectAlreadyExistsException";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
-const username : string = "sinagaming69";
-const project : string = "f-kult";
-const formName : string = "Test-form"
 const rootLink : string = "https://www.testwebsite.com"
 let databaseFile: string;
 let forms: DatabaseAccess;
@@ -34,14 +32,20 @@ let currForm = new Form;
 
 
 class FormCreator{
-  public static createOptions(question: MultipleChoice, updateState: () => void){
+  public static createOptions(question: MultipleChoice, errors : FormFormData, updateState: () => void){
     return <>
     {question.options.map((e, index) => {return <ul key={index}> <Input value={e} onValueChange={(input) =>{
       (question as MultipleChoice).renameOption(index, input);
       updateState();
     }}></Input>
+    {errors._questions[question.number-1]._options[index] && (
+            <div 
+              className="error">
+              {errors._questions[question.number-1]._options[index]}
+            </div>
+          )}
     <Button onClick={() => {
-      (question as MultipleChoice).removeOption(question.number);
+      (question as MultipleChoice).removeOption(index);
       updateState();
       }}>Remove option</Button> </ul>})}
     <Button onClick={() => {
@@ -51,7 +55,7 @@ class FormCreator{
     </>
   }
 
-  public static renderSwitch(question: Question, updateState: () => void){
+  public static renderSwitch(question: Question, errors : FormFormData, updateState: () => void){
     switch(question.questionType){
       case QuestionTypes.slider: {
         return <><Input value={((question as Slider).range).toString()} type="number" label="Amount of steps" min="3" max="9" step="2" onValueChange={(value) => {
@@ -78,7 +82,7 @@ class FormCreator{
         </RadioGroup></>
       }
       case QuestionTypes.multipleChoice: {
-        return <>{FormCreator.createOptions(question as MultipleChoice, updateState)}
+        return <>{FormCreator.createOptions(question as MultipleChoice, errors, updateState)}
         <Checkbox defaultChecked={(question as MultipleChoice).choiceType == ChoiceTypes.checkbox} onValueChange={(check) => {
         (question as MultipleChoice).choiceType = check ? ChoiceTypes.checkbox : ChoiceTypes.radio;
         updateState();
@@ -94,12 +98,18 @@ class FormCreator{
     }
   }
 
-  public static createQuestionBox(form: Form, question : Question, updateState: () => void) {
+  public static createQuestionBox(form: Form, question : Question, errors: FormFormData, updateState: () => void) {
     return <><p> Question number {question.number}</p>
     <Input label="Question name" value={question.description} onValueChange={(value) => {
         question.description = value;
         updateState();
       }}></Input>
+      {errors._questions[question.number-1]._description && (
+            <div 
+              className="error">
+              {errors._questions[question.number-1]._description}
+            </div>
+          )}
     <Checkbox defaultChecked={question.mandatory} onValueChange={(check) => {
         question.mandatory = check;
         updateState();
@@ -108,7 +118,7 @@ class FormCreator{
         question.userDisplay = check;
         updateState();
       }}>Show answers to respondents</Checkbox>
-    {FormCreator.renderSwitch(question, updateState)}
+    {FormCreator.renderSwitch(question, errors, updateState)}
     <Button onClick={() => {
       form.removeQuestion(question.number-1);
       updateState();
@@ -117,16 +127,30 @@ class FormCreator{
   }
 }
 
-export default function Home() {
+interface CreationPageParams {
+  params: {
+    user: string;
+    project: string;
+    formName: string;
+  }
+}
+
+export default function FormCreation({params} : CreationPageParams) {
   console.log("goofy");
+
+const username : string = params.user;
+const project : string = params.project;
+const formName : string = params.formName;
+const pathToSrc : string = "../../../..";
 
 
   useEffect(() => {
     const getForm = async () => {
-      const database : FileFinder = new FileFinder('src/app');
+      const database : FileFinder = new FileFinder(pathToSrc);
+      console.log(database.directoryPath);
       databaseFile = await database.findJSONFile(["database"], "forms");
       let formsArray : Array<Form> = [];
-      let objectsArray : Array<Object> = await FileSystemService.getJSONFile(databaseFile);
+      let objectsArray : Array<Object> = await FileSystemService.getJSONFile(database.directoryPath, databaseFile);
       for(let i = 0; i < objectsArray.length; i++){
         let formBuilder = new FormBuilder();
         console.dir(objectsArray[i] as Form);
@@ -144,6 +168,7 @@ export default function Home() {
         currForm = new Form;
       }
       setForm(currForm);
+      setActive(currForm.isActive);
       console.dir(form);
       console.dir(currForm);
       
@@ -154,9 +179,8 @@ export default function Home() {
 
   const [form, setForm] = useState(currForm);
   const [active, setActive] = useState(currForm.isActive)
-  const [validationErrors, setValidationErrors] = useState("");
+  const [validationErrors, setValidationErrors] = useState(new FormErrorHandler().validationErrors);
   const [modalOpen, setModalOpen] = useState(false);
-  const [tokens, setTokens] = useState(new Array<Token>);
 
   
   function updateState() : void {
@@ -176,6 +200,12 @@ export default function Home() {
         updateState();
       }}
     />
+     {validationErrors._name && (
+            <div 
+              className="error">
+              {validationErrors._name}
+            </div>
+          )}
       <Input
       type="text"
       label="Form description"
@@ -185,8 +215,14 @@ export default function Home() {
         updateState();
       }}
     />
+    {validationErrors._description && (
+            <div 
+              className="error">
+              {validationErrors._description}
+            </div>
+          )}
       <ul>
-        {form.questions.map((e, index) => {return <li key={index}> {FormCreator.createQuestionBox(form, e, updateState)}</li>})}
+        {form.questions.map((e, index) => {return <li key={index}> {FormCreator.createQuestionBox(form, e, validationErrors, updateState)}</li>})}
       </ul>
       <label htmlFor="Qtype"/>
       <Dropdown>
@@ -224,22 +260,24 @@ export default function Home() {
 
         try {
           FormValidator.FormTemplate.parse(form);
+          if(forms.checkDuplicate(form) && form.name != currForm.name)
+            throw(new ObjectAlreadyExistsException("Form of name " + form.name + " already exists"));
           setModalOpen(true);
         } catch(e: any) {
-          FormErrorHandler.errorValidation(e, new FormFormData())
-          console.log(e.message);
-          alert(e.message);
+          if(e instanceof ObjectAlreadyExistsException)
+            alert(e.message);
+          let errorHandler = new FormErrorHandler();
+          setValidationErrors(errorHandler.errorValidation(e));
         }
           console.dir(form);
 
         }}>Save form</Button>
         <Button onClick={async () => {
           try{
-            let forms : DatabaseAccess = new DatabaseAccess(await FileSystemService.getJSONFile(databaseFile) as Form[]);
             //Uses currForm since it uses the values that were gained on page load
             //If form was used, you could accidentally name your new form the same as an existing one and delete that
             forms.removeFromDatabase(currForm.name);
-            FileSystemService.writeToJSONFile(forms.objects, databaseFile);
+            FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
           }
           catch(e : any) {
             console.log("didn't delete");
@@ -256,28 +294,31 @@ export default function Home() {
             form.tokens = tokenBuilder.getTokens();
             form.isActive = false;
             setActive(false);
-            setTokens(tokenBuilder.getTokens());
-            let forms : DatabaseAccess = new DatabaseAccess(await FileSystemService.getJSONFile(databaseFile) as Form[]);
+            //If the form already exists in the database, remove it first
+            if(forms.checkDuplicate(form) && form.name == currForm.name)
+              forms.removeFromDatabase(form.name);
             forms.addToDatabase(form);
-            FileSystemService.writeToJSONFile(forms.objects, databaseFile);
+            FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
           }}>Publish form</Button>
           <Button onClick={async () => {
-            let forms : DatabaseAccess = new DatabaseAccess(await FileSystemService.getJSONFile(databaseFile) as Form[]);
+            //If the form already exists in the database, remove it first
+            if(forms.checkDuplicate(form) && form.name == currForm.name)
+              forms.removeFromDatabase(form.name);
             forms.addToDatabase(form);
-            FileSystemService.writeToJSONFile(forms.objects, databaseFile);
+            FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
           }
           }>Save without publishing</Button>
           <Button onClick={() => {
             setModalOpen(false);  
           }}>Fuck go back</Button>
-          {tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
+          {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
         </ModalContent>
       </Modal>
     </main>)
     :
     (
       <main>
-      {tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
+      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
       </main>
     )
   )

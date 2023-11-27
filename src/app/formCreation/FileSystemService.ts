@@ -1,12 +1,12 @@
 import FileTypes from "./FileTypes";
 
 export default class FileSystemService {
-    public static async listFiles(directoryPath: string): Promise<string[]> {
+    public static async listFiles(originPath: string, directoryPath: string): Promise<string[]> {
         console.log("hello");
         try {
             let data : string[] = [];
             console.log("Imma fetch bitch");
-            await fetch('../api/files', {
+            await fetch(originPath + '/api/files', {
                 method: 'POST',
                 body: JSON.stringify({path: directoryPath})
               })
@@ -29,9 +29,9 @@ export default class FileSystemService {
         }
     }
 
-    public static async getType(currentPath : string) : Promise<FileTypes> {
+    public static async getType(originPath : string, currentPath : string) : Promise<FileTypes> {
         let fileType :FileTypes = FileTypes.other;
-         await fetch('../api/fileType', {
+         await fetch(originPath + '/api/fileType', {
             method: 'POST',
             body: JSON.stringify({path: currentPath})
           })
@@ -53,8 +53,8 @@ export default class FileSystemService {
         return fileType;
     }
 
-    public static async writeToJSONFile(data : Array<Object>, filePath : string) {
-            await fetch('../api/writeToFile', {
+    public static async writeToJSONFile(originPath : string,data : Array<Object>, filePath : string) {
+            await fetch(originPath + '/api/writeToFile', {
                 method: 'POST',
                 body: JSON.stringify({data: data, path : filePath})
               })
@@ -73,10 +73,10 @@ export default class FileSystemService {
                 });
     }
 
-    public static async getJSONFile(filePath : string) : Promise<Array<Object>> {
+    public static async getJSONFile(originPath : string, filePath : string) : Promise<Array<Object>> {
         let jsonArray : Array<Object> = [];
-        if(await this.getType(filePath) == FileTypes.JSON){
-            await fetch('../api/readFile', {
+        if(await this.getType(originPath, filePath) == FileTypes.JSON){
+            await fetch(originPath + '/api/readFile', {
                 method: 'POST',
                 body: JSON.stringify({path : filePath})
               })

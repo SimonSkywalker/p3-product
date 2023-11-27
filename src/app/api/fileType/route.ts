@@ -1,5 +1,4 @@
 "use server"
-import NoFileNameException from '@/app/exceptions/NoFileNameException';
 import FileTypes from '@/app/formCreation/FileTypes';
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
@@ -26,17 +25,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
         if (fs.lstatSync(file).isDirectory()){
             console.log("it's a directory")
             return NextResponse.json({fileType: FileTypes.directory, status: 200});
-            console.log("Why are we still here?");
         }  else if (fs.lstatSync(file).isFile()){
             console.log("it's a file");
             return NextResponse.json({fileType: FileTypes.JSON, status: 200});
         }  else {
             return NextResponse.json({fileType: FileTypes.other, status: 200});
-            console.log("Just to suffer?");
         } 
     }
     catch (error) {
-        console.log("IEEEEEEEEEEEEH")
         console.error(error);
         return NextResponse.json({ error: 'Internal server error', status: 500});
     }

@@ -1,20 +1,24 @@
 import Token from "./Token";
-import WrongTypeException from "../exceptions/WrongTypeException";
-import NoObjectException from "../exceptions/NoObjectException";
 import Question, { MultipleChoice, Slider } from "./question";
 import { QuestionTypes } from "./question";
-import FormValidator from "./FormValidator";
-import FileFinder from "./FileFinder";
 import Nameable from "./Nameable";
 
 
+/**
+ * The class denoting forms created and sent to respondents.
+ * It contains the name and description of the form, whether it is active, and arrays for the relevant questions and tokens.
+ * The question array can be changed through the addQuestion and removeQuestion functions.
+ */
 export default class Form implements Nameable {
     private _name: string;
     private _description: string;
     private _questions: Array<Question>;
     private _tokens: Array<Token>;
     private _isActive: boolean;
+    private _parent: string;
 
+
+    //Get and set functions for the fields.
     public set isActive(value: boolean) {
         this._isActive = value;
     }
@@ -22,13 +26,7 @@ export default class Form implements Nameable {
     public get isActive(): boolean {
         return this._isActive;
     }
-
-    //Get and set functions for the fields.
     public get name(): string {
-        return this._name;
-    }
-
-    public getName(): string {
         return this._name;
     }
 
@@ -63,9 +61,14 @@ export default class Form implements Nameable {
         this._questions = [];
         this._tokens = [];
         this._isActive = true;
+        this._parent = "";
     }
 
     
+    /**
+     * Creates a new question object and adds it to the question array
+     * @param questionType The subclass of the question to be added
+     */
     public addQuestion(questionType : QuestionTypes) : void{
         switch (questionType){
             case QuestionTypes.multipleChoice: {
@@ -83,7 +86,12 @@ export default class Form implements Nameable {
         }
     }
 
-    public removeQuestion(index: number) : void{
+    /**
+     * Removes a question from the questions array
+     * Then, reassigns numbers to each question so they still go from 1 to n
+     * @param index The index of the question, which is equal to question.number-1
+     */
+    public removeQuestion(index: number) : void {
         this.questions.splice(index, 1);
         for (let i = 0; i < this.questions.length; i++){
             this.questions[i].number = i+1;
@@ -91,12 +99,19 @@ export default class Form implements Nameable {
     }
 
     /**
-     * Replaces space with dash
+     * Replaces spaces in name with dashes
+     * Used to make name compatible with the file system
+     * Also trims in order to remove spaces
      */
     public cleanName() : void{
-        this.name = this.name.replace(/ /g, "-");
+        this.name = this.name.trim().replace(/ /g, "-");
     }
 
+
+    /**
+     * Gets the name before it was cleaned. Used to display names with spaces to users.
+     * @returns This object's name, dashes being replaced with spaces
+     */
     public getUncleanName() : string{
         let newName : string = this.name;
         return newName.replace(/-/g," ");

@@ -1,4 +1,8 @@
+
+/**
+ * An interface for objects that have a name, accessed through a getter method called name()
+ */
 export default interface Nameable {
 
-    getName() : string;
+    get name() : string;
 }
