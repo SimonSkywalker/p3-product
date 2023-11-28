@@ -44,14 +44,13 @@ import Modal from "react-modal";
 import FileSystemService from "../components/FileSystemService";
 import ServerSidePaths from '../components/ServerSidePaths';
 import {Project, ProjectObject} from '../components/projectClass';
-import {ProjectInterface, projectObject} from '../interfaces/interfaces';
+import {ProjectInterface, projectObject, deleteProject, modalOperator} from '../interfaces/interfaces';
 import { TitleDuplicateException } from "../exceptions/TitleDuplicateException";
 import { CreateWhileEdit } from "../exceptions/CreateWhileEditException";
 import { EditWhileCreating } from "../exceptions/EditWhileCreating";
 import { EditingAlreadyActive } from "../exceptions/EditingAlreadyActiveException";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Console } from "console";
 import { validateProjectData } from "../lib/validation/project";
 import { z } from "zod";
 
@@ -83,25 +82,31 @@ const customStyles2 = {
   },
 };
 
-interface deleteProject {
-  projectTitle: String,
-  projectIndex: number,
-}
+
 
 
 
 export default function ProjectPage() {
+
   const [trigger, setTrigger] = useState(true);
+
   const [openTab, setOpenTab] = useState<number>(1);
-  const [iconModalIsOpen, setIconIsOpen] = useState<boolean>(false);
-  const [deleteModalIsOpen, setDeleteIsOpen] = useState<boolean>(false);
-  const [archiveModalIsOpen, setArchiveModalIsOpen] = useState<boolean>(false);
-  const [projectToDelete, setProjectToDelete] = useState<deleteProject>({projectTitle:"", projectIndex: -1});
-  const [creatingProject, setCreating] = useState<boolean>(false);
-  const [archiveIsOpen, setArchiveIsOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
+
   const [icons, setIcons] = useState<string[]>([]);
-  const [projects, setProjects] = useState<ProjectObject[]>([]); 
+  const [projects, setProjects] = useState<ProjectObject[]>([]);
+  
+
+  const [projectToDelete, setProjectToDelete] = useState<deleteProject>({projectTitle:"", projectIndex: -1});
+  const [projectToArchive, setProjectToArchive] = useState<deleteProject>({projectTitle:"", projectIndex: -1});
+  
+  
+  const [creatingProject, setCreating] = useState<boolean>(false);
   const [newProject, setNewProject] = useState<Project>(new Project());
+
+  
+   
+  
   
   //Todo - Get username from cookie
   const user = "Mka16";
@@ -136,8 +141,9 @@ export default function ProjectPage() {
     FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
       setIcons(iconFiles);
     });
-
+    
     getProjects();
+
   }, []);
 
 
@@ -169,13 +175,24 @@ export default function ProjectPage() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>){
 
     e.preventDefault();
+
+    if(newProject.getIcon() === ""){
+      newProject.setIcon("merete.jpg");
+    }
     
     const projectObject: ProjectObject = newProject.convertToProjectObject();
     projects.unshift(projectObject);
    
     formattingProjectData();
+    
+    newProject.createFolder();
+    
 
-    newProject.setIcon("");
+    setNewProject((prevProject) => {
+      const updatedProject = new Project();
+      updatedProject.setProject({ ...prevProject.getProject(), icon: '' });
+      return updatedProject;
+    });
 
     setCreating(false);
     
@@ -200,16 +217,18 @@ export default function ProjectPage() {
     const formData = new FormData();
     formData.append("file", file);
 
-    FileSystemService.postIcon(formData);
+    const result: { [key: string]: any } = await FileSystemService.postIcon(formData);
+    console.log("filename:", result["filename"]);
+    console.log("size:", result["size"]);
   
     e.target.value = '';                
 
-
-    
-
-
+    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
+      setIcons(iconFiles);
+    });
 
   }
+  
 
   async function handleDelete(){
   
@@ -219,9 +238,11 @@ export default function ProjectPage() {
 
     await formattingProjectData();
     
+    toast.info("Deleted " + projectToDelete.projectTitle)
+
     setProjectToDelete({projectTitle:"", projectIndex: -1});
 
-    setDeleteIsOpen(false);
+    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});;
 
   }
   
@@ -229,14 +250,16 @@ export default function ProjectPage() {
   
     // Has to .splice since useState value doesnt change
     // immediately but only schedules a change. 
-    projects.splice(projectToDelete.projectIndex, 1);
-
+    projects[projectToArchive.projectIndex].setIsActive(false);
+    
     await formattingProjectData();
     
+    toast.info("Moved " + projectToArchive.projectTitle + " to archive" )
+
     setProjectToDelete({projectTitle:"", projectIndex: -1});
 
-    setArchiveIsOpen(false);
-
+    setModalOpen({currentModalTitle: "archiveModal", isOpen: false});
+    
   }
 
   function isTitleUnique (title: string, creation: boolean) {
@@ -246,7 +269,13 @@ export default function ProjectPage() {
       const notUniqueTitle = projects.filter(project => {return project.getTitle() === title});
       const maxIndex = (creation) ? 0 : 1;
       if(notUniqueTitle.length > maxIndex){
+
+        if(notUniqueTitle.some(project=>{return project.getIsActive() === false})){
+          toast.info("The conflicting project is located in history")
+        }
+
         throw new TitleDuplicateException()
+
       }
 
     } catch(err) {
@@ -268,16 +297,16 @@ export default function ProjectPage() {
 
           <Modal
             
-            isOpen={iconModalIsOpen}
-            onRequestClose={() => setIconIsOpen(false)}
+            isOpen={(modalOpen.currentModalTitle === "iconModal") ? modalOpen.isOpen : false}
+            onRequestClose={() => setModalOpen({currentModalTitle: "", isOpen: false})}
             contentLabel="Choose Icon Modal"
             style={customStyles}
           >
-            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setIconIsOpen(false)}></img>
+            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setModalOpen({currentModalTitle: "", isOpen: false})}></img>
             
             <form 
             className="mt-6" 
-            onSubmit={() => setIconIsOpen(false)}>
+            onSubmit={() => setModalOpen({currentModalTitle: "", isOpen: false})}>
               <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
               <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
 
@@ -308,7 +337,7 @@ export default function ProjectPage() {
               <button 
                 type="submit"
                 title="submitButton"
-                onClick={() => setIconIsOpen(false)}
+                onClick={() => setModalOpen({currentModalTitle: "", isOpen: false})}
                 className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
                 Submit
               </button>
@@ -318,12 +347,12 @@ export default function ProjectPage() {
 
           <Modal
             
-            isOpen={deleteModalIsOpen}
-            onRequestClose={() => setDeleteIsOpen(false)}
+            isOpen={(modalOpen.currentModalTitle === "deleteModal") ? modalOpen.isOpen : false}
+            onRequestClose={() => setModalOpen({currentModalTitle: "", isOpen: false})}
             contentLabel="Delete confirm modal"
             style={customStyles2}
           >
-            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setDeleteIsOpen(false)}></img>
+            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}></img>
             
             <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete {projectToDelete?.projectTitle} ?</p>
             
@@ -339,7 +368,36 @@ export default function ProjectPage() {
             <button 
                 type="button"
                 title="cancelButton"
-                onClick={() => setDeleteIsOpen(false)}
+                onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}
+                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
+                Cancel
+              </button>
+
+
+
+          </Modal>
+          <Modal
+            
+            isOpen={(modalOpen.currentModalTitle === "archiveModal") ? modalOpen.isOpen : false}
+            onRequestClose={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}
+            contentLabel="Archive confirm modal"
+            style={customStyles2}
+          >
+            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}></img>
+            
+            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to archive {projectToArchive?.projectTitle} ?</p>
+
+            <button 
+                type="button"
+                title="archiveButton" 
+                onClick={handleArchive}
+                className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
+                Archive
+              </button>
+            <button 
+                type="button"
+                title="cancelButton"
+                onClick={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}
                 className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
                 Cancel
               </button>
@@ -484,7 +542,7 @@ export default function ProjectPage() {
                             <img className="w-10 h-10 hover:scale-125" src="icons/upload.png" 
                             onClick={ e => {
                               e.preventDefault();
-                              setIconIsOpen(true);
+                              setModalOpen({currentModalTitle: "iconModal", isOpen: true});
                             }}></img>
                         </button>
                         ) : (
@@ -492,7 +550,7 @@ export default function ProjectPage() {
                           <img className="w-10 h-10 hover:scale-125" src={"icons/" + newProject.getIcon()}
                           onClick={ e => {
                           e.preventDefault();
-                          setIconIsOpen(true);
+                          setModalOpen({currentModalTitle: "iconModal", isOpen: true});;
     
                         }}></img>
                         </button>
@@ -542,10 +600,9 @@ export default function ProjectPage() {
                           className="flex justify-end items-center">
                             <img className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src="icons/arhieve.png"
                             onClick={ e => {
-                              setArchiveIsOpen(true);
-                                project.setIsActive(false);
-                                formattingProjectData();
-                                //setTrigger(!trigger)
+                              setModalOpen({currentModalTitle: "archiveModal", isOpen: true});
+                              setProjectToArchive({projectTitle: project.getTitle(), projectIndex: i});
+                              console.log(project.getTitle())
                             }}>
                             </img>
                         </div>
@@ -628,7 +685,7 @@ export default function ProjectPage() {
                             className="flex justify-between items-center ">
                             <img className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
                             onClick={ e => {
-                              setDeleteIsOpen(true);
+                              setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
                               setProjectToDelete({projectTitle: project.getTitle(), projectIndex: i});
                               //handleDelete(i);
                               console.log(project.getTitle())

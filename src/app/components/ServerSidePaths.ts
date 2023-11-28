@@ -16,4 +16,8 @@ export default class ServerSidePaths {
     public static getProjectsPath(user: string): string {
         return ServerSidePaths.databasePath + "/" + user + "/" + ServerSidePaths.projectsFile;
     }
+
+    public static getProjectPath(user: string): string {
+        return ServerSidePaths.databasePath + "/" + user;
+    }
 }

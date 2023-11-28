@@ -1,4 +1,5 @@
 import { ProjectInterface, projectObject } from '../interfaces/interfaces';
+import fs from 'fs';
 
 
 export class Project {
@@ -6,7 +7,7 @@ export class Project {
     protected _projectdata: ProjectInterface = {
         title: '',
         isActive: true,
-        icon: "upload.png",
+        icon: "",
     }
 
     public constructor() {
@@ -17,7 +18,9 @@ export class Project {
     }
 
     public setIcon(icon: string){
-        this._projectdata.icon = icon;
+        if (icon.trim() !== '') {
+            this._projectdata.icon = icon;
+        }
     }
 
     public setIsActive(isActive: boolean){
@@ -50,6 +53,22 @@ export class Project {
         // Additional setup or customization for ProjectObject if needed
         return projectObject;
     }
+
+    public createFolder() {
+        const folderName = this._projectdata.title;
+        if (!fs.existsSync(folderName)) {
+            fs.mkdirSync(folderName);
+        }
+    }
+
+    // Method to delete the folder for the project
+    public deleteFolder() {
+        const folderName = this._projectdata.title;
+        if (fs.existsSync(folderName)) {
+            fs.rmdirSync(folderName, { recursive: true });
+        }
+    }
+
 }
 
 export class ProjectObject extends Project {

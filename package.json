@@ -12,12 +12,7 @@
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.11",
-<<<<<<< HEAD
-    "formidable": "^3.5.1",
-    "next": "^14.0.0",
-=======
     "next": "^14.0.3",
->>>>>>> 7de89adb580f907a218f93a8c5fddfd81a8e5334
     "react": "^18.2.0",
     "react-dom": "^18",
     "react-modal": "^3.16.1",
@@ -25,17 +20,15 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "@types/formidable": "^3.4.5",
-=======
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.2",
->>>>>>> 7de89adb580f907a218f93a8c5fddfd81a8e5334
+    "@types/jest": "^29.5.10",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-modal": "^3.16.2",
     "autoprefixer": "^10",
+    "axios": "^1.6.2",
     "eslint": "^8",
     "eslint-config-next": "14.0.0",
     "eslint-plugin-jest-dom": "^5.1.0",

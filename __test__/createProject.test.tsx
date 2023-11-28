@@ -1,46 +1,42 @@
-import { act, render, screen, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom'
-import ProjectPage from '@/app/projectCreation/page'
-import {renderHook} from '@testing-library/react'
+// ProjectPage.test.js
 
+import React from 'react';
+import { render, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import ProjectPage from '@/app/projectCreation/page';
+import axios from 'axios'; // This import is automatically mocked by Jest
+import { describe } from 'node:test';
+
+jest.mock('axios');
 /*
-describe("ProjectPage",()=>{
+describe('ProjectPage', () => {
+  test('renders without crashing', async () => {
+    // Mock the Axios request to return a specific response
+    axios.get.mockResolvedValue({
+      data: [
+        // Your mocked data here
+        { title: 'Project 1', isActive: true, icon: 'icon1.png' },
+        { title: 'Project 2', isActive: false, icon: 'icon2.png' },
+      ],
+    });
 
-    test('sets title in newProject', () => {
-        render(<ProjectPage />);
-    
-        // Assuming your button has a specific text or another identifier
-        const createNewButton = screen.getByText('+');
+    // Render the component
+    const { getByText } = render(<ProjectPage />);
 
-        // Trigger the button click event
-        fireEvent.click(createNewButton);
-    
-        // Now, you can find the input field for the title
-        const titleInput = screen.getByPlaceholderText('Project Name');
-    
-        // Assuming you have some specific title
-        const testTitle = 'Test Project';
-    
-        // Set the value in the input field
-        fireEvent.change(titleInput, { target: { value: testTitle } });
-    
-        const newProjectTitle = screen.getByText(testTitle);
+    // Wait for the Axios request to be resolved
+    await waitFor(() => {
+      expect(axios.get).toHaveBeenCalledTimes(1);
+    });
 
-        expect(newProjectTitle).toBeInTheDocument();
-      });
-    
-})
+    // Your assertions based on the mocked data
+    expect(getByText('Project 1')).toBeInTheDocument();
+    expect(getByText('Project 2')).toBeInTheDocument();
+  });
+});
 */
 
-describe("ProjectPage",()=>{
-
-    jest.setTimeout(30000);
-    it('renders correct content', async () => {
-
-        /**
-         * First page (make sure "isUsed"-boolean is set to false when starting)
-         */
-        await act(() => {
-            render(<ProjectPage />)
-        })
-    })})
+describe('ProjectPage', () => {
+    test('renders without crashing', async () => {
+        render(<ProjectPage />);
+    })
+})
