@@ -12,9 +12,12 @@
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.11",
-    "@types/node-fetch": "^2.6.9",
-    "axios": "^1.6.2",
-    "node-fetch": "^3.3.2",
+<<<<<<< HEAD
+    "formidable": "^3.5.1",
+    "next": "^14.0.0",
+=======
+    "next": "^14.0.3",
+>>>>>>> 7de89adb580f907a218f93a8c5fddfd81a8e5334
     "react": "^18.2.0",
     "react-dom": "^18",
     "react-modal": "^3.16.1",
@@ -22,9 +25,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
+<<<<<<< HEAD
+    "@types/formidable": "^3.4.5",
+=======
+    "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.2",
-    "@testing-library/user-event": "^14.5.1",
+>>>>>>> 7de89adb580f907a218f93a8c5fddfd81a8e5334
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

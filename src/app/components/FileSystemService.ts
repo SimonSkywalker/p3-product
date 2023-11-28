@@ -88,12 +88,27 @@ public static async writeToJSONFile(data: Array<Object>, filePath: string) {
                 jsonArray = data.data;
             }
         }
-    } catch (error:any) {
-        console.error('There has been a problem with your fetch operation:', error);
-        throw new Error('Failed to get JSON file: ' + error.message);
+        // console.dir(jsonArray);
+        return jsonArray;
     }
 
-    // console.dir(jsonArray);
-    return jsonArray;
-  }
+    public static async postIcon(formData : FormData) : Promise<Array<Object>> {
+      
+      let jsonArray : Array<Object> = [];
+          await fetch('/api/uploadIcon', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            // console.log("data:", data);
+            //let alertString = "Image uploaded successfully.\nfilename: " + data["filename"] + "\nsize: " + data["size"] + " bytes.";
+            //alert(alertString);
+            jsonArray = data.data;
+          })
+          .catch(error => console.error("error:", error));
+      
+      // console.dir(jsonArray);
+      return jsonArray;
+    }  
 }

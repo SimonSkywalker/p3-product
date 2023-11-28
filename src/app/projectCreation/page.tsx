@@ -95,6 +95,7 @@ export default function ProjectPage() {
   const [openTab, setOpenTab] = useState<number>(1);
   const [iconModalIsOpen, setIconIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteIsOpen] = useState<boolean>(false);
+  const [archiveModalIsOpen, setArchiveModalIsOpen] = useState<boolean>(false);
   const [projectToDelete, setProjectToDelete] = useState<deleteProject>({projectTitle:"", projectIndex: -1});
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [archiveIsOpen, setArchiveIsOpen] = useState<boolean>(false);
@@ -184,6 +185,7 @@ export default function ProjectPage() {
     e.preventDefault();
 
     const fileInput = e.target;
+
     if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
       // Handle the case where there are no files selected
       return;
@@ -194,6 +196,14 @@ export default function ProjectPage() {
     console.log("name " + file.name);
     console.log("type " + file.type);
     console.log("size " + file.size);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    FileSystemService.postIcon(formData);
+  
+    e.target.value = '';                
+
 
     
 
@@ -337,36 +347,6 @@ export default function ProjectPage() {
 
 
           </Modal>
-          <Modal
-            
-            isOpen={archiveIsOpen}
-            onRequestClose={() => setArchiveIsOpen(false)}
-            contentLabel="Delete confirm modal"
-            style={customStyles2}
-          >
-            <img className="w-6 h-6 float-right hover:scale-125" src="icons/arhieve.png" onClick={() => setArchiveIsOpen(false)}></img>
-            
-            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to archive {projectToDelete?.projectTitle} ?</p>
-
-            <button 
-                type="button"
-                title="archiveButton"
-                onClick={handleArchive}
-                className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
-                Archive
-              </button>
-            <button 
-                type="button"
-                title="cancelButton"
-                onClick={() => setArchiveIsOpen(false)}
-                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
-                Cancel
-              </button>
-
-
-
-          </Modal>
-
 
           <ul key="ul1" 
             className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row max-w-screen-2xl mx-auto"
@@ -560,7 +540,7 @@ export default function ProjectPage() {
                       <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
                         <div 
                           className="flex justify-end items-center">
-                            <img className="w-4 h-6 hover:scale-125 hover:cursor-pointer" src="icons/arhieve.png"
+                            <img className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src="icons/arhieve.png"
                             onClick={ e => {
                               setArchiveIsOpen(true);
                                 project.setIsActive(false);
