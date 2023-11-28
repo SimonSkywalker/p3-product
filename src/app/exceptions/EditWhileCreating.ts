@@ -3,7 +3,7 @@ export class EditWhileCreating extends Error {
     
     constructor(){
         super();
-        this.message = "Please finish creating before editing";
+        this.message = `Please finish creating before editing`;
     }
     
 }

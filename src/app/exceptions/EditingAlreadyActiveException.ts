@@ -1,9 +1,9 @@
 export class EditingAlreadyActive extends Error {
     static message: any;
     
-    constructor(){
+    constructor(projectTitle:string){
         super();
-        this.message = "Please finish editing before starting another edit";
+        this.message = `Please finish editing Project: ${projectTitle}`;
     }
     
 }
