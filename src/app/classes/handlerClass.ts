@@ -227,5 +227,14 @@ export class APIHandle{
         console.error(Error)
     }
   }
+
+  public static async APIRequestRQ(form: string) {
+    
+      const res = await fetch("/api/getFormdata", {
+        method: "POST",
+        body: JSON.stringify(form)
+      })
+    return await res.json()
+  }
 }
 

@@ -24,6 +24,8 @@ interface Question {
     description: string;
     questions: Question[];
     tokens: Token[];
+    isActive: boolean;
+    parent: any[string];
   }
 
 /**
@@ -149,7 +151,9 @@ export class checkList{
         return fs.readFile(formsFilePath, "utf8")
             .then((formsFile) => {
                 const formsFileparsed = JSON.parse(formsFile);
-                return formsFileparsed.forms.map((form: { name: string }) => form.name);
+                return formsFileparsed.forms
+                .filter((form: { name: string; isActive?: boolean }) => form.isActive !== true)
+                .map((form: { name: string }) => form.name);
             })
             .catch((error) => {
                 // Handle errors

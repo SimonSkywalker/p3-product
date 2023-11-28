@@ -12,7 +12,9 @@
 						"isUsed": false
 					}
 				}
-			]
+			],
+			"isActive": true,
+			"parent": []
 		},
 		{
 			"name": "20-10",
@@ -87,7 +89,9 @@
 						"isUsed": false
 					}
 				}
-			]
+			],
+			"isActive": false,
+			"parent": []
 		}
 	]
 }
