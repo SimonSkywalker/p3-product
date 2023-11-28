@@ -41,7 +41,7 @@ Merete - Delete confirmation modal
 'use client'
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
-import FileSystemService from '../components/FileSystemService';
+import FileSystemService from "../components/FileSystemService";
 import ServerSidePaths from '../components/ServerSidePaths';
 import {Project, ProjectObject} from '../components/projectClass';
 import {ProjectInterface, projectObject} from '../interfaces/interfaces';
@@ -110,7 +110,16 @@ export default function ProjectPage() {
   async function getProjects() {
     
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
-    const projectsWithBeingEdited: ProjectObject[] = data.map((projectData) => {return new ProjectObject(projectData)});
+    
+    const modifiedData = data.map((project) => {
+      // Assuming project.title is the property you want to modify
+      const modifiedTitle = project.title.replace(/-/g, ' '); // Replace all occurrences of '-' with a space
+    
+      // Return a new object with the modified title
+      return { ...project, title: modifiedTitle };
+    });
+    
+    const projectsWithBeingEdited: ProjectObject[] = modifiedData.map((projectData) => {return new ProjectObject(projectData)});
     
     setProjects(projectsWithBeingEdited);
     console.log("first" + projects);
@@ -140,11 +149,17 @@ export default function ProjectPage() {
     
     const data = projects.map((project) => project.getProjectDataArray()); 
 
-    const transformedData = data.map(([title, isActive, icon]) => ({
-      title,
-      isActive,
-      icon,
-    }));
+    const transformedData = data.map(([title, isActive, icon]) => {
+      // Replace spaces with hyphens in the title
+      const modifiedTitle = title.replace(/ /g, '-');
+    
+      // Return a new object with the modified title and other properties
+      return {
+        title: modifiedTitle,
+        isActive,
+        icon,
+      };
+    });
 
     await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
 
@@ -417,7 +432,7 @@ export default function ProjectPage() {
                           const editingProject = projects.filter(project => {return project.getBeingEdited()});
 
                           if(editingProject.length){
-                            throw new CreateWhileEdit();
+                            throw new CreateWhileEdit(editingProject[0].getTitle());
                           }
                           setCreating(true);
                         } catch(err) {
@@ -652,7 +667,7 @@ export default function ProjectPage() {
                                 }
                                 
                                 if(editingProject.length) {
-                                  throw new EditingAlreadyActive();
+                                  throw new EditingAlreadyActive(editingProject[0].getTitle());
                                 }
 
                                 project.setpreviousTitle(project.getTitle());
