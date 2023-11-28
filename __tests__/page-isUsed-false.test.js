@@ -29,10 +29,9 @@ describe('page.tsx', () => {
         /**
          * First page (make sure "isUsed"-boolean is set to false when starting)
          */
-        await act(() => {
+        act(() => {
             render(<Page
-                params={params}
-            />)
+                params={params} />)
         });
 
         //https://github.com/testing-library/dom-testing-library/issues/1234

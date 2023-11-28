@@ -29,6 +29,50 @@ export default class FileSystemService {
         }
     }
 
+    /**
+     * Creates
+     * @param originPath 
+     * @param directoryPath 
+     */
+    public static async makeDirectory(originPath : string, directoryPath : string) : Promise<void> {
+      try {
+        await fetch(originPath + '/api/createDirectory', {
+            method: 'POST',
+            body: JSON.stringify({path: directoryPath})
+          })
+            .then(async response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+            })
+            .catch(error => {
+              console.error('There has been a problem with your fetch operation:', error);
+            });
+      } catch (error : any) {
+          throw new Error('Failed to make directory: ' + error.message);
+      }
+    }
+
+    public static async delete(originPath : string, directoryPath : string) : Promise<void> {
+      try {
+        await fetch(originPath + '/api/delete', {
+            method: 'POST',
+            body: JSON.stringify({path: directoryPath})
+          })
+            .then(async response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+            })
+            .catch(error => {
+              console.error('There has been a problem with your fetch operation:', error);
+            });
+      } catch (error : any) {
+          throw new Error('Failed to make directory: ' + error.message);
+      }
+    }
+
+
     public static async getType(originPath : string, currentPath : string) : Promise<FileTypes> {
         let fileType :FileTypes = FileTypes.other;
          await fetch(originPath + '/api/fileType', {

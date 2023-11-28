@@ -61,6 +61,34 @@ export default class FormErrorHandler {
         this._validationErrors = value;
       }
 
+      /**
+       * Sets every validation error to be an empty string 
+       */
+      public cleanErrors() : void {
+        this._validationErrors._description = "";
+        this._validationErrors._name = "";
+        for(let i = 0; i < this._validationErrors._questions.length; i++){
+          this.cleanQuestion(i);
+        }
+      }
+
+      /**
+       * Removes all errors form a question
+       * @param questionNumber The index of the question
+       */
+      public cleanQuestion(questionNumber : number) : void {
+        this._validationErrors._questions[questionNumber] = {_description: "", _options: []};
+      }
+
+      /**
+       * Removes the error from an option
+       * @param questionNumber The index of the question containing the option
+       * @param optionNumber The index of the option
+       */
+      public cleanOption(questionNumber : number, optionNumber : number) : void {
+        this._validationErrors._questions[questionNumber]._options[optionNumber] = "";
+      }
+
       public errorValidation(Error: any){
         
         //True if validation error occurs
