@@ -8,6 +8,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const body = await req.json();
 
     const filePath : string = body.path;
+    const newPath : string = body.newPath;
 
     if (typeof filePath !== 'string') {
         console.log("ERROR BITCH");
@@ -15,7 +16,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
     try {
         let file = path.join(process.cwd(), filePath);
-        fs.rmdir(file, {recursive: true}, err => {
+        let newFile = path.join(process.cwd(), newPath);
+        fs.rename(file, newFile, err => {
             if (err) {
                 console.error(err);
             }
