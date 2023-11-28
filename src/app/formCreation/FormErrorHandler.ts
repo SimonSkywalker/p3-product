@@ -28,6 +28,32 @@ export default class FormErrorHandler {
         }]
         }
     
+        /**
+         * Makes sure that there are at least a certain amount of empty questions in the errors data
+         * @param questions The number of questions that should (at least) exist
+         * @returns This object's validation errors
+         */
+      public addQuestionErrors(questions : number) : FormFormData 
+      {
+        while(this._validationErrors._questions.length < questions){
+          this._validationErrors._questions.push({_description: "", _options: []});
+        }
+        return this._validationErrors
+      }
+
+      /**
+       * Makes sure that a certain question has at least a certain amount of empty option errors
+       * @param question Index of the question
+       * @param options Number of options that should (at least) exist
+       * @returns This object's validation errors
+       */
+      public addOptionErrors(question : number, options : number) : FormFormData {
+        while(this._validationErrors._questions[question]._options.length < options){
+          this._validationErrors._questions[question]._options.push("");
+        }
+        return this._validationErrors;
+      }
+
       public get validationErrors() {
         return this._validationErrors;
       }

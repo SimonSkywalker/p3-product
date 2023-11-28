@@ -32,6 +32,7 @@ const config: Config = {
       },
       colors: {
         primary: "#2190FF",
+        secondary: "#000000",
         palette:{
           100: "#c8703d",
           200:"#f5a564",
