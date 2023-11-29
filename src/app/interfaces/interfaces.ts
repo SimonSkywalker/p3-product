@@ -23,8 +23,8 @@ export interface projectObject extends ProjectInterface {
     beingEdited?: boolean;
 }
 
-export interface deleteProject {
-    projectTitle: String,
+export interface actionProject {
+    projectTitle: string,
     projectIndex: number,
 }
   
@@ -33,6 +33,4 @@ export interface modalOperator {
     isOpen: boolean,
 }
 
-export interface actionOnProject {
-    
-}
+

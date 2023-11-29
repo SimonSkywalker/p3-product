@@ -1,5 +1,5 @@
 import { ProjectInterface, projectObject } from '../interfaces/interfaces';
-import fs from 'fs';
+
 
 
 export class Project {
@@ -52,22 +52,7 @@ export class Project {
         const projectObject = new ProjectObject(this._projectdata);
         // Additional setup or customization for ProjectObject if needed
         return projectObject;
-    }
-
-    public createFolder() {
-        const folderName = this._projectdata.title;
-        if (!fs.existsSync(folderName)) {
-            fs.mkdirSync(folderName);
-        }
-    }
-
-    // Method to delete the folder for the project
-    public deleteFolder() {
-        const folderName = this._projectdata.title;
-        if (fs.existsSync(folderName)) {
-            fs.rmdirSync(folderName, { recursive: true });
-        }
-    }
+    }    
 
 }
 
@@ -108,6 +93,5 @@ export class ProjectObject extends Project {
     }
 
 }
-
 
 //export default Project;
