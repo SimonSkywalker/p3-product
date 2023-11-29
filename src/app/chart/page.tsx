@@ -45,9 +45,10 @@ export default function VisPage() {
     .then((data) => {
         setUser({
           ...user,
-          roles: data.roles,
-          questions: data.questions
-        })        
+          roles: data.formdata.roles,
+          questions: data.formdata.questions
+        })
+        console.log(data.mResponse)
       })
       .catch((error) => {
         alert(`Error: ${error}`);

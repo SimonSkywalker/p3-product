@@ -5,7 +5,7 @@ import Example2 from '../Pie'
 import { useEffect, useState } from 'react'
 import { Token } from "../classes/tokenClass";
 import Cookies from "js-cookie";
-import { QuestionHandler } from '../classes/chartMaker'
+import { QuestionHandler, chartMaker } from '../classes/chartMaker'
 import { APIHandle } from '../classes/handlerClass'
 
 export default function ChartPage(response: any) {
@@ -14,33 +14,46 @@ export default function ChartPage(response: any) {
         roles: [],
         questions: [],
       });
-    console.log(response.searchParams);
-
+    //console.log(response.searchParams);
+    
     const formData = response.searchParams;
-    useEffect(()=>{
-        const token = Cookies.get('token');
 
-    if (!token) {
-      router.push('/');
+    if (Object.keys(formData).length === 0) {
+        router.push('/chart');
       return;
     }
 
+    useEffect(()=>{
+        const token = Cookies.get('token');
+
+        if (!token) {
+          router.push('/');
+          return;
+        }
     Token.validateToken(token).catch((error) => {
       console.error(error);
       router.replace("/login");
     });
-        APIHandle.APIRequestRQ(formData.form)
-        .then((data) => {
+    
+    APIHandle.APIRequestRQ(formData.form)
+    .then((data) => {
             setChartData({
             ...chartData,
-            roles: data.roles,
-            questions: data.questions
+            roles: data.formdata.roles,
+            questions: data.formdata.questions
             })
+
+            console.log(data.mResponse);
+            let info = new chartMaker()
+            info.makeArray(data.mResponse, formData.rolePicks)
+            console.log(info.dataArray);
         })
-        .catch((error) => {
+    .catch((error) => {
             console.error(`Error: ${error}`);
         });
     }, [formData])
+
+    //formData, check if info[i].roles is in formdata.rolePicks
     
     if (typeof formData.questionPicks === "string") {
         formData.questionPicks = [formData.questionPicks];
@@ -48,7 +61,7 @@ export default function ChartPage(response: any) {
     if (typeof formData.rolePicks === "string") {
         formData.rolePicks = [formData.rolePicks];
     }
-    console.log(QuestionHandler.questionIndexGetter(formData.questionPicks, chartData.questions));
+    //console.log(QuestionHandler.questionIndexGetter(formData.questionPicks, chartData.questions));
 
     return(
         <main>
