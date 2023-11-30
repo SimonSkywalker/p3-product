@@ -446,8 +446,8 @@ const setEdit = (project:ProjectObject) => {
                 className={
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 1
-                    ? "text-white bg-blueGray-600"
-                    : "text-blueGray-600 bg-white")
+                    ? "text-white bg-palette-500"
+                    : "text-palette-500 bg-white")
                 }
                 onClick={e => {
                   e.preventDefault();
@@ -465,8 +465,8 @@ const setEdit = (project:ProjectObject) => {
                 className={
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 2
-                    ? "text-white bg-blueGray-600"
-                    : "text-blueGray-600 bg-white")
+                    ? "text-white bg-palette-500"
+                    : "text-palette-500 bg-white")
                 }
                 onClick={e => {
                   e.preventDefault();
