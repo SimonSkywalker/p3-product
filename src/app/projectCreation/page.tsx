@@ -9,16 +9,14 @@
 
 
 New To Do
-Comment code
-History - css & delete (Carmen)-done
-Cleanup OnClicks (Nicolaj) - Kinda Done
-Cleanup Trigger (Nicolaj) - Done
 
-Edit placeholder current Title (Merete) - Done
-Cross at creation does not reset icon - done
-sætte style ind i css - done
-Semicolon - Merete - done
-Links ved project iconer - Done
+Comment code
+Hvis man klikker på projectet DTG. redirect localhost:3000/{user}/DTG/
+IKON MODAL GÅR UNDER NAV BAR!!!!!!!!!!!!!!!!!!!!!!!! - Done
+Get Username from token - Done
+Check Token - Done
+Describe Integration Tests
+Active / History Tabs Stay right below NavBar
 
 
 */
@@ -39,14 +37,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { validateProjectData } from "../lib/validation/project";
 import { z } from "zod";
 import Link from 'next/link';
-
-
+import { APIHandle } from "../classes/handlerClass";
+import { log } from "console";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 
 
 
 export default function ProjectPage() {
-
+  const router = useRouter();
+  
+  const [user, setUser] = useState("");
+  
   const [openTab, setOpenTab] = useState<number>(1);
   const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
 
@@ -59,12 +62,60 @@ export default function ProjectPage() {
   const [newProject, setNewProject] = useState<Project>(new Project());
 
 
-  //Todo - Get username from cookie
-  const user = "Mka16";
+  useEffect(() => {
+    const token = Cookies.get("token");
+    console.log(token)
+    if (!token) {
+      router.replace("/login"); // If no token is found, redirect to login page
+      return;
+    }
+      // Validate the token by making an API call
+      const validateToken = async () => {
+        try {
+          const res = await fetch("/api/protected", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!res.ok) throw new Error("Token validation failed");
+        } catch (error) {
+          console.error(error);
+          router.replace("/login"); // Redirect to login if token validation fails
+        }
+      };
+  
+      validateToken();
+
+    FileSystemService.APIRequestUser().then(async (data)=>{setUser(await data.Id);});
+   
+    //Sets the div 'outerDiv' as the appElement of the modals, 
+    //such that the page content inside the div is hidden when a modal is in use.
+    const appElement: HTMLElement | null = document.getElementById('outerDiv');
+    if (appElement) {
+      Modal.setAppElement(appElement);
+    }
+
+    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
+      setIcons(iconFiles);
+    });
+    
+    getProjects();
+    
+  }, [user]);
+  
+
+ 
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
 
-  
+  /**
+   * Function that calls the getJSONFile function,
+   *  which returns all of the users projects as an array of ProjectInterfaces. 
+   * The projects get redefined as ProjectObjects and are set as the state projects.
+   */
   async function getProjects() {
+    
+    console.log("get projects user ", user);
     
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
     
@@ -81,21 +132,50 @@ export default function ProjectPage() {
 
   }
 
-  useEffect(() => {
-
-    const appElement: HTMLElement | null = document.getElementById('outerDiv');
-    if (appElement) {
-      Modal.setAppElement(appElement);
-    }
-
-    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
-      setIcons(iconFiles);
-    });
-    
-    getProjects();
-
-  }, []);
+  /**
+   * useEffect is called when the page renders. 
+   * Calls the listFiles function which returns icons and sets them as the state of Icons.
+   * Also calls the getProjects function. 
+   */
+  const fetchData = async () => {
+    try {
+      await FileSystemService.APIRequestUser().then((data)=>{
+        console.log(data.Id);
+        setUser(data.Id);
+      });
+     
   
+     
+
+      console.log(user);
+      
+      // Now, user state has been updated, and you can log it
+      
+
+      // Rest of your code
+      const appElement: HTMLElement | null = document.getElementById('outerDiv');
+      if (appElement) {
+        Modal.setAppElement(appElement);
+      }
+
+      const iconFiles = await FileSystemService.listFiles(ServerSidePaths.getIconsPath());
+      setIcons(iconFiles);
+
+      getProjects();
+    } catch (error) {
+      // Handle errors here
+      console.error("Error fetching user data:", error);
+    }
+  };
+  
+
+  
+
+  /**
+   * getProjectDataArray returns an array with each field of a project for all the projects. 
+   * This data is modified with its properties and then written to the project database with the
+   * writeToJSONFile function. 
+   */
   async function formattingProjectData() {
     
     const data = projects.map((project) => project.getProjectDataArray()); 
@@ -116,31 +196,13 @@ export default function ProjectPage() {
 
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>){
-
-    e.preventDefault();
-
-    if(newProject.getIcon() === ""){
-      newProject.setIcon("merete.jpg");
-    }
-    
-    const projectObject: ProjectObject = newProject.convertToProjectObject();
-    projects.unshift(projectObject);
-   
-    formattingProjectData();
-    
-    FileSystemService.makeDirectory('../', ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
-
-    setNewProject((prevProject) => {
-      const updatedProject = new Project();
-      updatedProject.setProject({ ...prevProject.getProject(), icon: '' });
-      return updatedProject;
-    });
-
-    setCreating(false);
-    
-  } 
-
+  /**
+   * Handles when an icon is uploaded. 
+   * Sets a variable 'file' as the file at index[0] if more files are uploaded. 
+   * Creates new FormData with the file as the value of the field file. 
+   * The formData is used to call the postIcon function to post the new icon to the icon folder.
+   * The icons state is updated with the updated icon folder.
+   */
   async function handleUploadIcon(e:React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
 
@@ -152,10 +214,6 @@ export default function ProjectPage() {
     }
 
     const file = fileInput.files[0];
-    
-    console.log("name " + file.name);
-    console.log("type " + file.type);
-    console.log("size " + file.size);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -164,6 +222,7 @@ export default function ProjectPage() {
     console.log("filename:", result["filename"]);
     console.log("size:", result["size"]);
   
+    //Resets the file input field
     e.target.value = '';                
 
     FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
@@ -172,7 +231,10 @@ export default function ProjectPage() {
 
   }
   
-
+  /**
+   * Deletes the selected project from the projects state
+   * Also deletes the selected project folder with delete function from FileSystemService
+   */
   async function handleDelete(){
   
     // Has to .splice since useState value doesnt change
@@ -185,32 +247,51 @@ export default function ProjectPage() {
 
     toast.info("Deleted " + actionOnProject.projectTitle);
 
+    //Resets the actionOnProject state
     setActionOnProject({projectTitle:"", projectIndex: -1});
 
-    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});;
+    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});
 
   }
   
+  /**
+   * Runs through the projects state and looks for the one to archive. 
+   * Sets IsActive to false for the selected project
+   */
   async function handleArchive(){
   
-    // Has to .splice since useState value doesnt change
-    // immediately but only schedules a change. 
-    projects[actionOnProject.projectIndex].setIsActive(false);
+    projects.map((project) => {
+      if(project.getTitle() === actionOnProject.projectTitle){
+        project.setIsActive(false)
+      }
+    })
+    //projects[actionOnProject.projectIndex].setIsActive(false);
     
     await formattingProjectData();
     
     toast.info("Moved " + actionOnProject.projectTitle + " to archive" );
 
+    //Resets the actionOnProject state
     setActionOnProject({projectTitle:"", projectIndex: -1});
 
     setModalOpen({currentModalTitle: "archiveModal", isOpen: false});
     
   }
 
+  /**
+   * Case 1 - Creating a new project:
+   * Filters through the projects. If there is a match in title with the new project - notUniqueTitle is > 0
+   * creation is true - maxIndex is 0
+   * 
+   * Case 2 - Editing a project:
+   * Filters through the projects. 
+   * If there is a match in title with the project being edited, that is not the prev title - notUniqueTitle is > 1
+   * creation is true - maxIndex is 1
+   */
   function isTitleUnique (title: string, creation: boolean) {
 
     try {
-      //zod validate
+      
       const notUniqueTitle = projects.filter(project => {return project.getTitle() === title});
       const maxIndex = (creation) ? 0 : 1;
       if(notUniqueTitle.length > maxIndex){
@@ -232,6 +313,9 @@ export default function ProjectPage() {
 
   }
 
+  /**
+   * Checks if the user is currently editing a project, if not - creating state is set to true
+   */
   const handleCreateButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
@@ -249,6 +333,13 @@ export default function ProjectPage() {
     }
   };
 
+  /**
+   * Case 1 - The user cancels editing a project:
+   * The project title is set to be the previous title before edit and beingEdited is set to false
+   * 
+   * Case 2 - The user starts to edit a project:
+   * The previousTitle is set to be the project title for safe keeping and beingEdited is set to true
+   */
   const handleEdit = (editedProject:ProjectObject) => {
 
     if(editedProject.getBeingEdited()){
@@ -266,47 +357,77 @@ export default function ProjectPage() {
     });
   };
   
-const setEdit = (project:ProjectObject) => {
-  try {
-    
-    const editingProject = projects.filter(project => {return project.getBeingEdited()});
-    
-    if(creatingProject){
-      throw new EditWhileCreating();
-    }
-    
-    if(editingProject.length) {
-      throw new EditingAlreadyActive(editingProject[0].getTitle());
-    }
-    //SAD project.getTitle() 
-    setActionOnProject({projectTitle: project.getTitle(), projectIndex: -1});
-    handleEdit(project);
+  /**
+   * Checks if the user is already creating or editing another project
+   * Calls handleEdit
+   */
+  const setEdit = (project:ProjectObject) => {
+    try {
+      
+      const editingProject = projects.filter(project => {return project.getBeingEdited()});
+      
+      if(creatingProject){
+        throw new EditWhileCreating();
+      }
+      
+      if(editingProject.length) {
+        throw new EditingAlreadyActive(editingProject[0].getTitle());
+      }
+      //SAD project.getTitle() 
+      setActionOnProject({projectTitle: project.getTitle(), projectIndex: -1});
+      handleEdit(project);
 
-  } catch (err){
-    
-    if(err instanceof EditWhileCreating) {
-      toast.warning(err.message);
-    }
+    } catch (err){
+      
+      if(err instanceof EditWhileCreating) {
+        toast.warning(err.message);
+      }
 
-    if(err instanceof EditingAlreadyActive) {
-      toast.warning(err.message);
+      if(err instanceof EditingAlreadyActive) {
+        toast.warning(err.message);
+      }
     }
   }
-}
 
+/**
+  * When a new project is submitted, the new project is placed as the first object in the projects state.
+  * A new directory with the project title is made within the database.
+  */
   const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
+
     try {
+
       let validatedTitle = validateProjectData.parse({ title: newProject.getTitle() });
       newProject.setTitle(validatedTitle.title);
       isTitleUnique(newProject.getTitle(), creatingProject);
-      handleSubmit(e);
+    
+      //Sets a default icon if none is chosen
+      if(newProject.getIcon() === ""){
+        newProject.setIcon("allan.jpg");
+      }
+      
+      //converts the new project to an ProjectObject as the already existing objects
+      const projectObject: ProjectObject = newProject.convertToProjectObject();
+      
+      projects.unshift(projectObject);
+     
+      formattingProjectData();
+      
+      FileSystemService.makeDirectory('../', ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
+
+      //Resets the newProject state with empty values
       setNewProject((prevProject) => {
         const updatedProject = new Project();
-        updatedProject.setProject({ ...prevProject.getProject(), title: '' });
+        updatedProject.setProject({ ...prevProject.getProject(), title: '', icon: '' });
         return updatedProject;
       });
+
+      setCreating(false);
+      
       toast.success("Created Project: " + newProject.getTitle());
+
     } catch (err) {
       if (err instanceof z.ZodError) {
         err.errors.forEach((validationError) => {
@@ -335,7 +456,7 @@ const setEdit = (project:ProjectObject) => {
             className="modal-icon"
            
           >
-            <img className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" title={"Cancel"} onClick={() => setModalOpen({currentModalTitle: "", isOpen: false})}></img>
+            <img className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} title={"Cancel"} onClick={() => setModalOpen({currentModalTitle: "", isOpen: false})}></img>
             
             <form 
             className="mt-6" 
@@ -354,14 +475,14 @@ const setEdit = (project:ProjectObject) => {
                 ))}
     
               </div>
-
+                
               <hr className="rounded-lg border-2"></hr>
 
               <h2 className="text-3xl text-center m-4">Or Upload Image</h2>
               <div id="uploadIcon" className="grid place-items-center m-12">
 
                 <label htmlFor="file-input">
-                  <img title={"upload"} className="w-10 h-10 hover:scale-125" src="icons/upload.png"/>
+                  <img title={"upload"} className="w-10 h-10 hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/upload.png"}/>
                 </label>
                 <input id="file-input" type="file" onChange={e => handleUploadIcon(e)} className="hidden"/>
 
@@ -385,7 +506,7 @@ const setEdit = (project:ProjectObject) => {
             contentLabel="Delete confirm modal"
             className="modal-confirm"
           >
-            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}></img>
+            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}></img>
             
             <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete {actionOnProject?.projectTitle} ?</p>
             
@@ -414,7 +535,7 @@ const setEdit = (project:ProjectObject) => {
             contentLabel="Archive confirm modal"
             
           >
-            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src="icons/cross.png" onClick={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}></img>
+            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} onClick={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}></img>
             
             <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to archive {actionOnProject?.projectTitle} ?</p>
 
@@ -433,10 +554,8 @@ const setEdit = (project:ProjectObject) => {
                 Cancel
               </button>
 
-
-
           </Modal>
-
+          
           <ul key="ul1" 
             className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row max-w-screen-2xl mx-auto"
             role="tablist"
@@ -447,7 +566,7 @@ const setEdit = (project:ProjectObject) => {
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 1
                     ? "text-white bg-palette-500"
-                    : "text-palette-500 bg-white")
+                    : "text-palette-500 bg-white-300")
                 }
                 onClick={e => {
                   e.preventDefault();
@@ -466,7 +585,7 @@ const setEdit = (project:ProjectObject) => {
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 2
                     ? "text-white bg-palette-500"
-                    : "text-palette-500 bg-white")
+                    : "text-palette-500 bg-white-300")
                 }
                 onClick={e => {
                   e.preventDefault();
@@ -480,10 +599,6 @@ const setEdit = (project:ProjectObject) => {
               </a>
             </li>
           </ul>
-
-
-          
-
 
           <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
@@ -527,7 +642,7 @@ const setEdit = (project:ProjectObject) => {
                         {(newProject.getIcon() === "") ? 
                         (
                           <button type="button">
-                            <img className="w-10 h-10 hover:scale-125" src="icons/upload.png" title={"Upload"}
+                            <img className="w-10 h-10 hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/upload.png"} title={"Upload"}
                             onClick={ e => {
                               e.preventDefault();
                               setModalOpen({currentModalTitle: "iconModal", isOpen: true});
@@ -543,15 +658,13 @@ const setEdit = (project:ProjectObject) => {
                         }}></img>
                         </button>
                         )
-                        }
-                        
-                        
+                        } 
                         
                       </div>
 
                       <div>
                         <br/>
-                        <img title={"Cancel"} className="w-6 h-6 float-left hover:scale-125" src="icons/cross.png"
+                        <img title={"Cancel"} className="w-6 h-6 float-left hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"}
                         onClick={ e => {
                           setNewProject((prevProject) => {
                             const updatedProject = new Project();
@@ -568,7 +681,7 @@ const setEdit = (project:ProjectObject) => {
                           <img
                             title={"Submit"}
                             className="w-6 h-6 float-right hover:scale-125"
-                            src="icons/checkmark.png"
+                            src={ServerSidePaths.URLFunctionIconsPath + "/checkmark.png"}
                             alt="Submit"
                           />
                         </button>
@@ -579,6 +692,10 @@ const setEdit = (project:ProjectObject) => {
 
                   </div>
                   
+
+                  {/*
+                  This Section Creates the HTML project elements
+                  */}
                   {projects.map((project, i) => 
                   
                     project.getIsActive() ? (
@@ -586,7 +703,7 @@ const setEdit = (project:ProjectObject) => {
                       <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
                         <div 
                           className="flex justify-end items-center">
-                            <img title={"Archive"} className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src="icons/arhieve.png"
+                            <img title={"Archive"} className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src={ServerSidePaths.URLFunctionIconsPath + "/archive.png"}
                             onClick={ e => {
                               setModalOpen({currentModalTitle: "archiveModal", isOpen: true});
                               setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
@@ -613,7 +730,7 @@ const setEdit = (project:ProjectObject) => {
                                   try {
                                     let validatedTitle = validateProjectData.parse({title: actionOnProject.projectTitle});
                                     project.setTitle(validatedTitle.title);
-                                    isTitleUnique(project.getTitle(),creatingProject);
+                                    isTitleUnique(project.getTitle(), creatingProject);
                                     project.setBeingEdited(false);
                                     formattingProjectData();
                                     FileSystemService.rename('../', ServerSidePaths.getProjectPath(user) + `/${project.getpreviousTitle()}`,project.getTitle());
@@ -654,7 +771,7 @@ const setEdit = (project:ProjectObject) => {
                             className="text-center pb-4">{project.getTitle()}</p>
                           ) }
                           
-                          <Link href={"/register"}>
+                          <Link href={"/" + user + "/" + project.getTitle()}>
                             <img 
                             title={"Project"}
                             key={"Icon" + project.getIcon() + i} 
@@ -665,12 +782,11 @@ const setEdit = (project:ProjectObject) => {
                             
                           </Link><br />
                           
-                          
                           <div 
                             
                             key={"buttonsDiv" + i}
                             className="flex justify-between items-center ">
-                            <img title={"Delete"} className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src="icons/trash.png"
+                            <img title={"Delete"} className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
                             onClick={ e => {
                               setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
                               setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
@@ -680,7 +796,7 @@ const setEdit = (project:ProjectObject) => {
         
                             }}>
                             </img>
-                            <img title={"Edit"} className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src="icons/edit.png"
+                            <img title={"Edit"} className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src={ServerSidePaths.URLFunctionIconsPath + "/edit.png"}
                             onClick={()=>{setEdit(project);}}>
                             </img>
                           </div>
@@ -708,18 +824,25 @@ const setEdit = (project:ProjectObject) => {
 
                       <div key={"DivHistory" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
                       <p key={"ProjectHistory" + project.getTitle() + i} className="text-center pb-4">{project.getTitle()}</p><br/>
-                      <img title={"Project"} src={`${URLIconsPath}/${project.getIcon()}`} width={50} height={50} className="mt-4 mx-auto block"/>
+                      
+                      <Link href={"/" + user + "/" + project.getTitle()}>
+                        <img 
+                        title={"Project"}
+                        key={"Icon" + project.getIcon() + i} 
+                        src={`${URLIconsPath}/${project.getIcon()}`}
+                        width={50} 
+                        height={50} 
+                        className="mt-4 mx-auto block rounded"/>      
+                      </Link><br/>
                       
                       <div
                         key={"buttonsDiv" + i}
                             className="flex justify-between items-center ">
                         
-                        <img title={"Delete"} className="w-4 h-6 float-left hover:scale-125" src="icons/trash.png"
+                        <img title={"Delete"} className="w-4 h-6 float-left hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
                         onClick={ e => {
-                              setDeleteIsOpen(true);
-                              setProjectToDelete({projectTitle: project.getTitle(), projectIndex: i});
-                              //handleDelete(i);
-                              console.log(project.getTitle())
+                              setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
+                              setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
                         
                         }}>
                         </img>

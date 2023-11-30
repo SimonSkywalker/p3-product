@@ -160,9 +160,22 @@ export default class FileSystemService {
         throw new Error('Failed to make directory: ' + error.message);
     }
   }
-  /* public static makeProjectFolder(user:string) {
-    fs.mkdir(process.cwd() + ServerSidePaths.getProjectsPath(user));
-  } */
+  
+  public static async APIRequestUser() {
+    let data;
+    try{
+    const res = await fetch("/api/getCurrentUser") 
+      if(res.ok){
+      
+        data = await res.json();
+        //console.log(data);
+        return data;
+      }
+    
+    }catch(Error){
+        console.error(Error)
+    }
+  }
   
 
 }
