@@ -23,7 +23,7 @@ export class QuestionHandler {
     }
 }
 
-export class chartMaker{
+export class dataMaker{
     
     private _dataSet: Responses = {
         roles:{},
@@ -45,7 +45,8 @@ export class chartMaker{
     }
 
     makeArray(responses: any[], pickedRoles: any[]) {
-        responses.forEach((element, i) => {
+        this.dataArray = [];
+        responses.forEach((element) => {
             Object.entries(element).forEach(([key, value]) => {
                 const roles = (value as any)?.roles;
                 const questions = (value as any)?.questions;
@@ -65,6 +66,13 @@ export class chartMaker{
                 }
             });
         });
-        //console.log(this.dataArray);
+    }
+
+    countData(role: string, Answers: []){
+
+        
+
     }
 }
+
+

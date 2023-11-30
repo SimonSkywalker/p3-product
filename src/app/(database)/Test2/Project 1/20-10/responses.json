@@ -22,15 +22,31 @@
 					"test3"
 				],
 				"1": [
-					"test3"
+					"test5"
 				]
 			},
 			"questions": {
-				"0": ["test3"],
-				"1": ["test3"],
+				"0": ["Disagree"],
+				"1": ["Agree"],
 				"2": ["Agree"],
 				"3": -1,
-				"4": "Hej med dig"
+				"4": "Hej med dig1"
+			}
+		}
+	},
+	{
+		"tokenId2": {
+			"roles": {
+				"0": [
+					"Hej med dig"
+				],
+				"1": [
+					"test9"
+				]
+			},
+			"questions": {
+				"0": ["Disagree"],
+				"1": ["Agree"]
 			}
 		}
 	}

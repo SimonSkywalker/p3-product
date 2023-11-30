@@ -29,7 +29,6 @@ export default function Example({ questionName, questionIndex, roles } : ChartPr
     for ( let i in roles) {
         randomBackgroundColor.push(dynamicColors());
     }
-
     useEffect(() => {
         const canvas = document.getElementById(`myChart${questionIndex}`) as HTMLCanvasElement;
         const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
