@@ -10,7 +10,7 @@
 
 New To Do
 Comment code
-History - css & delete (Carmen)
+History - css & delete (Carmen)-done
 Cleanup OnClicks (Nicolaj) - Kinda Done
 Cleanup Trigger (Nicolaj) - Done
 
@@ -707,13 +707,21 @@ const setEdit = (project:ProjectObject) => {
                     ) : (
 
                       <div key={"DivHistory" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
-                      <p key={"ProjectHistory" + project.getTitle() + i}>{project.getTitle()}</p><br/>
-                      <img title={"Project"} src={`${URLIconsPath}/${project.getIcon()}`} width={50} height={50} className="rounded"/>
+                      <p key={"ProjectHistory" + project.getTitle() + i} className="text-center pb-4">{project.getTitle()}</p><br/>
+                      <img title={"Project"} src={`${URLIconsPath}/${project.getIcon()}`} width={50} height={50} className="mt-4 mx-auto block"/>
                       
-                      <div>
-                        <br/>
+                      <div
+                        key={"buttonsDiv" + i}
+                            className="flex justify-between items-center ">
+                        
                         <img title={"Delete"} className="w-4 h-6 float-left hover:scale-125" src="icons/trash.png"
-                        onClick={ e => {e.preventDefault();}}>
+                        onClick={ e => {
+                              setDeleteIsOpen(true);
+                              setProjectToDelete({projectTitle: project.getTitle(), projectIndex: i});
+                              //handleDelete(i);
+                              console.log(project.getTitle())
+                        
+                        }}>
                         </img>
                       </div>
                     </div>  
