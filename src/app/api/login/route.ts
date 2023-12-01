@@ -36,7 +36,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     if(check){     
       //Signs the token using Json Web Token. Expires after 24 hours
       const token = jwt.sign({ userId: u.username }, process.env.JWT_SECRET, {
-        expiresIn: "1m",
+        expiresIn: "24h",
       });
 
       
