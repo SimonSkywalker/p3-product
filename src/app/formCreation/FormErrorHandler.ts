@@ -89,7 +89,7 @@ export default class FormErrorHandler {
         this._validationErrors._questions[questionNumber]._options[optionNumber] = "";
       }
 
-      public errorValidation(Error: any){
+      public errorValidation(Error: any) : FormFormData {
         
         //True if validation error occurs
         if(Error instanceof z.ZodError){

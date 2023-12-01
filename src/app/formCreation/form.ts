@@ -2,6 +2,7 @@ import Token from "./Token";
 import Question, { MultipleChoice, Slider } from "./question";
 import { QuestionTypes } from "./question";
 import Nameable from "./Nameable";
+import _ from "lodash";
 
 
 /**
@@ -55,6 +56,13 @@ export default class Form implements Nameable {
         this._tokens = value;
     }
 
+    public get parent(): string {
+        return this._parent;
+    }
+    public set parent(value: string) {
+        this._parent = value;
+    }
+
     public constructor(){
         this._name = "Untitled form";
         this._description = "";
@@ -103,8 +111,8 @@ export default class Form implements Nameable {
      * Used to make name compatible with the file system
      * Also trims in order to remove spaces
      */
-    public cleanName() : void{
-        this.name = this.name.trim().replace(/ /g, "-");
+    public cleanName() : void {
+        this.name = this.name.trim().replace(/-/g, "\\-").replace(/ /g, "-");
     }
 
 
@@ -112,8 +120,36 @@ export default class Form implements Nameable {
      * Gets the name before it was cleaned. Used to display names with spaces to users.
      * @returns This object's name, dashes being replaced with spaces
      */
-    public getUncleanName() : string{
+    public getUncleanName() : string {
         let newName : string = this.name;
-        return newName.replace(/-/g," ");
+        return newName.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
     }
+
+    /**
+     * Creates a new form to be a child of this form.
+     * @returns A new, active form with the same questions as this form
+     */
+    public createChild() : Form {
+        const child = _.cloneDeep(this);
+        child.name = "Copy of " + this.name;
+        child.parent = this.name;
+        child.isActive = true;
+
+        return child;
+    }
+
+    /**
+     * Compares this form to another form, and returns an array with every question that is an exact match between the two
+     * @param otherForm Another form object
+     * @returns An array of questions
+     */
+    public findMatchingQuestions(otherForm : Form) : Array<Question> {
+        let matchingQuestions : Array<Question> = new Array<Question>
+        for(let i = 0; i < this.questions.length; i++){
+            if(otherForm.questions.indexOf(this.questions[i]) >= 0)
+                matchingQuestions.push(this.questions[i]);
+        }
+        return matchingQuestions;
+    }
+
 }

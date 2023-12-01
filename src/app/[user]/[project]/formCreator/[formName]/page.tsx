@@ -8,7 +8,7 @@ import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
 import {Modal, ModalContent} from "@nextui-org/react";
 import FileSystemService from '../../../../formCreation/FileSystemService';
-import Form from '../../../../formCreation/form';
+import Form from '../../../../formCreation/Form';
 import Question from "../../../../formCreation/question";
 import FileFinder from '../../../../formCreation/FileFinder';
 import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "../../../../formCreation/question";
@@ -33,7 +33,7 @@ class FormCreator{
     errors.addOptionErrors(question.number-1, question.options.length);
     return <>
     {question.options.map((e, index) => {return <ul key={index}> <Input value={e} color="secondary"  onValueChange={(input) =>{
-      (question as MultipleChoice).renameOption(index, input);
+      question.renameOption(index, input);
       updateState();
     }}></Input>
     {errors.validationErrors._questions[question.number-1]._options[index] && (
@@ -43,12 +43,12 @@ class FormCreator{
             </div>
           )}
     <Button className="button" onClick={() => {
-      (question as MultipleChoice).removeOption(index);
+      question.removeOption(index);
       errors.cleanOption(question.number-1, index);
       updateState();
       }}>Remove option</Button> </ul>})}
     <Button className="button" onClick={() => {
-      (question as MultipleChoice).addOption();
+      question.addOption();
       updateState();
     }}>Add option</Button>
     </>
@@ -272,13 +272,15 @@ const pathToSrc : string = "../../../..";
 
             try {
               FormValidator.FormTemplate.parse(form);
+              console.dir(forms);
               if(forms.checkDuplicate(form) && form.name != formName)
                 throw(new ObjectAlreadyExistsException("Form of name " + form.name + " already exists"));
               setModalOpen(true);
             } catch(e: any) {
               if(e instanceof ObjectAlreadyExistsException)
                 alert(e.message);
-              console.dir(errorHandler.validationErrors);
+              console.dir(e);
+              errorHandler.cleanErrors();
               setValidationErrors(errorHandler.errorValidation(e));
             }
               console.dir(form);
@@ -298,7 +300,7 @@ const pathToSrc : string = "../../../..";
           </div>
           <Modal isOpen={modalOpen}>
             <ModalContent>
-              <Input color="secondary" type="number" label="How many people should answer this form?" min="1" max="1024" step="1" onValueChange={(value) => {
+              <Input color="secondary" type="number" label="How many people should answer this form?" min="0" max="1024" step="1" onValueChange={(value) => {
                 tokenBuilder.setTokens(parseInt(value));
               }}/>
               <Button className="button" onClick={async () => {

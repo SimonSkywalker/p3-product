@@ -3,6 +3,7 @@ import RegisterPage from '@/app/register/page'
 import {renderHook} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { registerFormSchema } from '@/app/lib/validations/registerForm'
+import {expect, jest, test} from '@jest/globals'
 
 describe("RegisterPage",()=>{
     

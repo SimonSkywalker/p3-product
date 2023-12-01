@@ -1,6 +1,5 @@
 import test from "node:test";
 import NoObjectException from "../exceptions/NoObjectException";
-import Form from "./form";
 import Nameable from "./Nameable";
 
 
@@ -26,7 +25,7 @@ export default class DatabaseAccess {
      */
     public checkDuplicate(object : Nameable) : boolean {
         return (this._objects.some((testObject) => {
-            console.log("Comparing " + console.log(testObject.name) + " to " + object.name)
+            console.log("Comparing " + testObject.name + " to " + object.name)
             return testObject.name == object.name}));
     }
 

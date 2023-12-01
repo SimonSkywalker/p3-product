@@ -115,5 +115,27 @@
 		"_tokens": [],
 		"_isActive": true,
 		"_parent": ""
+	},
+	{
+		"_name": "This-is-a-teeeest",
+		"_description": "",
+		"_questions": [
+			{
+				"_description": "Numse?",
+				"_mandatory": true,
+				"_userDisplay": true,
+				"_questionType": 0,
+				"_number": 1,
+				"_saveRole": false,
+				"_options": [
+					"Ja",
+					"Nej"
+				],
+				"_choiceType": 0
+			}
+		],
+		"_tokens": [],
+		"_isActive": true,
+		"_parent": ""
 	}
 ]
