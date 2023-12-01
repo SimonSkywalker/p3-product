@@ -8,5 +8,15 @@
         "Username": "Test2",
         "Password": "$2b$10$Qw/qi31tGFzwasthjQ05vOjj4pdCxTK5TLfqeB4DGl8aHXPBunr5a",
         "DisplayName": "Test2"
+    },
+    {
+        "Username": "Mka16",
+        "Password": "$2b$10$kD4IHYu9YiX5HY/0uqrhG.RHgRYnHVPPwwVPdMNWG1oXvzU/LIQ3O",
+        "DisplayName": "Mka16"
+    },
+    {
+        "Username": "BLAH",
+        "Password": "$2b$10$xi5vdqsNmpDryYlxt0IIHeAfSczcUcU7QJ3h2sblz6UKoQnbbC5D.",
+        "DisplayName": "BLAH"
     }
 ]
