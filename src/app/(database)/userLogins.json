@@ -18,5 +18,15 @@
         "Username": "BLAH",
         "Password": "$2b$10$xi5vdqsNmpDryYlxt0IIHeAfSczcUcU7QJ3h2sblz6UKoQnbbC5D.",
         "DisplayName": "BLAH"
+    },
+    {
+        "Username": "Nicolaj",
+        "Password": "$2b$10$9g7fQCk13cEeIkWbkaq4rOrC58lIOZZonIUSO9bGNH4OBX4L6/BSW",
+        "DisplayName": "Nicolaj"
+    },
+    {
+        "Username": "Nicolaj2",
+        "Password": "$2b$10$S86kTG0O5ks9si0vHjhoGOqV8TbmRe.dqA.H7VsONaCYWvXU7JE7q",
+        "DisplayName": "Nicolaj2"
     }
 ]

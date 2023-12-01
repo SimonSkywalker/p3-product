@@ -3,6 +3,12 @@
 "use server"
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * Handles POST requst to upload image
+ * Retrieves the formData and file from the file field in formData
+ * Converts file content to buffer and writes the file to the desired path
+ */
+
 export async function POST(req: NextRequest)
 {
     const formData = await req.formData();

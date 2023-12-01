@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
  * @returns The Markup of the Website incl. The Form for registration, various input fields
  */
 export default function RegisterPage() {
-  //const router = useRouter();
+  const router = useRouter();
   //Creating the object to handle the data given from input
   const registrationHandler = new RegistrationHandler();
 
@@ -61,7 +61,7 @@ export default function RegisterPage() {
       .then(()=>{
         //routes to login page if input if data is validated without problem
         toast.success('Registered '+formData.username)
-        /* router.push('/login') */})
+        router.push('/login')})
       .catch((err)=>{
         if (err instanceof RegisterException) {
           

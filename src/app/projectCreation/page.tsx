@@ -87,7 +87,10 @@ export default function ProjectPage() {
   
       validateToken();
 
-    FileSystemService.APIRequestUser().then(async (data)=>{setUser(await data.Id);});
+      FileSystemService.APIRequestUser().then(async (data) => {
+        setUser(await data.Id);
+        getProjects(data.Id);
+      });
    
     //Sets the div 'outerDiv' as the appElement of the modals, 
     //such that the page content inside the div is hidden when a modal is in use.
@@ -100,9 +103,10 @@ export default function ProjectPage() {
       setIcons(iconFiles);
     });
     
-    getProjects();
     
-  }, [user]);
+    
+    
+  }, []);
   
 
  
@@ -113,11 +117,11 @@ export default function ProjectPage() {
    *  which returns all of the users projects as an array of ProjectInterfaces. 
    * The projects get redefined as ProjectObjects and are set as the state projects.
    */
-  async function getProjects() {
+  async function getProjects(theUser: string) {
     
     console.log("get projects user ", user);
     
-    const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(user)) as ProjectInterface[];
+    const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(theUser)) as ProjectInterface[];
     
     const modifiedData = data.map((project) => {
       // Assuming project.title is the property you want to modify
@@ -131,7 +135,8 @@ export default function ProjectPage() {
     setProjects(projectsWithBeingEdited);
 
   }
-
+  
+  
   /**
    * useEffect is called when the page renders. 
    * Calls the listFiles function which returns icons and sets them as the state of Icons.
@@ -161,7 +166,7 @@ export default function ProjectPage() {
       const iconFiles = await FileSystemService.listFiles(ServerSidePaths.getIconsPath());
       setIcons(iconFiles);
 
-      getProjects();
+      getProjects(user);
     } catch (error) {
       // Handle errors here
       console.error("Error fetching user data:", error);
@@ -556,6 +561,10 @@ export default function ProjectPage() {
 
           </Modal>
           
+
+          {/* 
+          * Begin Active / History Tab
+          */}
           <ul key="ul1" 
             className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row max-w-screen-2xl mx-auto"
             role="tablist"
@@ -599,12 +608,25 @@ export default function ProjectPage() {
               </a>
             </li>
           </ul>
+          {/* 
+          * End Active / History Tab
+          */}
+
+
 
           <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
+
+                {/* 
+                *  Begin Elements shown when on Active Tab
+                */}
                 <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
                   
+                  {/* 
+                  * Elements in the following Div are hidden if 
+                  * creatingProject useState is true
+                  */}
                   <div 
                     id="newProjectDiv" 
                     className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
@@ -614,6 +636,10 @@ export default function ProjectPage() {
                       >+</button>
                   </div>
 
+                  {/* 
+                  * Elements in the following Div are hidden if 
+                  * creatingProject useState is false
+                  */}
                   <div 
                   id="createProjectDiv" 
                   className={(creatingProject ? "block " : "hidden ") + "grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400"}>
@@ -694,13 +720,16 @@ export default function ProjectPage() {
                   
 
                   {/*
-                  This Section Creates the HTML project elements
+                  * maps through all the projects stored in the Array,
+                  * creating the object to interact with on the page
                   */}
                   {projects.map((project, i) => 
                   
+                    //Creates the project element if the projects' isActive is true
                     project.getIsActive() ? (
-
                       <div key={"DivActive" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400">
+                        
+                        {/* Archive Icon to archive the project */}
                         <div 
                           className="flex justify-end items-center">
                             <img title={"Archive"} className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src={ServerSidePaths.URLFunctionIconsPath + "/archive.png"}
@@ -711,12 +740,16 @@ export default function ProjectPage() {
                             }}>
                             </img>
                         </div>
+
                         <form key={"Form" + project.getTitle() + i} onSubmit={(e) =>{
                           e.preventDefault();
                           project.setBeingEdited(false);
                         }}>
                           
-                          
+                          {/* 
+                          * if the Project is being edited, an input field
+                          * is shown instead of a paragraph
+                          */}
                           { (project.getBeingEdited()) ? (
                             <div className="relative ">
                               <input
@@ -771,7 +804,11 @@ export default function ProjectPage() {
                             className="text-center pb-4">{project.getTitle()}</p>
                           ) }
                           
-                          <Link href={"/" + user + "/" + project.getTitle()}>
+                          {/*
+                          * Link if you click on the icon redirecting
+                          * the user to the clicked project page
+                          */}
+                          <Link href={"/" + user + "/" + project.getTitle().replace(/ /g, '-')}>
                             <img 
                             title={"Project"}
                             key={"Icon" + project.getIcon() + i} 
@@ -779,7 +816,6 @@ export default function ProjectPage() {
                             width={50} 
                             height={50} 
                             className="mt-4 mx-auto block rounded"/>
-                            
                           </Link><br />
                           
                           <div 
@@ -790,10 +826,7 @@ export default function ProjectPage() {
                             onClick={ e => {
                               setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
                               setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
-                              //handleDelete(i);
                               console.log(project.getTitle());
-                              
-        
                             }}>
                             </img>
                             <img title={"Edit"} className="w-4 h-6  hover:scale-125 hover:cursor-pointer" src={ServerSidePaths.URLFunctionIconsPath + "/edit.png"}
@@ -811,7 +844,16 @@ export default function ProjectPage() {
                   )}
 
                 </div>
- 
+                {/* 
+                *  End Elements shown when on Active Tab
+                */}
+
+
+                {/* 
+                *  Begin Elements shown when on History Tab
+                *  History is a synchrone version of Active - Just
+                *  Without the ability to edit and archive the project
+                */}
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"} id="link2">
                   
                   {projects.map((project, i) => 
@@ -851,6 +893,10 @@ export default function ProjectPage() {
                     )
                   )}
                 </div>  
+                {/* 
+                *  End Elements shown when on History Tab
+                */}
+
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ import {APIHandle, ErrorCheck, LoginHandler} from '../classes/handlerClass';
 
 
 export default function LoginPage() {
-  //const router = useRouter();
+  const router = useRouter();
   
   //Constants used to handle data
   const loginHandler = new LoginHandler();
@@ -55,7 +55,7 @@ export default function LoginPage() {
 
       //Sends the data to server validation and handling
       APIHandle.APIRequestLogin(validatedData)
-      .then(()=>{/* router.push('/leaderHome') */})
+      .then(()=>{router.push('/projectCreation')})
       .catch((err)=>{
         //Is true if the wrong credentials are inputted
         if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}

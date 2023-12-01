@@ -37,6 +37,9 @@ export default class FormBuilder {
     public getForm() : Form {
         return this.form;
     }
+    /*public getFormArray{ 
+
+    }*/
 
 
     /**

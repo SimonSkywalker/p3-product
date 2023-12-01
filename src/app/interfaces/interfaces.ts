@@ -1,3 +1,5 @@
+import Token from "../formCreation/Token";
+import Question from "../formCreation/question";
 
 //For classes that can add, remove and get information from JSON files.
 interface DatabaseAccess {
@@ -31,6 +33,16 @@ export interface actionProject {
 export interface modalOperator {
     currentModalTitle: String,
     isOpen: boolean,
+}
+
+export interface FormObject{
+     _name: string,
+     _description: string,
+     _questions: Array<Question>,
+     _tokens: Array<Token>,
+     _isActive: boolean;
+     _parent: string;
+
 }
 
 

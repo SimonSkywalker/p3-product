@@ -79,6 +79,11 @@ export default class FileSystemService {
     return jsonArray;
   }
 
+  /**
+   * formData: a form with the field 'file' containing the image file to upload
+   * POST request to the /api/uploadIcon endpoint with formData
+   * 
+   */
   public static async postIcon(formData: FormData): Promise<{ [key: string]: any }> {
     let result: { [key: string]: any } = {};
 

@@ -1,14 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Modal from "react-modal";
 import FileSystemService from "../../components/FileSystemService";
+import FileFinder from '@/app/formCreation/FileFinder';
 import ServerSidePaths from '../../components/ServerSidePaths';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
-import { modalOperator } from '@/app/interfaces/interfaces';
+import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
+import { FormObject } from '@/app/interfaces/interfaces';
+import Form from '@/app/formCreation/form';
+import FormBuilder from '@/app/formCreation/FormBuilder';
+import Link from 'next/link';
+
 
 interface ProjectParams {
     params:{
@@ -19,14 +25,69 @@ interface ProjectParams {
 
 export const page = ({params}:ProjectParams) => {
 
-    const [openTab, setOpenTab] = useState<number>(2);
-    const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
+  const [openTab, setOpenTab] = useState<number>(2);
+  const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
 
-    const [creatingForm, setForm] = useState<boolean>(false);
-    const [newForm, setNewForm] = useState<Project>(new Project());
-    const [selectedValue,setSelectedValue] = useState("");
+  const [actionOnProject, setActionOnProject] = useState<actionProject>({projectTitle:"", projectIndex: -1});
+  const [creatingForm, setForm] = useState<boolean>(false);
+  const [newForm, setNewForm] = useState<Project>(new Project());
+  const [selectedValue, setSelectedValue] = useState("");
+  const [forms, setForms] = useState<Form[]>([]);
 
-   
+  //console.log(params.user, params.project);
+
+
+  async function getForms() {
+  
+    const projectAltered = params.project.replace(/-/g, ' ');
+  
+    const dataForms: Form[] = await FileSystemService.getJSONFile(ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' ')) as Form[];
+    
+    const buildedForms : Form[] = [];
+    
+    dataForms.map(form => {
+      buildedForms.push(new FormBuilder().formFromObject(form));
+    })
+
+    console.log("dataForms: ", dataForms);
+
+    setForms(buildedForms);
+
+  }
+
+  useEffect(() => {
+    
+    getForms();
+
+    // længden er 0 fordi useEffect ikke er kørt færdig surt show
+    //console.log(forms.length);
+  
+  }, []);
+
+  function handleDelete(event: any): void {
+    event.preventDefault();
+    throw new Error('Function not implemented.');
+
+  }
+  /*async function handleDelete(){
+  
+    // Has to .splice since useState value doesnt change
+    // immediately but only schedules a change. 
+    projects.splice(actionOnProject.projectIndex, 1);
+
+    await formattingProjectData();
+    
+    FileSystemService.delete('../', ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
+
+    toast.info("Deleted " + actionOnProject.projectTitle);
+
+    //Resets the actionOnProject state
+    setActionOnProject({projectTitle:"", projectIndex: -1});
+
+    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});
+
+  }
+  */
 
   return (
     <div className="flex flex-wrap">
@@ -50,7 +111,7 @@ export const page = ({params}:ProjectParams) => {
               
               <button 
                 type="button"
-                title="deleteButton"
+                title="FormButton"
                 onClick={ (e) => {}  }
                 className="float-left m-2 px-9 py-2 tracking-wide text-white bg-gray-700 hover:bg-gray-600 rounded-md focus:outline-none focus:bg-red-600 hover:scale-105" >
                 New Form
@@ -95,6 +156,35 @@ export const page = ({params}:ProjectParams) => {
                 </select>
  
             </form>
+          </Modal>
+
+          <Modal
+            
+            isOpen={(modalOpen.currentModalTitle === "deleteModal") ? modalOpen.isOpen : false}
+            onRequestClose={() => setModalOpen({currentModalTitle: "", isOpen: false})}
+            contentLabel="Delete confirm modal"
+            className="modal-confirm"
+          >
+            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}></img>
+            
+            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete {actionOnProject?.projectTitle} ?</p>
+            
+            <p className="mt-8 mb-8 text-l text-center">Deleted objects can never be recovered</p>
+
+            <button 
+                type="button"
+                title="deleteButton"
+                onClick={handleDelete}
+                className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
+                Delete
+              </button>
+            <button 
+                type="button"
+                title="cancelButton"
+                onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}
+                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
+                Cancel
+              </button>
           </Modal>
 
           
@@ -151,6 +241,53 @@ export const page = ({params}:ProjectParams) => {
           <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
+                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
+ 
+                  {forms.map((form, i) => 
+                    !form.isActive ? (
+
+                      <p key={"status" + form.name + i} className="hidden"></p>
+
+                    ) : (
+                      
+                      <div key={"div" + form.name + i} className="hover:scale-105 shadow-xl h-30 w-60 rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ">
+                      
+                        {/* user/project/formCreation/[formName]*/}
+                        <Link href={params.project + "/formCreator/" + form.name}>
+
+                          <p key={"title" + form.name + i} className="mb-8 ml-2 mt-2">{form.name}</p>
+
+                          <div className="inline-flex flex-row">
+                            <p key={"status" + form.name + i} className="italic ml-2 mb-2">Published</p>
+                          </div>  
+
+                        </Link><br/>
+
+                        <img title={"Delete"} className="w-4 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
+                          onClick={ e => {
+                            setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
+                            setActionOnProject({projectTitle: form.name, projectIndex: i});
+                            
+                          }}>
+                        </img>
+
+                      </div>
+                    )
+                    
+                  )}
+
+                  <p className="text-xs font-bold uppercase  shadow-lg rounded block leading-normal text-white bg-palette-500">
+                    <Link 
+                    href={"/projectCreation"}
+                    className='px-5 py-3 bg-palette-500 rounded'>
+                      Back to projectpage
+                    </Link>
+                  </p>
+
+                </div> 
+                
+                {/*---------------STOP HER-------------*/}
+                {/*---------------STOP HER-------------*/}
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
                   
                   <div 
@@ -161,6 +298,48 @@ export const page = ({params}:ProjectParams) => {
                       onClick={(e)=>{setModalOpen({currentModalTitle: "newFormModal", isOpen: true})}}
                       >+</button>
                   </div>
+
+                  
+                  {forms.map((form, i) => 
+                    form.isActive ? (
+
+                      <p key={"status" + form.name + i} className="hidden"></p>
+
+                    ) : (
+                      
+                      <div key={"div" + form.name + i} className="hover:scale-105 shadow-xl h-30 w-60 rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ">
+                      
+                        {/* user/project/formCreation/[formName]*/}
+                        <Link href={params.project + "/formCreator/" + form.name}>
+
+                          <p key={"title" + form.name + i} className="mb-8 ml-2 mt-2">{form.name}</p>
+
+                          <div className="inline-flex flex-row">
+                            <p key={"status" + form.name + i} className="italic ml-2 mb-2">Not Published</p>
+                          </div>  
+
+                        </Link><br/>
+
+                        <img title={"Delete"} className="w-4 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
+                          onClick={ e => {
+                            setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
+                            setActionOnProject({projectTitle: form.name, projectIndex: i});
+                            
+                          }}>
+                        </img>
+
+                      </div>
+                    )
+                    
+                  )}
+
+                  <p className="text-xs font-bold uppercase shadow-lg rounded block leading-normal text-white bg-palette-500">
+                    <Link 
+                    href={"/projectCreation"}
+                    className='px-5 py-3 bg-palette-500 rounded'>
+                      Back to projectpage
+                    </Link>
+                  </p>
 
                 </div> 
 
