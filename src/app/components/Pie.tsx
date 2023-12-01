@@ -5,9 +5,10 @@ interface ChartProps {
     questionName: string
     questionIndex: number
     roles: any[]
+    answerCount: {}
 }
 
-export default function Example({ questionName, questionIndex, roles } : ChartProps) {
+export default function PieChart({ questionName, questionIndex, roles, answerCount } : ChartProps) {
 
     let randomBackgroundColor : any = [];
     let usedColors = new Set();
@@ -37,7 +38,7 @@ export default function Example({ questionName, questionIndex, roles } : ChartPr
             data: {
                 labels: roles,
                 datasets: [{
-                    data: [70, 10, 6, 10],
+                    data: Object.values(answerCount) as [],
                     backgroundColor: randomBackgroundColor,
                     borderWidth: 2,
                 }]

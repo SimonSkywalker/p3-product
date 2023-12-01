@@ -3,15 +3,18 @@
 		"tokenId": {
 			"roles": {
 				"0": [
-					"test4"
+					"Option1"
 				],
 				"1": [
-					"test3"
+					"Option2"
 				]
 			},
 			"questions": {
-				"0": ["Agree"],
-				"1": ["Disagree"]
+				"0": ["Option1"],
+				"1": ["Option10"],
+				"2": ["Strongly Agree"],
+				"3": -1,
+				"4": "Simon er dum!"
 			}
 		}
 	},
@@ -19,18 +22,18 @@
 		"tokenId1": {
 			"roles": {
 				"0": [
-					"test3"
+					"Option1"
 				],
 				"1": [
-					"test5"
+					"Option3"
 				]
 			},
 			"questions": {
-				"0": ["Disagree"],
-				"1": ["Agree"],
+				"0": ["Option1"],
+				"1": ["Option10", "Option12"],
 				"2": ["Agree"],
 				"3": -1,
-				"4": "Hej med dig1"
+				"4": "Hej med dig!"
 			}
 		}
 	},
@@ -39,13 +42,10 @@
 			"roles": {
 				"0": [
 					"Hej med dig"
-				],
-				"1": [
-					"test9"
 				]
 			},
 			"questions": {
-				"0": ["Disagree"],
+				"0": -1,
 				"1": ["Agree"]
 			}
 		}

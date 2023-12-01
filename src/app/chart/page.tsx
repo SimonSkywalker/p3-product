@@ -83,7 +83,7 @@ export default function VisPage() {
     ));
     const listQuestions = user?.questions?.map((question: any, i: number) => (
       <div key={i}>
-        <input type="checkbox" id={`questions-${i}`} name="questionPicks" value={question.description} />
+        <input type="checkbox" id={`questions-${i}`} name="questionPicks" value={i} />
         <label htmlFor={`questions-${i}`}> Question {i+1}: {question.description} </label>
       </div>
     ));
