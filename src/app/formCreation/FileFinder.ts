@@ -1,6 +1,6 @@
 
 import NoFileNameException from "../exceptions/NoFileNameException"
-import FileSystemService from "./FileSystemService";
+import FileSystemService from "../components/FileSystemService";
 import FileTypes from "./FileTypes";
 
 class FileFinder {
@@ -25,8 +25,8 @@ class FileFinder {
             }   
             console.log("HEJ?" + FileTypes.directory.valueOf());
             console.log(newDirectoryPath);
-            console.log(await FileSystemService.getType(this.directoryPath, newDirectoryPath))
-            if (await FileSystemService.getType(this.directoryPath, newDirectoryPath) == FileTypes.directory.valueOf()) {
+            console.log(await FileSystemService.getType(newDirectoryPath))
+            if (await FileSystemService.getType(newDirectoryPath) == FileTypes.directory.valueOf()) {
                 console.log("Directory found");
                 return newDirectoryPath;
             }
@@ -41,7 +41,7 @@ class FileFinder {
             let path : string = await this.getDirectory(desiredFilePath);
             let filePath : string = path + "/" + fileName + ".json";
             console.log("HEJ!!" + filePath);
-            if(await FileSystemService.getType(this.directoryPath, filePath) == FileTypes.JSON){
+            if(await FileSystemService.getType(filePath) == FileTypes.JSON){
                 return filePath;
             }
         }
