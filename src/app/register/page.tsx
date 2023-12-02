@@ -62,10 +62,10 @@ export default function RegisterPage() {
         //routes to login page if input if data is validated without problem
         toast.success('Registered '+formData.username)
         router.push('/login')})
-      .catch((err)=>{
+      .catch((err:any)=>{
         if (err instanceof RegisterException) {
           
-          setValidationErrors({...validationErrors, username: err.message, confirmPassword: ''});
+          setValidationErrors({...validationErrors, username: err.message,password: '', confirmPassword: ''});
         };
       }); 
 

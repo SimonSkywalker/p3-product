@@ -1,13 +1,5 @@
-/* TODO
 
-- /finde ud af klasserne og interface
-- lave handler class med de små funktioner
-- sætte enkelte html elementer i filer for sig selv?
-- lav bedre id / keys
-- færre div'er
-
-
-
+/*
 New To Do
 
 Comment code
@@ -41,12 +33,14 @@ import { APIHandle } from "../classes/handlerClass";
 import { log } from "console";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
+import { useAuth } from "../context/Auth";
 
 
 
 export default function ProjectPage() {
   const router = useRouter();
+  const { logout } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   
   const [user, setUser] = useState("");
   
@@ -66,6 +60,7 @@ export default function ProjectPage() {
     const token = Cookies.get("token");
     console.log(token)
     if (!token) {
+      logout();
       router.replace("/login"); // If no token is found, redirect to login page
       return;
     }
@@ -78,10 +73,13 @@ export default function ProjectPage() {
             },
           });
   
-          if (!res.ok) throw new Error("Token validation failed");
+          if (!res.ok) {throw new Error("Token validation failed");}
         } catch (error) {
           console.error(error);
+          logout();
           router.replace("/login"); // Redirect to login if token validation fails
+        } finally {
+          setIsLoading(false);
         }
       };
   
@@ -108,7 +106,10 @@ export default function ProjectPage() {
     
   }, []);
   
-
+  if (isLoading) {
+    // You can display a loading indicator here if needed
+    return <div>Loading...</div>;
+  }
  
   const URLIconsPath = ServerSidePaths.getURLIconsPath();
 

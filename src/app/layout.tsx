@@ -5,7 +5,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
-
+import { AuthProvider } from './context/Auth'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -29,9 +29,11 @@ export default function RootLayout({
       </head>
       
       <body className={inter.className}>
-        <Navbar />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
       
     </html>

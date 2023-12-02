@@ -8,13 +8,14 @@ import { useRouter } from 'next/navigation';
 import z from 'zod';
 import { LoginException } from '../exceptions/LoginException';
 import {APIHandle, ErrorCheck, LoginHandler} from '../classes/handlerClass';
-
+import { useAuth } from '../context/Auth';
 
 
 export default function LoginPage() {
   const router = useRouter();
   
   //Constants used to handle data
+  const { login } = useAuth();
   const loginHandler = new LoginHandler();
   const [formData, setFormData] = useState(loginHandler.formData);
   const [validationErrors, setValidationErrors] = useState(loginHandler.validationErrors);
@@ -55,7 +56,7 @@ export default function LoginPage() {
 
       //Sends the data to server validation and handling
       APIHandle.APIRequestLogin(validatedData)
-      .then(()=>{router.push('/projectCreation')})
+      .then(()=>{login();router.push('/projectCreation')})
       .catch((err)=>{
         //Is true if the wrong credentials are inputted
         if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}
