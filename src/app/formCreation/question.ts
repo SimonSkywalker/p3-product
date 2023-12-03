@@ -98,6 +98,7 @@ export class MultipleChoice extends Question {
 
 }
 
+
 export class Slider extends Question {
     private _sliderType: SliderTypes;
     private _range: number;
@@ -122,26 +123,26 @@ export class Slider extends Question {
         this._range = 7;
     }
 
-    public rangeValidator() : boolean {
-        if (this.range % 2 == 0 && this.sliderType == SliderTypes.agreeDisagree)
-            throw new Error("Range should be an odd number");
-        else if (this.range < 1 || this.range > 10)
-            throw new Error("range should be between 1 and 10");
-        return true;
-    }
-
-
 }
 
 
+/**
+ * The two types for multiple choice questions, radio and checkbox
+ */
 export enum ChoiceTypes {
     radio, checkbox
 }
 
+/**
+ * The two types for slider questions, agree/disagree or numerical values
+ */
 export enum SliderTypes {
     agreeDisagree, values
 }
 
+/**
+ * The three types of questions, multiple choice, slider and text input
+ */
 export enum QuestionTypes {
     multipleChoice, slider, textInput
 }

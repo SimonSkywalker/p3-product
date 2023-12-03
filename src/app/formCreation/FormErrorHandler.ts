@@ -2,22 +2,6 @@ import { z } from "zod";
 import FormValidator from "./FormValidator";
 
 export default class FormErrorHandler {
-
-    private _formData: FormFormData = {
-        _name: "",
-        _description: "",
-        _questions : [{
-            _description: "",
-            _options: [""],
-        }]
-    }
-
-    public get formData() {
-        return this._formData;
-      }
-      public set formData(value) {
-        this._formData = value;
-      }
     
       private _validationErrors: FormFormData = {
         _name: "",
@@ -61,7 +45,12 @@ export default class FormErrorHandler {
         this._validationErrors = value;
       }
 
-      public errorValidation(Error: any){
+      /**
+       * This function takes an error and, if it is a zod error, finds the field of the error and copies the string onto a FormFormData object
+       * @param Error An error that has been caught
+       * @returns An instance of FormFormData, containing strings with potential found errors
+       */
+      public errorValidation(Error: any) : FormFormData {
         
         //True if validation error occurs
         if(Error instanceof z.ZodError){
