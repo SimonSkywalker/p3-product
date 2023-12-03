@@ -14,7 +14,7 @@ class CsvMaker {
         for(let i = 0; i < array.length; i++) {
             let csvLine : string = "";
             for(let j = 0; j < array[i].length; j++) {
-                csvLine += j.toString();
+                csvLine += array[i][j].toString();
                 if (j < array[i].length+1)
                     csvLine += ","
             }
@@ -34,16 +34,16 @@ export default class ResponseCsvMaker extends CsvMaker {
      * @returns A 2D array containing values corresponding 
      */
     public static responsesToArray(responses : Array<ResponseData>, form : Form) : Array<Array<any>>{
-        let finalArray : Array<Array<any>> = [];
+        let finalArray : Array<Array<any>> = [[]];
         finalArray[0][0] = "Questions";
         for(let i = 0; i < responses.length; i++){
-            finalArray[0].push(responses[i]);
+            finalArray[0].push(responses[i].tokenID);
         }
         for(let i = 0; i < form.questions.length; i++){
             finalArray.push([]);
             finalArray[i+1][0] = form.questions[i].description;
             for(let j = 0; j < responses.length; j++){
-                finalArray[i+1].push(responses[j].answers);
+                finalArray[i+1].push(responses[j].answers[i]);
             }
         }
         return finalArray;
@@ -76,14 +76,15 @@ export class ResponseData {
      */
     public static responseFromObject(response : any) : ResponseData {
         let responseData = new ResponseData;
-        let answers = Object.keys(response.questions);
+        let answers = Object.values(response.questions);
 
         if(response.tokenID == undefined || response.questions == undefined)
             throw WrongTypeException
         responseData._tokenID = response.tokenID;
         for(let i = 0; i < answers.length; i++){
+            responseData.answers.push(new AnswerData);
             if(answers[i] != undefined)
-                responseData.answers[i].setAnswer(response.questions[i.toString()]);
+                responseData.answers[i].setAnswer(answers[i] as string);
         }
         return responseData;
     }
@@ -121,5 +122,13 @@ export class AnswerData {
             this._multipleAnswer = answer;
     }
 
+    public toString() : string {
+        if(this._singleAnswer)
+            return this._singleAnswer;
+        //Adding quotes so that in csv, they will count as one entity
+        if(this._multipleAnswer.length > 0)
+            return '""' + this._multipleAnswer.join(",") + '""';
+        else throw Error;
+    }
 
 }
