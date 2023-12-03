@@ -3,6 +3,10 @@ import NoFileNameException from "../exceptions/NoFileNameException"
 import FileSystemService from "./FileSystemService";
 import FileTypes from "./FileTypes";
 
+
+/**
+ * This class 
+ */
 class DatabaseAccess {
     private _directoryPath: string;
 
