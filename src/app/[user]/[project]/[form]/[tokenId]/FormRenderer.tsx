@@ -132,10 +132,10 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
         .catch((error) => {
           alert(`Error: ${error}`);
         });
-    }
+    } 
 
     // Change For Jest
-    // goToFinalPage();
+    //goToFinalPage();
   };
 
   // Function to handle user input and update userResponses

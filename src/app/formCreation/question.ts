@@ -1,3 +1,5 @@
+import WrongTypeException from "../exceptions/WrongTypeException";
+
 export default class Question {
     private _description: string;
     private _mandatory: boolean;
@@ -48,6 +50,36 @@ export default class Question {
 
     }
 
+    /**
+     * If this is a multiple choice question, add an option. Else, do nothing
+     */
+    public addOption() : void {
+        if(this instanceof MultipleChoice){
+            (this as MultipleChoice).options.push("Option");
+        }
+    }
+
+    /**
+     * If this is a multiple choice question, rename an option. Else, do nothing
+     * @param index Index of option to be renamed
+     * @param newName New name to add to option
+     */
+    public renameOption(index : number, newName : string) : void {
+        if(this instanceof MultipleChoice){
+            (this as MultipleChoice).options[index] = newName;
+        }
+    }
+
+    /**
+     * If this is a multiple choice question, remove an option. Else, do nothing
+     * @param index  Index of option to be removed
+     */
+    public removeOption(index: number) : void {
+        if(this instanceof MultipleChoice) {
+            (this as MultipleChoice).options.splice(index, 1);
+        }
+    }
+
 }
 
 export class MultipleChoice extends Question {
@@ -84,18 +116,6 @@ export class MultipleChoice extends Question {
         this._choiceType = ChoiceTypes.radio;
     }
 
-    public addOption(){
-        this._options.push("Option");
-    }
-
-    public renameOption(position: number, name: string){
-        this._options[position] = name;
-    }
-
-    public removeOption(position: number){
-        this._options.splice(position, 1);
-    }
-
 }
 
 export class Slider extends Question {
@@ -122,13 +142,6 @@ export class Slider extends Question {
         this._range = 7;
     }
 
-    public rangeValidator() : boolean {
-        if (this.range % 2 == 0 && this.sliderType == SliderTypes.agreeDisagree)
-            throw new Error("Range should be an odd number");
-        else if (this.range < 1 || this.range > 10)
-            throw new Error("range should be between 1 and 10");
-        return true;
-    }
 
 
 }

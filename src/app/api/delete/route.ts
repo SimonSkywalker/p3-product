@@ -14,7 +14,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         return NextResponse.json({ error: 'Invalid path' , status: 400});
     }
     try {
-        let file = path.join(process.cwd(), filePath);
         fs.rm(file, { recursive: true }, (err) => {
             if (err) {
                 console.error(err);

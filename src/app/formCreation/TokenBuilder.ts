@@ -1,3 +1,4 @@
+import NegativeNumberException from "../exceptions/NegativeNumberException";
 import WrongTypeException from "../exceptions/WrongTypeException";
 import Token from "./Token";
 
@@ -48,6 +49,9 @@ class TokenBuilder{
      * @returns The token builder
      */
     public setTokens(amount: number): TokenBuilder{
+        if(amount < 0){
+            throw new NegativeNumberException;
+        }
         if(this._tokens.length < amount)
             this.addTokens(amount - this._tokens.length);
         else if(this._tokens.length > amount)
@@ -72,13 +76,15 @@ class TokenBuilder{
         try {
             this.setTokens(objects.length);
             for(let i = 0; i < this._tokens.length; i++){
+                if(objects[i]._tokenID == undefined || objects[i]._isUsed == undefined)
+                    throw new WrongTypeException;
                 this._tokens[i].tokenID = objects[i]._tokenID;
                 this._tokens[i].isUsed = objects[i]._isUsed;
             }
             return this.getTokens();
         }
         catch (e: any){
-            throw new WrongTypeException();
+            throw new WrongTypeException;
         }
     }
 }

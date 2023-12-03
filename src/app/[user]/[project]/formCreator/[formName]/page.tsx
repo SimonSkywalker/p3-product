@@ -6,12 +6,9 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org
 import {Button} from "@nextui-org/button"
 import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
-import {
-  Modal, 
-  ModalContent} from "@nextui-org/react";
+import {Modal, ModalContent} from "@nextui-org/react";
 import FileSystemService from '../../../../formCreation/FileSystemService';
-import Token from '../../../../formCreation/Token'
-import Form from '../../../../formCreation/form';
+import Form from '../../../../formCreation/Form';
 import Question from "../../../../formCreation/question";
 import FileFinder from '../../../../formCreation/FileFinder';
 import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "../../../../formCreation/question";
@@ -22,7 +19,6 @@ import _, { update } from 'lodash';
 import FormBuilder from "../../../../formCreation/FormBuilder";
 import FormErrorHandler, { FormFormData } from "../../../../formCreation/FormErrorHandler";
 import ObjectAlreadyExistsException from "../../../../exceptions/ObjectAlreadyExistsException";
-import { error } from "console";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
@@ -30,14 +26,14 @@ const rootLink : string = "https://www.testwebsite.com"
 let databaseFile: string;
 let forms: DatabaseAccess;
 let currForm = new Form;
-
+const errorHandler = new FormErrorHandler();
 
 class FormCreator{
   public static createOptions(question: MultipleChoice, errors : FormErrorHandler, updateState: () => void){
     errors.addOptionErrors(question.number-1, question.options.length);
     return <>
     {question.options.map((e, index) => {return <ul key={index}> <Input value={e} color="secondary"  onValueChange={(input) =>{
-      (question as MultipleChoice).renameOption(index, input);
+      question.renameOption(index, input);
       updateState();
     }}></Input>
     {errors.validationErrors._questions[question.number-1]._options[index] && (
@@ -47,11 +43,12 @@ class FormCreator{
             </div>
           )}
     <Button className="button" onClick={() => {
-      (question as MultipleChoice).removeOption(index);
+      question.removeOption(index);
+      errors.cleanOption(question.number-1, index);
       updateState();
       }}>Remove option</Button> </ul>})}
     <Button className="button" onClick={() => {
-      (question as MultipleChoice).addOption();
+      question.addOption();
       updateState();
     }}>Add option</Button>
     </>
@@ -62,6 +59,7 @@ class FormCreator{
       case QuestionTypes.slider: {
         return <><Input color="secondary" value={((question as Slider).range).toString()} type="number" label="Amount of steps" min="3" max="9" step="2" onValueChange={(value) => {
           (question as Slider).range = parseInt(value);
+          updateState();
         }}/>
         <RadioGroup
         label="Slider type"
@@ -85,11 +83,11 @@ class FormCreator{
       }
       case QuestionTypes.multipleChoice: {
         return <>
-        <Checkbox defaultChecked={(question as MultipleChoice).choiceType == ChoiceTypes.checkbox} onValueChange={(check) => {
+        <Checkbox isSelected={(question as MultipleChoice).choiceType == ChoiceTypes.checkbox} onValueChange={(check) => {
         (question as MultipleChoice).choiceType = check ? ChoiceTypes.checkbox : ChoiceTypes.radio;
         updateState();
       }}>Allow multiple options checked</Checkbox>
-        <Checkbox defaultChecked={(question as MultipleChoice).saveRole} onValueChange={(check) => {
+        <Checkbox isSelected={(question as MultipleChoice).saveRole} onValueChange={(check) => {
         (question as MultipleChoice).saveRole = check;
         updateState();
       }}>Use question to determine roles</Checkbox>
@@ -103,6 +101,7 @@ class FormCreator{
 
   public static createQuestionBox(form: Form, question : Question, errors: FormErrorHandler, updateState: () => void) {
     errors.addQuestionErrors(question.number);
+    console.dir(errors);
     return <><p> Question number {question.number}</p>
     <Input color="secondary"  label="Question name" value={question.description} onValueChange={(value) => {
         question.description = value;
@@ -114,17 +113,18 @@ class FormCreator{
               {errors.validationErrors._questions[question.number-1]._description}
             </div>
           )}
-    <Checkbox defaultChecked={question.mandatory} onValueChange={(check) => {
+    <Checkbox isSelected={question.mandatory} onValueChange={(check) => {
         question.mandatory = check;
         updateState();
       }}>Required</Checkbox>
-    <Checkbox defaultChecked={question.userDisplay} onValueChange={(check) => {
+    <Checkbox isSelected={question.userDisplay} onValueChange={(check) => {
         question.userDisplay = check;
         updateState();
       }}>Show answers to respondents</Checkbox>
     {FormCreator.renderSwitch(question, errors, updateState)}
     <Button className="button" onClick={() => {
       form.removeQuestion(question.number-1);
+      errors.cleanQuestion(question.number-1);
       updateState();
     }}>Remove question</Button>
     </>
@@ -181,7 +181,6 @@ const pathToSrc : string = "../../../..";
 
   }, [])
 
-  const errorHandler = new FormErrorHandler();
   const [form, setForm] = useState(currForm);
   const [active, setActive] = useState(currForm.isActive)
   const [validationErrors, setValidationErrors] = useState(errorHandler.validationErrors);
@@ -200,7 +199,7 @@ const pathToSrc : string = "../../../..";
           className="w-full p-6 rounded-md shadow-md lg:max-w-xl bg-white-300 shadow-2xl space-y-3">
           <h1 
             className="text-3xl font-bold text-center text-gray-700">
-            Login
+            Form creation
           </h1>
           <Input
           type="text"
@@ -209,7 +208,6 @@ const pathToSrc : string = "../../../..";
           value={form.getUncleanName()}
           onValueChange={(name) => {
             form.name = name;
-            form.cleanName();
             updateState();
           }}
         />
@@ -274,13 +272,15 @@ const pathToSrc : string = "../../../..";
 
             try {
               FormValidator.FormTemplate.parse(form);
-              if(forms.checkDuplicate(form) && form.name != currForm.name)
+              console.dir(forms);
+              if(forms.checkDuplicate(form) && form.name != formName)
                 throw(new ObjectAlreadyExistsException("Form of name " + form.name + " already exists"));
               setModalOpen(true);
             } catch(e: any) {
               if(e instanceof ObjectAlreadyExistsException)
                 alert(e.message);
-              let errorHandler = new FormErrorHandler();
+              console.dir(e);
+              errorHandler.cleanErrors();
               setValidationErrors(errorHandler.errorValidation(e));
             }
               console.dir(form);
@@ -290,7 +290,7 @@ const pathToSrc : string = "../../../..";
               try{
                 //Uses currForm since it uses the values that were gained on page load
                 //If form was used, you could accidentally name your new form the same as an existing one and delete that
-                forms.removeFromDatabase(currForm.name);
+                forms.removeFromDatabase(formName);
                 FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
               }
               catch(e : any) {
@@ -300,32 +300,48 @@ const pathToSrc : string = "../../../..";
           </div>
           <Modal isOpen={modalOpen}>
             <ModalContent>
-              <Input color="secondary" type="number" label="How many people should answer this form?" min="1" max="1024" step="1" onValueChange={(value) => {
+              <Input color="secondary" type="number" label="How many people should answer this form?" min="0" max="1024" step="1" onValueChange={(value) => {
                 tokenBuilder.setTokens(parseInt(value));
               }}/>
               <Button className="button" onClick={async () => {
+                form.cleanName();
                 console.dir(tokenBuilder);
                 form.tokens = tokenBuilder.getTokens();
                 form.isActive = false;
                 setActive(false);
                 //If the form already exists in the database, remove it first
-                if(forms.checkDuplicate(form) && form.name == currForm.name)
+                if(forms.checkDuplicate(form) && form.name == formName)
                   forms.removeFromDatabase(form.name);
                 forms.addToDatabase(form);
+                const database : FileFinder = new FileFinder(pathToSrc);
+                //Makes directory at the project path plus the current form name
+                //If directory already exists, nothing happens
+                FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
+                //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
               }}>Publish form</Button>
+
               <Button className="button" onClick={async () => {
+                form.cleanName();
                 //If the form already exists in the database, remove it first
-                if(forms.checkDuplicate(form) && form.name == currForm.name)
+                if(forms.checkDuplicate(form) && form.name == formName)
                   forms.removeFromDatabase(form.name);
                 forms.addToDatabase(form);
+                const database : FileFinder = new FileFinder(pathToSrc);
+                //Makes directory at the project path plus the current form name
+                //If directory already exists, nothing happens
+                FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
+                //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
-              }
-              }>Save without publishing</Button>
+                setModalOpen(false);
+              }}>Save without publishing</Button>
+
               <Button className="button" onClick={() => {
                 setModalOpen(false);  
-              }}>Fuck go back</Button>
+              }}>Don't save</Button>
+
               {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
+
             </ModalContent>
           </Modal>
         </div>
