@@ -169,7 +169,7 @@ describe('Form', () => {
         const newForm : Form = testForm.createChild();
         expect(newForm.name).toEqual("Copy of Untitled form");
         expect(newForm.questions).toEqual(testForm.questions);
-        expect(newForm.parent).toEqual(testForm.name);
+        expect(newForm.parents).toEqual(testForm.name);
     })
 
     it("Can find exact matches between questions", () => {
@@ -186,7 +186,7 @@ describe('FormBuilder', () => {
         expect(testForm.description).toEqual(object._description);
         expect(testForm.questions).toEqual(object._questions);
         expect(testForm.isActive).toEqual(object._isActive);
-        expect(testForm.parent).toEqual(object._parent);
+        expect(testForm.parents).toEqual(object._parent);
         expect(testForm.tokens).toEqual(object._tokens);
     })
 

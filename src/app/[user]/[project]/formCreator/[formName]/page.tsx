@@ -150,7 +150,7 @@ export default function FormCreation({params} : CreationPageParams) {
 const router = useRouter();
 
 const username : string = params.user;
-const project : string = params.project;
+const project : string = params.project.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
 const formName : string = params.formName;
 const pathToSrc : string = "../../../..";
 
@@ -162,7 +162,7 @@ useEffect(() => {
   const token = Cookies.get("token");
   console.log(token)
   if (!token) {
-    toast.error("No user found");
+    toast.error("No user found"); 
     router.replace("/login"); // If no token is found, redirect to login page
     return;
   }
@@ -381,7 +381,7 @@ useEffect(() => {
                 setModalOpen(false);  
               }}>Don't save</Button>
 
-              {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
+              {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}</li>})}
 
             </ModalContent>
           </Modal>
@@ -391,7 +391,7 @@ useEffect(() => {
     :
     (
       <main>
-      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project+"/"+form.name+"/"+token.tokenID}</li>})}
+      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}</li>})}
       </main>
     )
   )
