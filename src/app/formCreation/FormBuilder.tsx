@@ -28,11 +28,6 @@ export default class FormBuilder {
         return this;
     }
 
-    public addParents(parents : Array<string>) : FormBuilder {
-        this.form.parents = parents; 
-        return this;
-    }
-
     public addQuestion(question : Question) : FormBuilder {
         this.form.questions.push(question);
         return this;
@@ -58,9 +53,9 @@ export default class FormBuilder {
      * @returns A new Form object with the same values as the initial object, or an exception if the values cannot be copied
      */
     public formFromObject(object : any) : Form {
-        if(object._name == undefined || object._description == undefined || object._isActive == undefined || object._questions == undefined || object._tokens == undefined || object._parents == undefined)
+        if(object._name == undefined || object._description == undefined || object._isActive == undefined || object._questions == undefined || object._tokens == undefined)
             throw new WrongTypeException;
-        this.addName(object._name).addDescription(object._description).addActiveStatus(object._isActive).addParents(object._parents);
+        this.addName(object._name).addDescription(object._description).addActiveStatus(object._isActive);
         this.addTokens((new TokenBuilder).TokenFromObjects(object._tokens));
         for(let i = 0; i < object._questions.length; i++){
             let questionBuilder : QuestionBuilder = new QuestionBuilder(object._questions[i]._questionType);

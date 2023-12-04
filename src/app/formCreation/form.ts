@@ -16,7 +16,6 @@ export default class Form implements Nameable {
     private _questions: Array<Question>;
     private _tokens: Array<Token>;
     private _isActive: boolean;
-    private _parents: Array<string>;
 
 
     //Get and set functions for the fields.
@@ -56,20 +55,12 @@ export default class Form implements Nameable {
         this._tokens = value;
     }
 
-    public get parents(): Array<string> {
-        return this._parents;
-    }
-    public set parents(value: Array<string>) {
-        this._parents = value;
-    }
-
     public constructor(){
         this._name = "Untitled form";
         this._description = "";
         this._questions = [];
         this._tokens = [];
         this._isActive = true;
-        this._parents = [];
     }
 
     
@@ -132,8 +123,6 @@ export default class Form implements Nameable {
     public createChild() : Form {
         const child = _.cloneDeep(this);
         child.name = "Copy of " + this.name;
-        child.parents = this.parents;
-        child.parents.push(this.name);
         child.isActive = true;
 
         return child;
