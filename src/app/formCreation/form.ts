@@ -134,7 +134,7 @@ export default class Form implements Nameable {
         child.name = "Copy of " + this.name;
         child.parent = this.name;
         child.isActive = true;
-
+        child.cleanName();
         return child;
     }
 

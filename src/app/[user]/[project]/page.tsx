@@ -109,14 +109,14 @@ export const page = ({params}:ProjectParams) => {
             onSubmit={() => setModalOpen({currentModalTitle: "", isOpen: false})}>
               <h2 className="text-3xl text-center m-4">Form Creation</h2>
               
-              <button 
+              <Link 
+                href={params.project + "/formCreator/"}
                 type="button"
                 title="FormButton"
-                onClick={ (e) => {}  }
-                className="float-left m-2 px-9 py-2 tracking-wide text-white bg-gray-700 hover:bg-gray-600 rounded-md focus:outline-none focus:bg-red-600 hover:scale-105" >
+                className="float-left m-2 px-9 py-2 tracking-wide text-white bg-gray-700 hover:bg-gray-600 rounded-md focus:outline-none hover:scale-105" >
                 New Form
-              </button>
-              
+              </Link>
+
               
                 <select 
                     
