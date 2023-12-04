@@ -35,7 +35,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Perform a check to the server if the token is still valid
     fetch('/api/protected', {
-      method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
       },
