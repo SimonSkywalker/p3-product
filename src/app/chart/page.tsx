@@ -9,8 +9,7 @@ import Menu2 from "./Menu2";
 
 export default function VisPage() {
   const router = useRouter();
-  const [user, setUser] = useState({Id:"", project: "", forms:[], roles:[], questions:[]});
-  const [formData, setFormData] = useState({form: '', otherForm: '', roles: [], questions: []});
+  const [user, setUser] = useState({Id:"", project: "", forms:[], selectedForm: "", roles:[], questions:[]});
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -45,6 +44,7 @@ export default function VisPage() {
     .then((data) => {
         setUser({
           ...user,
+          selectedForm: data.formdata.selectedForm,
           roles: data.formdata.roles,
           questions: data.formdata.questions
         })
@@ -69,10 +69,15 @@ export default function VisPage() {
       setFormData([...formData, value]);
     }
   }  */
-
-  console.log(user)
+  let otherForms: any = []
+  if (typeof user?.selectedForm != 'undefined') {
+    otherForms = user?.forms.filter(function(e) { return e !== user?.selectedForm })
+  }
 
   const listForm = user?.forms.map((form: any) => (
+    <option value={form} key={form}>{form}</option>
+  ));
+  const listFormOp = otherForms.map((form: any) => (
     <option value={form} key={form}>{form}</option>
   ));
   const listRoles = user?.roles?.map((role: any, i: number) => (
@@ -104,7 +109,7 @@ export default function VisPage() {
           <h3 className="block text-sm font-semibold text-gray-800">Select other form for comparison (optional)</h3>
           <select name="otherForm" className="bg-white-300" defaultValue={'DEFAULT'}>
           <option disabled value="DEFAULT">-- select option --</option>
-            {listForm}
+            {listFormOp}
           </select>
         </div>
           <Menu1

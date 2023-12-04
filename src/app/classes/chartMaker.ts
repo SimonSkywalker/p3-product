@@ -58,7 +58,7 @@ export class QuestionHandler {
 
 export class dataMaker{
     
-    private _dataSet: Responses = {
+    private _dataSet = {
         roles:{},
         question:{}
     };

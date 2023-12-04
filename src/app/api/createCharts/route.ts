@@ -12,6 +12,7 @@ export async function GET(request: NextRequest, response: NextResponse){
         chartsPageURL.searchParams.append(key, value)
     }
    
+    console.log(chartsPageURL);
 
     return  NextResponse.redirect(chartsPageURL);
     

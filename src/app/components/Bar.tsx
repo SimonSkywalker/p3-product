@@ -6,9 +6,10 @@ interface ChartProps {
   questionIndex: number
   questions: any[]
   answerCount: {}
+  answer2Count: {}
 }
 
-export default function BarChart({ questionName, questionIndex, questions, answerCount } : ChartProps) {
+export default function BarChart({ questionName, questionIndex, questions, answerCount, answer2Count } : ChartProps) {
   let randomBackgroundColor : any = [];
   let usedColors = new Set();
 
@@ -29,7 +30,7 @@ export default function BarChart({ questionName, questionIndex, questions, answe
   for ( let i in questions) {
       randomBackgroundColor.push(dynamicColors());
   }
-  const datasetMaker = (object: any): any[]=>{
+  const datasetMaker = (object: any): any[] => {
 
     let tempArray = [];
 
@@ -39,8 +40,44 @@ export default function BarChart({ questionName, questionIndex, questions, answe
         label: key,
         backgroundColor: dynamicColors(),
         borderWidth: 2
+
       })
     }
+    
+    return tempArray;
+  }
+  
+  const dynamicColorsKeys: any = {}
+  const datasetMakerCompareTo = (object: any, object2: any): any[]=>{
+    let tempArray = [];
+
+    for (const [key, value] of Object.entries(object)) {
+      if (!(key in dynamicColorsKeys)) {
+        dynamicColorsKeys[key] = dynamicColors() as any;
+      }
+      
+      tempArray.push({
+        data: Object.values(value as {}),
+        label: key + ' (current)',
+        backgroundColor: dynamicColorsKeys[key],
+        borderWidth: 2,
+        stack: 'Stack 0',
+      })
+    }
+
+    for (const [key, value] of Object.entries(object2)) {
+      if (!(key in dynamicColorsKeys)) {
+        dynamicColorsKeys[key] = dynamicColors() as any;
+      }
+      tempArray.push({
+        data: Object.values(value as {}),
+        label: key + ' (compare)',
+        backgroundColor: dynamicColorsKeys[key],
+        borderWidth: 2,
+        stack: 'Stack 1',
+      })
+    }
+    
     return tempArray;
   }
   useEffect(() => {
@@ -50,7 +87,7 @@ export default function BarChart({ questionName, questionIndex, questions, answe
             type: 'bar',
             data: {
                 labels: questions,
-                datasets: datasetMaker(answerCount)
+                datasets: (answer2Count) ? datasetMakerCompareTo(answerCount, answerCount) : datasetMaker(answerCount)
             },
             options: {
                 scales: {

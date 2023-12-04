@@ -9,6 +9,9 @@ import Cookies from "js-cookie";
 import { QuestionHandler, dataMaker } from '../classes/chartMaker'
 import { APIHandle } from '../classes/handlerClass'
 
+
+
+
 export default function ChartPage(response: any) {
     const router = useRouter()
     const [chartData, setChartData] = useState({
@@ -18,7 +21,6 @@ export default function ChartPage(response: any) {
     const [answerData, setAnswerData] = useState(new dataMaker)
     
     const formData = response.searchParams;
-    let myNewArray: any = {};
 
     if (Object.keys(formData).length === 0) {
         router.push('/chart');
@@ -36,7 +38,7 @@ export default function ChartPage(response: any) {
         console.error(error);
         router.replace("/login");
         });
-        
+
         APIHandle.APIRequestRQ(formData.form)
         .then((data) => {
                 setChartData({
@@ -44,7 +46,7 @@ export default function ChartPage(response: any) {
                 roles: data.formdata.roles,
                 questions: data.formdata.questions
                 })
-            
+                
                 answerData.makeArray(data.mResponse, formData.rolePicks)
                 console.log(answerData.dataArray);
 
@@ -81,6 +83,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             roles={formData.rolePicks}
                             answerCount={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray[option].roleAnswersCount}
                         />
                         )}
                         { //Multiple choice (checkboxes)
@@ -90,6 +93,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={chartData.questions[option].options}
                             answerCount={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray[option].roleAnswersCount}
                         />
                         )}
                         { //Slider (AgreeDisagree)
@@ -99,6 +103,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={sortedDataArray[option]?.questionLabels}
                             answerCount={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray[option].roleAnswersCount}
                         />
                         )}
                         { //Slider (values)
@@ -108,6 +113,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={sortedDataArray[option]?.questionLabels}
                             answerCount={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray[option].roleAnswersCount}
                         />
                         )}
                         { //Text input

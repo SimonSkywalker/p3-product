@@ -21,6 +21,7 @@ export default function leaderHome() {
         })
 
     }, [router]);
+ 
   return (
     <div>Projects</div>
   )

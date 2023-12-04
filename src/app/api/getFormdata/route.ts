@@ -13,7 +13,7 @@ export async function POST(request: NextRequest, response: NextResponse){
     const roleslist = await checkList.findRoles(decoded.userId, projectName, selectedForm)
     const questionList = await checkList.getQuestions(decoded.userId, projectName, selectedForm)
     const path = process.cwd() + `/src/app/(database)/${decoded.userId}/${projectName}/${selectedForm}/responses.json`;
-   
+    
     const responseFile = await fs.readFile(path, "utf8")
     .then((responses) => {
         return JSON.parse(responses);
@@ -24,6 +24,6 @@ export async function POST(request: NextRequest, response: NextResponse){
         return [];
     });
 
-    return new NextResponse(JSON.stringify({formdata: {roles: roleslist, questions: questionList}, mResponse: responseFile}), {status: 200})
+    return new NextResponse(JSON.stringify({formdata: {roles: roleslist, selectedForm: selectedForm, questions: questionList}, mResponse: responseFile}), {status: 200})
     
 } 
