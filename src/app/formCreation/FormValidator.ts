@@ -1,6 +1,6 @@
 import z from "zod"
 
-import Form from "./Form";
+import Form from "./form";
 import Question from "./question";
 import { MultipleChoice, Slider } from "./question";
 import ValidationError from "../exceptions/ValidationError";
@@ -14,7 +14,7 @@ export default class FormValidator {
     static FormTemplate = z.object({
         _name: z.string().min(1, { message: "Name required" })
                         .max(nameMax, { message: "No more than " + nameMax + " characters" })
-                        .regex(new RegExp(/^$|^[a-zA-Z0-9æøåÆØÅ -]+$/),'Special characters not allowed'),
+                        .regex(new RegExp(/^$|^[a-zA-Z0-9æøåÆØÅ\\ -]+$/),'Special characters not allowed'),
         _description: z.string().max(descMax),
         _questions: z.array(z.object({
             _description: z.string().min(1, { message: "Text required" })
@@ -27,7 +27,7 @@ export default class FormValidator {
 
     static nameTemplate = z.string().min(1, { message: "Name required" })
     .max(nameMax, { message: "No more than " + nameMax + " characters" })
-    .regex(new RegExp(/^$|^[a-zA-Z0-9øåÆØÅ ]+$/),'Special characters not allowed')
+    .regex(new RegExp(/^$|^[a-zA-Z0-9øåÆØÅ\\ -]+$/),'Special characters not allowed')
 
     static descTemplate = z.string()
     .max(descMax, { message: "No more than " + descMax + " characters" });

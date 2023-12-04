@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import userList from '@/app/database/userLogins.json'
 import { redirect } from "next/dist/server/api-utils";
 import { error } from "console";
-import {cookies} from "next/headers"
+import Cookies from "js-cookie"
 const jwt = require("jsonwebtoken");
 
 export async function POST(request: NextRequest, response: NextResponse) {

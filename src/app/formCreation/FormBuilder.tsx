@@ -1,5 +1,5 @@
 import Token from "./Token";
-import Form from "./Form";
+import Form from "./form";
 import Question from "./question";
 import TokenBuilder from "./TokenBuilder";
 import QuestionBuilder from "./QuestionBuilder";

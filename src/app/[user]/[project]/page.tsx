@@ -11,10 +11,14 @@ import { useState } from 'react';
 import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
 import { FormObject } from '@/app/interfaces/interfaces';
-import Form from '@/app/formCreation/Form';
+import Form from '@/app/formCreation/form';
 import FormBuilder from '@/app/formCreation/FormBuilder';
 import Link from 'next/link';
-
+import FormValidator from '@/app/formCreation/FormValidator';
+import ObjectAlreadyExistsException from '@/app/exceptions/ObjectAlreadyExistsException';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/context/Auth';
 
 interface ProjectParams {
     params:{
@@ -24,11 +28,15 @@ interface ProjectParams {
 }
 
 export const page = ({params}:ProjectParams) => {
+  const router = useRouter();
+  const { logout } = useAuth();
+
 
   const [openTab, setOpenTab] = useState<number>(2);
   const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
 
-  const [selectedForm, setSelectedForm] = useState<Form | null | undefined>(undefined);
+  const [nameInput, setNameInput] = useState<string>("");
+  const [selectedForm, setSelectedForm] = useState<Form>();
   const [actionOnProject, setActionOnProject] = useState<actionProject>({projectTitle:"", projectIndex: -1});
   const [creatingForm, setForm] = useState<boolean>(false);
   const [newForm, setNewForm] = useState<Project>(new Project());
@@ -58,6 +66,32 @@ export const page = ({params}:ProjectParams) => {
 
   useEffect(() => {
     
+    const token = Cookies.get("token");
+    console.log(token)
+    if (!token) {
+      logout();
+      router.replace("/login"); // If no token is found, redirect to login page
+      return;
+    }
+      // Validate the token by making an API call
+      const validateToken = async () => {
+        try {
+          const res = await fetch("/api/protected", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (!res.ok) {throw new Error("Token validation failed");}
+        } catch (error) {
+          console.error(error);
+          logout();
+          router.replace("/login"); // Redirect to login if token validation fails
+        }
+      };
+  
+      validateToken();
+
     getForms();
 
     const appElement: HTMLElement | null = document.getElementById('outerDiv');
@@ -80,17 +114,32 @@ export const page = ({params}:ProjectParams) => {
   const handleSelectChange = (e:any) => {
     const selectedValue = e.target.value;
     const selectedForm = forms.find((form) => form.name === selectedValue);
-    setSelectedForm(selectedForm || null);
+    setSelectedForm(selectedForm);
   };
 
-  const handleCopyForm = () => {
-    const copyForm = selectedForm?.createChild();
-    copyForm?.name.replace(/'-'g/,' ')
-    forms.push(new FormBuilder().formFromObject(copyForm))
-    formattingProjectData();
+  const handleCopyForm = (selectForm : Form, copiedName : string) => {
+    let copyForm = selectForm.createChild();
+    copyForm.name = copiedName;
+    copyForm.cleanName();
+    try{
+      FormValidator.nameTemplate.parse(copyForm.name);
+        //maybe throws zod error
+        //Check if validateName is unique
+      const isNotUnique : boolean = forms.some((form)=>{form.name == copyForm?.name})
+      if(isNotUnique){
+      throw new ObjectAlreadyExistsException("Form already exists");
+      }
+      //Push form to forms array
+      forms.push(new FormBuilder().formFromObject(copyForm))
+      writeFormData();
+      setModalOpen({currentModalTitle: "newFormModal", isOpen: false})
+    } catch (e: any) {
+        toast.error(e.message);
+        toast.error(copyForm.name);
+    }
   };
 
-  async function formattingProjectData() {
+  async function writeFormData() {
     const projectAltered = params.project.replace(/-/g, ' ');
     FileSystemService.writeToJSONFile(forms, ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' '));
   }
@@ -158,22 +207,31 @@ export const page = ({params}:ProjectParams) => {
                 <optgroup label="Published">
                 {publishedForms.map((form) => (
                     <option key={form.name} value={form.name}>
-                      {form.name}
+                      {form.getUncleanName()}
                     </option>
                   ))}
                 </optgroup>
                 <optgroup label="Not Published">
                   {notPublishedForms.map((form) => (
                     <option key={form.name} value={form.name}>
-                      {form.name}
+                      {form.getUncleanName()}
                     </option>
                   ))}
                 </optgroup>
               </select>
 
+              <input
+              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"   
+              
+              onChange={(value) => {
+                setNameInput(value.target.value.toString());}}
+              >
+              
+              </input>
+
               <button
                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors hover:duration-200 bg-gray-700 rounded-md hover:bg-gray-600"
-               onClick={(e) => {handleCopyForm();}}
+               onClick={(e) => {selectedForm ? handleCopyForm(selectedForm, nameInput) : toast.warning("Please Select a Form");e.preventDefault()}}
                >
                 Copy Form
               </button>

@@ -8,7 +8,7 @@ import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
 import {Modal, ModalContent} from "@nextui-org/react";
 import FileSystemService from "@/app/components/FileSystemService";
-import Form from '../../../../formCreation/Form';
+import Form from '../../../../formCreation/form';
 import Question from "../../../../formCreation/question";
 import FileFinder from '../../../../formCreation/FileFinder';
 import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "../../../../formCreation/question";
