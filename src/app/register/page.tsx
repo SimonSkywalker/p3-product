@@ -56,7 +56,7 @@ export default function RegisterPage() {
       //Validates data up against the RegisterSchema
       const validatedData = registerFormSchema.parse(registrationHandler.formData);
 
-      //Sents data to server for second validation & possible database input
+      //Sends data to server for second validation & possible database input
       APIHandle.APIRequestRegister(validatedData)
       .then(()=>{
         //routes to login page if input if data is validated without problem

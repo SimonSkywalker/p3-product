@@ -1,4 +1,4 @@
-import userList from '@/app/(database)/userLogins.json'
+import userList from '@/app/database/userLogins.json'
 import {promises as fs} from "fs"
 import { RegisterException } from '../exceptions/RegisterException';
 
@@ -55,7 +55,7 @@ export class User{
             //Checks if user already exists
             if(checkList.isDuplicate(userList, this.username)){
                 throw new RegisterException();
-            }
+            } 
             
             //Writes to database
             userList.push({Username: this.username, Password: this.password, DisplayName: this.displayName});
@@ -66,7 +66,7 @@ export class User{
 
     /**
      * During login, findUser checks the database
-     * for if an user with the given username exists
+     * for if a user with the given username exists
      * and returns this user with it values
      */
     public findUser() {
@@ -124,7 +124,7 @@ class dataManipulation{
      * @param list of users that is to be save to the database
      */
     public static saveListData(list: typeof userList){
-        fs.writeFile(process.cwd() +'/src/app/(database)/userLogins.json', JSON.stringify(list, null, 4));
+        fs.writeFile(process.cwd() +'/src/app/database/userLogins.json', JSON.stringify(list, null, 4));
     }
 
     /**
@@ -132,7 +132,7 @@ class dataManipulation{
      * @param user to be made a folder for
      */
     public static makeUserFolder(user: string){
-        fs.mkdir(process.cwd() +'/src/app/(database)/'+user);
+        fs.mkdir(process.cwd() +'/src/app/database/'+user);
         
     }
 }

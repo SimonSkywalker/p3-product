@@ -141,20 +141,25 @@ export class Slider extends Question {
         this._sliderType = SliderTypes.agreeDisagree;
         this._range = 7;
     }
-
-
-
 }
 
-
+/**
+ * The two types for multiple choice questions, radio and checkbox
+ */
 export enum ChoiceTypes {
     radio, checkbox
 }
 
+/**
+ * The two types for slider questions, agree/disagree or numerical values
+ */
 export enum SliderTypes {
     agreeDisagree, values
 }
 
+/**
+ * The three types of questions, multiple choice, slider and text input
+ */
 export enum QuestionTypes {
     multipleChoice, slider, textInput
 }

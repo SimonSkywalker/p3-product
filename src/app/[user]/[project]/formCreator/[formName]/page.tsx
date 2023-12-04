@@ -19,6 +19,11 @@ import _, { update } from 'lodash';
 import FormBuilder from "../../../../formCreation/FormBuilder";
 import FormErrorHandler, { FormFormData } from "../../../../formCreation/FormErrorHandler";
 import ObjectAlreadyExistsException from "../../../../exceptions/ObjectAlreadyExistsException";
+import { error } from "console";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import ServerSidePaths from "@/app/components/ServerSidePaths";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
@@ -142,10 +147,47 @@ interface CreationPageParams {
 export default function FormCreation({params} : CreationPageParams) {
   console.log("goofy");
 
+const router = useRouter();
+
 const username : string = params.user;
 const project : string = params.project;
 const formName : string = params.formName;
 const pathToSrc : string = "../../../..";
+
+/**
+ * This useEffect checks for the user's cookies to see if they are logged in
+ * If no token is found from the cookies, or if it is not validated, send a message and reroute to the login page
+ */
+useEffect(() => {
+  const token = Cookies.get("token");
+  console.log(token)
+  if (!token) {
+    toast.error("You do not have access to this page");
+    router.replace("/login"); // If no token is found, redirect to login page
+    return;
+  }
+    // Validate the token by making an API call
+    const validateToken = async () => {
+      try {
+        const res = await fetch("/api/protected", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error("Token validation failed");
+      } catch (error) {
+        console.error(error);
+        toast.error("You do not have access to this page");
+        router.replace("/login"); // Redirect to login if token validation fails
+      }
+    };
+
+    validateToken();
+
+  //FileSystemService.APIRequestUser().then(async (data)=>{setUser(await data.Id);});
+  
+});
 
 
   useEffect(() => {
@@ -154,7 +196,7 @@ const pathToSrc : string = "../../../..";
       console.log(database.directoryPath);
       databaseFile = await database.findJSONFile(["database", username, project], "forms");
       let formsArray : Array<Form> = [];
-      let objectsArray : Array<Object> = await FileSystemService.getJSONFile(database.directoryPath, databaseFile);
+      let objectsArray : Array<Object> = await FileSystemService.getJSONFile(databaseFile);
       for(let i = 0; i < objectsArray.length; i++){
         let formBuilder = new FormBuilder();
         console.dir(objectsArray[i] as Form);
@@ -278,9 +320,8 @@ const pathToSrc : string = "../../../..";
               setModalOpen(true);
             } catch(e: any) {
               if(e instanceof ObjectAlreadyExistsException)
-                alert(e.message);
-              console.dir(e);
-              errorHandler.cleanErrors();
+                toast.error('A form with this name already exists in this project');
+              let errorHandler = new FormErrorHandler();
               setValidationErrors(errorHandler.errorValidation(e));
             }
               console.dir(form);
@@ -291,7 +332,7 @@ const pathToSrc : string = "../../../..";
                 //Uses currForm since it uses the values that were gained on page load
                 //If form was used, you could accidentally name your new form the same as an existing one and delete that
                 forms.removeFromDatabase(formName);
-                FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
+                FileSystemService.writeToJSONFile(forms.objects, databaseFile);
               }
               catch(e : any) {
                 console.log("didn't delete");
@@ -318,7 +359,7 @@ const pathToSrc : string = "../../../..";
                 //If directory already exists, nothing happens
                 FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
                 //Overwrites the forms json file with this form added/updated
-                FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
+                FileSystemService.writeToJSONFile(forms.objects, databaseFile);
               }}>Publish form</Button>
 
               <Button className="button" onClick={async () => {
@@ -332,7 +373,7 @@ const pathToSrc : string = "../../../..";
                 //If directory already exists, nothing happens
                 FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
                 //Overwrites the forms json file with this form added/updated
-                FileSystemService.writeToJSONFile(pathToSrc, forms.objects, databaseFile);
+                FileSystemService.writeToJSONFile(forms.objects, databaseFile);
                 setModalOpen(false);
               }}>Save without publishing</Button>
 

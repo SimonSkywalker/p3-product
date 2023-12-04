@@ -5,6 +5,11 @@ import TokenBuilder from "./TokenBuilder";
 import QuestionBuilder from "./QuestionBuilder";
 import WrongTypeException from "../exceptions/WrongTypeException";
 
+/**
+ * This class follows the builder design pattern
+ * It is used to build a form by gradually adding the components,
+ * or by using data from an object outside the form class
+ */
 export default class FormBuilder {
     private form : Form = new Form();
 
