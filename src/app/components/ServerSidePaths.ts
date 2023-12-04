@@ -3,7 +3,7 @@ export default class ServerSidePaths {
     static iconsPath : string = "/public/icons";
     static URLIconsPath : string = "/icons";
     static URLFunctionIconsPath : string = "/functionIcons";
-    static databasePath : string = "/src/app/(database)";
+    static databasePath : string = "/src/app/database";
     static projectsFile : string = "projects.json";
     static formsFile : string = "forms.json";
 

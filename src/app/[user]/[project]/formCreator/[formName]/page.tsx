@@ -7,7 +7,7 @@ import {Button} from "@nextui-org/button"
 import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
 import {Modal, ModalContent} from "@nextui-org/react";
-import FileSystemService from '../../../../formCreation/FileSystemService';
+import FileSystemService from "@/app/components/FileSystemService";
 import Form from '../../../../formCreation/Form';
 import Question from "../../../../formCreation/question";
 import FileFinder from '../../../../formCreation/FileFinder';
@@ -162,7 +162,7 @@ useEffect(() => {
   const token = Cookies.get("token");
   console.log(token)
   if (!token) {
-    toast.error("You do not have access to this page");
+    toast.error("No user found");
     router.replace("/login"); // If no token is found, redirect to login page
     return;
   }
