@@ -28,6 +28,7 @@ export const page = ({params}:ProjectParams) => {
   const [openTab, setOpenTab] = useState<number>(2);
   const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
 
+  const [selectedForm, setSelectedForm] = useState<Form | null | undefined>(undefined);
   const [actionOnProject, setActionOnProject] = useState<actionProject>({projectTitle:"", projectIndex: -1});
   const [creatingForm, setForm] = useState<boolean>(false);
   const [newForm, setNewForm] = useState<Project>(new Project());
@@ -59,6 +60,10 @@ export const page = ({params}:ProjectParams) => {
     
     getForms();
 
+    const appElement: HTMLElement | null = document.getElementById('outerDiv');
+    if (appElement) {
+      Modal.setAppElement(appElement);
+    }
     // længden er 0 fordi useEffect ikke er kørt færdig surt show
     //console.log(forms.length);
   
@@ -69,6 +74,27 @@ export const page = ({params}:ProjectParams) => {
     throw new Error('Function not implemented.');
 
   }
+
+  
+
+  const handleSelectChange = (e:any) => {
+    const selectedValue = e.target.value;
+    const selectedForm = forms.find((form) => form.name === selectedValue);
+    setSelectedForm(selectedForm || null);
+  };
+
+  const handleCopyForm = () => {
+    const copyForm = selectedForm?.createChild();
+    copyForm?.name.replace(/'-'g/,' ')
+    forms.push(new FormBuilder().formFromObject(copyForm))
+    formattingProjectData();
+  };
+
+  async function formattingProjectData() {
+    const projectAltered = params.project.replace(/-/g, ' ');
+    FileSystemService.writeToJSONFile(forms, ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' '));
+  }
+
   /*async function handleDelete(){
   
     // Has to .splice since useState value doesnt change
@@ -88,6 +114,9 @@ export const page = ({params}:ProjectParams) => {
 
   }
   */
+
+  const publishedForms = forms.filter((form) => form.isActive);
+  const notPublishedForms = forms.filter((form) => !form.isActive);
 
   return (
     <div className="flex flex-wrap">
@@ -110,7 +139,7 @@ export const page = ({params}:ProjectParams) => {
               <h2 className="text-3xl text-center m-4">Form Creation</h2>
               
               <Link 
-                href={params.project + "/formCreator/"}
+                href={params.project + "/formCreator/newForm"}
                 type="button"
                 title="FormButton"
                 className="float-left m-2 px-9 py-2 tracking-wide text-white bg-gray-700 hover:bg-gray-600 rounded-md focus:outline-none hover:scale-105" >
@@ -118,42 +147,36 @@ export const page = ({params}:ProjectParams) => {
               </Link>
 
               
-                <select 
-                    
-                   /*  value={selectedValue}
-                    onChange={(e)=>{
-                        const selectedValue = e.target.value;
-                        // Update state or perform any other action based on the selected value
-                        setSelectedValue(selectedValue);
-                      }} */
-                    
-                    className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors hover:duration-200 bg-gray-700 rounded-md hover:bg-gray-600">
-                    
-                    <option value="" disabled selected className='hidden'>Choose an existing Form</option>
-                    <optgroup label="Published">
-                    <option value="P0">P0-Form</option>
-                    <option value="P1">P1-Form</option>
-                    <option value="P2">P2-Form</option>
-                    <option value="P0">P0-Form</option>
-                    <option value="P1">P1-Form</option>
-                    <option value="P2">P2-Form</option>
-                    <option value="P0">P0-Form</option>
-                    <option value="P1">P1-Form</option>
-                    <option value="P2">P2-Form</option>
-                    <option value="P0">P0-Form</option>
-                    <option value="P1">P1-Form</option>
-                    <option value="P2">P2-Form</option>
-                    <option value="P0">P0-Form</option>
-                    <option value="P1">P1-Form</option>
-                    <option value="P2">P2-Form</option>
-                    </optgroup>
-                    <optgroup label="Not Published">
-                    <option value="P3">P3-Form</option>
-                    <option value="P4">P4-Form</option>
-                    <option value="P5">P5-Form</option>
-                    </optgroup>
-                    Cancel
-                </select>
+              <select
+                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors hover:duration-200 bg-gray-700 rounded-md hover:bg-gray-600"
+                onChange={handleSelectChange}
+                value={selectedForm ? selectedForm.name : ''}
+              >
+                <option value="" disabled className="hidden">
+                  Choose an existing Form
+                </option>
+                <optgroup label="Published">
+                {publishedForms.map((form) => (
+                    <option key={form.name} value={form.name}>
+                      {form.name}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Not Published">
+                  {notPublishedForms.map((form) => (
+                    <option key={form.name} value={form.name}>
+                      {form.name}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+
+              <button
+               className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors hover:duration-200 bg-gray-700 rounded-md hover:bg-gray-600"
+               onClick={(e) => {handleCopyForm();}}
+               >
+                Copy Form
+              </button>
  
             </form>
           </Modal>

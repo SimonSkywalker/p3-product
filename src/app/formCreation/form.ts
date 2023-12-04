@@ -122,9 +122,8 @@ export default class Form implements Nameable {
      */
     public createChild() : Form {
         const child = _.cloneDeep(this);
-        child.name = "Copy of " + this.name;
+        child.name = "Copy-of-" + this.name;
         child.isActive = true;
-        child.cleanName();
         return child;
     }
 
