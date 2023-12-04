@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
 import { FormObject } from '@/app/interfaces/interfaces';
-import Form from '@/app/formCreation/form';
+import Form from '@/app/formCreation/Form';
 import FormBuilder from '@/app/formCreation/FormBuilder';
 import Link from 'next/link';
 
