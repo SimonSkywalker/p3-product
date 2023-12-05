@@ -8,6 +8,7 @@ import { loginFormSchema } from "../lib/validations/loginForm";
 interface FormData {
   username: string;
   password: string;
+
 }
 
 //Used for registration
@@ -206,6 +207,34 @@ export class APIHandle{
             throw new LoginException
 
           }
+  }
+
+  /**
+   * APIRequestUser
+   */
+  public static async APIRequestUser() {
+    let data;
+    try{
+    const res = await fetch("/api/getuser") 
+      if(res.ok){
+      
+        data = await res.json();
+        //console.log(data);
+        return data;
+      }
+    
+    }catch(Error){
+        console.error(Error)
+    }
+  }
+
+  public static async APIRequestRQ(form: string) {
+    
+      const res = await fetch("/api/getFormdata", {
+        method: "POST",
+        body: JSON.stringify(form)
+      })
+    return await res.json()
   }
 }
 
