@@ -69,15 +69,15 @@ class FormCreator{
         <RadioGroup
         label="Slider type"
         //Default value is a string equal to the name of the sliderType enum
-        defaultValue={SliderTypes[(question as Slider).sliderType]}
+        defaultValue={SliderTypes[(question as Slider).type]}
         onValueChange={(value) => {
           switch (value){
             case "agreeDisagree":{
-              (question as Slider).sliderType = SliderTypes.agreeDisagree;
+              (question as Slider).type = SliderTypes.agreeDisagree;
               break;
             }
             case "values":{
-              (question as Slider).sliderType = SliderTypes.values;
+              (question as Slider).type = SliderTypes.values;
               break;
             }
           }
@@ -88,8 +88,8 @@ class FormCreator{
       }
       case QuestionTypes.multipleChoice: {
         return <>
-        <Checkbox isSelected={(question as MultipleChoice).choiceType == ChoiceTypes.checkbox} onValueChange={(check) => {
-        (question as MultipleChoice).choiceType = check ? ChoiceTypes.checkbox : ChoiceTypes.radio;
+        <Checkbox isSelected={(question as MultipleChoice).type == ChoiceTypes.checkbox} onValueChange={(check) => {
+        (question as MultipleChoice).type = check ? ChoiceTypes.checkbox : ChoiceTypes.radio;
         updateState();
       }}>Allow multiple options checked</Checkbox>
         <Checkbox isSelected={(question as MultipleChoice).saveRole} onValueChange={(check) => {
@@ -338,6 +338,9 @@ useEffect(() => {
                 console.log("didn't delete");
               }
             }}>Delete form</Button>
+            <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
+              Go back to forms
+            </Button>
           </div>
           <Modal isOpen={modalOpen}>
             <ModalContent>
@@ -360,6 +363,7 @@ useEffect(() => {
                 FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
+                updateState();
               }}>Publish form</Button>
 
               <Button className="button" onClick={async () => {
@@ -375,6 +379,7 @@ useEffect(() => {
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
                 setModalOpen(false);
+                router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))
               }}>Save without publishing</Button>
 
               <Button className="button" onClick={() => {
@@ -392,6 +397,10 @@ useEffect(() => {
     (
       <main>
       {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}</li>})}
+
+        <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
+          Go back to forms
+        </Button>
       </main>
     )
   )
