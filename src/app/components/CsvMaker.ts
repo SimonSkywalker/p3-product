@@ -1,5 +1,5 @@
 import WrongTypeException from "../exceptions/WrongTypeException";
-import Form from "../formCreation/Form";
+import Form from "../formCreation/form";
 
 class CsvMaker {
 
