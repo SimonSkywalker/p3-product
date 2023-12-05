@@ -1,9 +1,15 @@
-import userList from '@/app/database/userLogins.json'
 import {promises as fs} from "fs"
 import { RegisterException } from '../exceptions/RegisterException';
+import { user } from "@nextui-org/react";
+
+interface UserObject{
+    Username: string
+    Password: string
+    DisplayName: string
+}
 
 /**
- * Class to make a User with a usename,password
+ * Class to make a User with a usename, password & displayname
  */
 export class User{
 
@@ -12,7 +18,6 @@ export class User{
     private _password: string;
     
     private _displayName: string;
-
        
     /**
      * constructor to define classes values
@@ -51,16 +56,25 @@ export class User{
      * - If it does, it throws a custom Error
      * - If it does not, it write to database & make a folder for their projects
      */
-    public createUser(){
+    public async createUser(){
+        let userList: UserObject[]
+        //Checks for exsting file
+        try{
+            fs.access(process.cwd() +'/src/app/database/userLogins.json')
+            let tmp = await fs.readFile(process.cwd() +'/src/app/database/userLogins.json', 'utf-8').catch()
+            userList = JSON.parse(tmp) ;
+        }catch{
+            userList = []
+            }
             //Checks if user already exists
-            if(checkList.isDuplicate(userList, this.username)){
+             if(checkList.isDuplicate(userList, this.username)){
                 throw new RegisterException();
-            } 
+            }  
             
             //Writes to database
             userList.push({Username: this.username, Password: this.password, DisplayName: this.displayName});
             dataManipulation.saveListData(userList);
-            dataManipulation.makeUserFolder(this.username);   
+            dataManipulation.makeUserFolder(this.username); 
         
     }
 
@@ -69,23 +83,15 @@ export class User{
      * for if a user with the given username exists
      * and returns this user with it values
      */
-    public findUser() {
+    public findUser(userList: UserObject[]) {
         userList.some((element) => {
-            if (element.Username === this.username) {
+             if (element.Username === this.username) {
                 let user:User = new User(this.username,this.password)
                 return user;
-            }
+            } 
     })
 }
 
-
-    /**
-     * For futureworks
-     */
-    public deleteUser(){
-    }
-
-   
 
 }
 
@@ -102,18 +108,18 @@ class checkList{
         @param list A list of all users
         @param Username The name user that is to be checked
         @return A true || false     */
-    public static isDuplicate(list: typeof userList, Username: string):boolean {
+    public static isDuplicate(list: UserObject[], Username: string):boolean {
 
         let bool = false;
         list.some((element) => {
             if (element.Username === Username) {
                 bool = true;
-            }
+            } 
         });
         return bool;
     }
 }
-
+ 
 /**
  * Class for changing or making new data in the database
  */
@@ -123,7 +129,7 @@ class dataManipulation{
      * This method saves the list of user in its corresponding json file in database
      * @param list of users that is to be save to the database
      */
-    public static saveListData(list: typeof userList){
+    public static saveListData(list: UserObject[]){
         fs.writeFile(process.cwd() +'/src/app/database/userLogins.json', JSON.stringify(list, null, 4));
     }
 
