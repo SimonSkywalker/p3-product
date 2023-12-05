@@ -69,15 +69,15 @@ class FormCreator{
         <RadioGroup
         label="Slider type"
         //Default value is a string equal to the name of the sliderType enum
-        defaultValue={SliderTypes[(question as Slider).sliderType]}
+        defaultValue={SliderTypes[(question as Slider).type]}
         onValueChange={(value) => {
           switch (value){
             case "agreeDisagree":{
-              (question as Slider).sliderType = SliderTypes.agreeDisagree;
+              (question as Slider).type = SliderTypes.agreeDisagree;
               break;
             }
             case "values":{
-              (question as Slider).sliderType = SliderTypes.values;
+              (question as Slider).type = SliderTypes.values;
               break;
             }
           }
@@ -88,8 +88,8 @@ class FormCreator{
       }
       case QuestionTypes.multipleChoice: {
         return <>
-        <Checkbox isSelected={(question as MultipleChoice).choiceType == ChoiceTypes.checkbox} onValueChange={(check) => {
-        (question as MultipleChoice).choiceType = check ? ChoiceTypes.checkbox : ChoiceTypes.radio;
+        <Checkbox isSelected={(question as MultipleChoice).type == ChoiceTypes.checkbox} onValueChange={(check) => {
+        (question as MultipleChoice).type = check ? ChoiceTypes.checkbox : ChoiceTypes.radio;
         updateState();
       }}>Allow multiple options checked</Checkbox>
         <Checkbox isSelected={(question as MultipleChoice).saveRole} onValueChange={(check) => {

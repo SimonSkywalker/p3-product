@@ -8,7 +8,7 @@
             "_userDisplay": true,
             "_questionType": 1,
             "_number": 1,
-            "_sliderType": 0,
+            "_type": 0,
             "_range": 7
         }
     ],
@@ -53,7 +53,7 @@
         "_userDisplay": true,
         "_questionType": 1,
         "_number": 1,
-        "_sliderType": 0,
+        "_type": 0,
         "_range": 7
     }
 ],
@@ -99,7 +99,7 @@
             "_userDisplay": true,
             "_questionType": 1,
             "_number": 1,
-            "_sliderType": 0,
+            "_type": 0,
             "_range": 7
         }
     ],
@@ -145,7 +145,7 @@
                 "_userDisplay": true,
                 "_questionType": 1,
                 "_number": 1,
-                "_sliderType": 0,
+                "_type": 0,
                 "_range": 7
             }
         ],
