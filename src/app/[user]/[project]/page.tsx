@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
 import { FormObject } from '@/app/interfaces/interfaces';
-import Form from '@/app/formCreation/form';
+import Form from '@/app/formCreation/Form';
 import FormBuilder from '@/app/formCreation/FormBuilder';
 import Link from 'next/link';
 import FormValidator from '@/app/formCreation/FormValidator';
@@ -98,6 +98,8 @@ export const page = ({params}:ProjectParams) => {
     if (appElement) {
       Modal.setAppElement(appElement);
     }
+
+  
     // længden er 0 fordi useEffect ikke er kørt færdig surt show
     //console.log(forms.length);
   
@@ -109,7 +111,9 @@ export const page = ({params}:ProjectParams) => {
 
   }
 
-  
+  const truncateString = (str: string, maxLength: number) => {
+    return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+  };
 
   const handleSelectChange = (e:any) => {
     const selectedValue = e.target.value;
@@ -137,6 +141,12 @@ export const page = ({params}:ProjectParams) => {
         toast.error(e.message);
         toast.error(copyForm.name);
     }
+  };
+
+  const closeModal = () => {
+    setModalOpen({ currentModalTitle: '', isOpen: false });
+    setSelectedForm(undefined);
+    setNameInput('');
   };
 
   async function writeFormData() {
@@ -175,7 +185,7 @@ export const page = ({params}:ProjectParams) => {
           <Modal
             
             isOpen={(modalOpen.currentModalTitle === "newFormModal") ? modalOpen.isOpen : false}
-            onRequestClose={() => setModalOpen({currentModalTitle: "", isOpen: false})}
+            onRequestClose={() => {closeModal}}
             contentLabel="Choose newForm Modal"
             className="modal-newForm"
            
@@ -207,14 +217,14 @@ export const page = ({params}:ProjectParams) => {
                 <optgroup label="Published">
                 {publishedForms.map((form) => (
                     <option key={form.name} value={form.name}>
-                      {form.getUncleanName()}
+                      {truncateString(form.getUncleanName(), 20)}
                     </option>
                   ))}
                 </optgroup>
                 <optgroup label="Not Published">
                   {notPublishedForms.map((form) => (
                     <option key={form.name} value={form.name}>
-                      {form.getUncleanName()}
+                      {truncateString(form.getUncleanName(), 20)}
                     </option>
                   ))}
                 </optgroup>
@@ -223,8 +233,8 @@ export const page = ({params}:ProjectParams) => {
               <input
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"   
               
-              onChange={(value) => {
-                setNameInput(value.target.value.toString());}}
+              onChange={(e) => {
+                setNameInput(e.target.value.toString());}}
               >
               
               </input>
