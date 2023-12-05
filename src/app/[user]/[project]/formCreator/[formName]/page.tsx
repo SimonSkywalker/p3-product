@@ -338,6 +338,9 @@ useEffect(() => {
                 console.log("didn't delete");
               }
             }}>Delete form</Button>
+            <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
+              Go back to forms
+            </Button>
           </div>
           <Modal isOpen={modalOpen}>
             <ModalContent>
@@ -360,6 +363,7 @@ useEffect(() => {
                 FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
+                updateState();
               }}>Publish form</Button>
 
               <Button className="button" onClick={async () => {
@@ -375,6 +379,7 @@ useEffect(() => {
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
                 setModalOpen(false);
+                router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))
               }}>Save without publishing</Button>
 
               <Button className="button" onClick={() => {
@@ -392,6 +397,10 @@ useEffect(() => {
     (
       <main>
       {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}</li>})}
+
+        <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
+          Go back to forms
+        </Button>
       </main>
     )
   )

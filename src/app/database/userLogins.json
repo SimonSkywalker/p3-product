@@ -8,5 +8,10 @@
         "Username": "Test2",
         "Password": "$2b$10$Qw/qi31tGFzwasthjQ05vOjj4pdCxTK5TLfqeB4DGl8aHXPBunr5a",
         "DisplayName": "Test2"
+    },
+    {
+        "Username": "Mka16",
+        "Password": "$2b$10$1HhSeBjJ3MDLF2YmDIUkxOGoypk/5yWGDSpVkPMQXAZtzy0T/yls6",
+        "DisplayName": "Mka16"
     }
 ]
