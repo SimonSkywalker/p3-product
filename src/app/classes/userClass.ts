@@ -1,4 +1,4 @@
-import userList from '@/app/(database)/userLogins.json'
+import userList from '@/app/database/userLogins.json'
 import * as fs from "fs/promises";
 import { RegisterException } from '../exceptions/RegisterException';
 
@@ -145,7 +145,7 @@ export class checkList{
      * @returns 
      */
     public static findForms(userId: string, project: string) {
-        const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
+        const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
     
         // Return the Promise
         return fs.readFile(formsFilePath, "utf8")
@@ -169,7 +169,7 @@ export class checkList{
      * @returns 
      */
     public static findRoles(userId: string, project: string, Form: string) {
-        const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
+        const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
     
         // Return the Promise
         return fs.readFile(formsFilePath, "utf8")
@@ -202,7 +202,7 @@ export class checkList{
      * @returns 
      */
     public static getQuestions(userId: string, project: string, Form: string) {
-        const formsFilePath = process.cwd() + `/src/app/(database)/${userId}/${project}/forms.json`;
+        const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
     
         // Return the Promise
         return fs.readFile(formsFilePath, "utf8")
@@ -230,7 +230,7 @@ class dataManipulation{
      * @param list of users that is to be save to the database
      */
     public static saveListData(list: typeof userList){
-        fs.writeFile(process.cwd() +'/src/app/(database)/userLogins.json', JSON.stringify(list, null, "\t"));
+        fs.writeFile(process.cwd() +'/src/app/database/userLogins.json', JSON.stringify(list, null, "\t"));
     }
 
     /**
@@ -238,7 +238,7 @@ class dataManipulation{
      * @param user to be made a folder for
      */
     public static makeUserFolder(user: string){
-        fs.mkdir(process.cwd() +'/src/app/(database)/'+user);
+        fs.mkdir(process.cwd() +'/src/app/database/'+user);
         
     }
 }

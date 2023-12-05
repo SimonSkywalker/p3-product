@@ -12,7 +12,7 @@ export async function POST(request: NextRequest, response: NextResponse){
     
     const roleslist = await checkList.findRoles(decoded.userId, projectName, selectedForm)
     const questionList = await checkList.getQuestions(decoded.userId, projectName, selectedForm)
-    const path = process.cwd() + `/src/app/(database)/${decoded.userId}/${projectName}/${selectedForm}/responses.json`;
+    const path = process.cwd() + `/src/app/database/${decoded.userId}/${projectName}/${selectedForm}/responses.json`;
     
     const responseFile = await fs.readFile(path, "utf8")
     .then((responses) => {

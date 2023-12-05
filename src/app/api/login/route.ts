@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { User } from "@/app/classes/userClass"
 import { loginFormSchema } from "@/app/lib/validations/loginForm";
 import bcrypt from 'bcrypt';
-import userList from '@/app/(database)/userLogins.json'
+import userList from '@/app/database/userLogins.json'
 import { redirect } from "next/dist/server/api-utils";
 import { error } from "console";
 import {cookies} from "next/headers"
