@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
 import { FormObject } from '@/app/interfaces/interfaces';
-import Form from '@/app/formCreation/Form';
+import Form from '@/app/formCreation/form';
 import FormBuilder from '@/app/formCreation/FormBuilder';
 import Link from 'next/link';
 import FormValidator from '@/app/formCreation/FormValidator';
@@ -130,6 +130,7 @@ export const page = ({params}:ProjectParams) => {
         //maybe throws zod error
         //Check if validateName is unique
       const isNotUnique : boolean = forms.some((form)=>{form.name == copyForm?.name})
+      console.log(isNotUnique)
       if(isNotUnique){
       throw new ObjectAlreadyExistsException("Form already exists");
       }
