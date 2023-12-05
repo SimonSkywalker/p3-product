@@ -44,15 +44,6 @@ interface Question {
     type?: number;
     range?: number;
   }
-  
-  interface FormObject {
-    name: string;
-    description: string;
-    questions: Question[];
-    tokens: Token[];
-    isActive: boolean;
-    parent: any[string];
-  }
 
 /**
  * Class to make a User with a usename, password & displayname
