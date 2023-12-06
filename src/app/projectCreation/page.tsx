@@ -199,6 +199,7 @@ export default function ProjectPage() {
     });
 
     await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
+    console.log(ServerSidePaths.getProjectsPath(user));
 
   }
 
@@ -250,6 +251,7 @@ export default function ProjectPage() {
     await formattingProjectData();
     
     FileSystemService.delete('../', ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
+    console.log(ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
 
     toast.info("Deleted " + actionOnProject.projectTitle);
 
