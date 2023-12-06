@@ -85,7 +85,7 @@ export default class Question {
 export class MultipleChoice extends Question {
     private _saveRole: boolean;
     private _options : Array<string>;
-    private _choiceType : ChoiceTypes;
+    private _type : ChoiceTypes;
 
     //Get and set functions for the fields.
     public get saveRole(): boolean {
@@ -102,31 +102,31 @@ export class MultipleChoice extends Question {
         this._options = value;
     }
 
-    public get choiceType(): ChoiceTypes {
-        return this._choiceType;
+    public get type(): ChoiceTypes {
+        return this._type;
     }
-    public set choiceType(value: ChoiceTypes) {
-        this._choiceType = value;
+    public set type(value: ChoiceTypes) {
+        this._type = value;
     }
 
     constructor(number: number){
         super(QuestionTypes.multipleChoice, number);
         this._saveRole = false;
         this._options = [];
-        this._choiceType = ChoiceTypes.radio;
+        this._type = ChoiceTypes.radio;
     }
 
 }
 
 export class Slider extends Question {
-    private _sliderType: SliderTypes;
+    private _type: SliderTypes;
     private _range: number;
 
-    public get sliderType(): SliderTypes {
-        return this._sliderType;
+    public get type(): SliderTypes {
+        return this._type;
     }
-    public set sliderType(value: SliderTypes) {
-        this._sliderType = value;
+    public set type(value: SliderTypes) {
+        this._type = value;
     }
 
     public get range(): number {
@@ -138,7 +138,7 @@ export class Slider extends Question {
 
     constructor(number: number){
         super(QuestionTypes.slider, number);
-        this._sliderType = SliderTypes.agreeDisagree;
+        this._type = SliderTypes.agreeDisagree;
         this._range = 7;
     }
 }

@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
     try {
         let file = path.join(process.cwd(), filePath);
-        fs.writeFile(file, JSON.stringify(data), err => {
+        fs.writeFile(file, JSON.stringify(data, null, 4), err => {
             if (err) {
                 console.error(err);
                 return NextResponse.json({ error: 'Internal server error', status: 500});

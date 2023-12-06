@@ -8,7 +8,7 @@
             "_userDisplay": true,
             "_questionType": 1,
             "_number": 1,
-            "_sliderType": 0,
+            "_type": 0,
             "_range": 7
         }
     ],
@@ -42,8 +42,7 @@
             "_isUsed": false
         }
     ],
-    "_isActive": false,
-    "_parent": ""
+    "_isActive": false
 },{
 "_name": "Sinasform",
 "_description": "Hej, dette er en form",
@@ -54,7 +53,7 @@
         "_userDisplay": true,
         "_questionType": 1,
         "_number": 1,
-        "_sliderType": 0,
+        "_type": 0,
         "_range": 7
     }
 ],
@@ -100,7 +99,7 @@
             "_userDisplay": true,
             "_questionType": 1,
             "_number": 1,
-            "_sliderType": 0,
+            "_type": 0,
             "_range": 7
         }
     ],
@@ -146,7 +145,7 @@
                 "_userDisplay": true,
                 "_questionType": 1,
                 "_number": 1,
-                "_sliderType": 0,
+                "_type": 0,
                 "_range": 7
             }
         ],

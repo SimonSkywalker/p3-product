@@ -14,7 +14,7 @@
 					"Option 1",
 					"Option 2"
 				],
-				"_choiceType": 0
+				"_type": 0
 			}
 		],
 		"_tokens": [],
@@ -39,7 +39,7 @@
 				"_userDisplay": true,
 				"_questionType": 1,
 				"_number": 1,
-				"_sliderType": 0,
+				"_type": 0,
 				"_range": 7
 			}
 		],
@@ -93,7 +93,7 @@
 					"Developer",
 					"Secretary"
 				],
-				"_choiceType": 0
+				"_type": 0
 			},
 			{
 				"_description": "How satisfied are you working here, on a scale from 1 to 5?",
@@ -101,7 +101,7 @@
 				"_userDisplay": false,
 				"_questionType": 1,
 				"_number": 2,
-				"_sliderType": 1,
+				"_type": 1,
 				"_range": 5
 			},
 			{
@@ -131,7 +131,7 @@
 					"Ja",
 					"Nej"
 				],
-				"_choiceType": 0
+				"_type": 0
 			}
 		],
 		"_tokens": [],
