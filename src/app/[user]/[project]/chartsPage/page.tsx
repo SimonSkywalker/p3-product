@@ -28,6 +28,7 @@ export default function ChartPage(response: any) {
         roles: [{} as any],
         questions: [{} as any]
       });
+    
     const [answerData, setAnswerData] = useState(new dataMaker);
     const [answerData2, setAnswerData2] = useState(new dataMaker);
     const formData = response.searchParams;
@@ -76,15 +77,24 @@ export default function ChartPage(response: any) {
                 console.log(answerData.dataArray);
 
             })
+
+        
         .catch((error) => {
                 console.error(`Error: ${error}`);
             });
     },[])
+    let sortedDataArray: any = []
+    let sortedDataArray2: any = []
+    try {
+        sortedDataArray = answerData.sortDataArray(formData, chartData);
+        sortedDataArray2 = answerData2.sortDataArray(formData, chartData2);
+    } catch (error) {
+        window.location.reload()
+    }
     
-    const sortedDataArray = answerData.sortDataArray(formData, chartData);
-    const sortedDataArray2 = answerData2.sortDataArray(formData, chartData2);
 
     console.log(sortedDataArray);
+    console.log(sortedDataArray2);
    
     if (typeof formData.questionPicks === "string") {
         formData.questionPicks = [formData.questionPicks];
@@ -110,7 +120,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             roles={formData.rolePicks}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray2[option].roleAnswersCount}
+                            answer2Count={formData.otherForm ? sortedDataArray2[option].roleAnswersCount : {}}
                         />
                         )}
                         { //Multiple choice (checkboxes)
@@ -120,7 +130,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={chartData.questions[option]._options}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray2[option].roleAnswersCount}
+                            answer2Count={formData.otherForm ? sortedDataArray2[option].roleAnswersCount : {}}
                         />
                         )}
                         { //Slider (AgreeDisagree)
@@ -130,7 +140,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={sortedDataArray[option]?.questionLabels}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray2[option].roleAnswersCount}
+                            answer2Count={formData.otherForm ? sortedDataArray2[option].roleAnswersCount : {}}
                         />
                         )}
                         { //Slider (values)
@@ -140,7 +150,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={sortedDataArray[option]?.questionLabels}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray2[option].roleAnswersCount}
+                            answer2Count={formData.otherForm ? sortedDataArray2[option].roleAnswersCount : {}}
                         />
                         )}
                         { //Text input
@@ -150,7 +160,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={formData.rolePicks}
                             answerCount={sortedDataArray[option].roleAnswers}
-                            answerCount2={sortedDataArray2[option].roleAnswers}
+                            answerCount2={formData.otherForm ? sortedDataArray2[option].roleAnswers : {}}
                         />
                         )}
                     </li>

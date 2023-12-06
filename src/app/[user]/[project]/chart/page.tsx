@@ -31,6 +31,8 @@ export default function VisPage({params}:ChartParams) {
     });
     Cookies.set('userID', params.user);
     Cookies.set('projectName', params.project);
+    if(Cookies.get('otherForm')){
+    Cookies.remove("otherForm")}
     APIHandle.APIRequestUser(user.project)
       .then(async(data) => {
         if (data) {

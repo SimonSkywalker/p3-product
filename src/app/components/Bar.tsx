@@ -87,7 +87,7 @@ export default function BarChart({ questionName, questionIndex, questions, answe
             type: 'bar',
             data: {
                 labels: questions,
-                datasets: (answer2Count) ? datasetMakerCompareTo(answerCount, answerCount) : datasetMaker(answerCount)
+                datasets: (Object.keys(answer2Count).length !== 0) ? datasetMakerCompareTo(answerCount, answer2Count) : datasetMaker(answerCount)
             },
             options: {
                 scales: {

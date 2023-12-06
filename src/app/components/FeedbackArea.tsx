@@ -8,11 +8,11 @@ interface FeedbackProps {
     answerCount2: {}
   }
   
-  export default function FeedbackArea({ questionName, questionIndex, questions, answerCount } : FeedbackProps) {
-     const handleTextArea = () =>{
+  export default function FeedbackArea({ questionName, questionIndex, questions, answerCount, answerCount2 } : FeedbackProps) {
+     const handleTextArea = (feedback: {}) =>{
         let html = [];
         let counter = -1;
-        for (const [key, value] of Object.entries(answerCount) as any) {
+        for (const [key, value] of Object.entries(feedback) as any) {
             if (value.answer != -1) {
                 counter += 1;
                 html.push(
@@ -32,8 +32,15 @@ interface FeedbackProps {
     return (
         <>
             <h1 className="mt-10 text-xl font-semibold capitalize ">{questionName}</h1>
-            <div className="grid  grid-cols-1  gap-4 bg-white">
-                {handleTextArea()}
+            <div className="grid grid-cols-2 gap-2">
+                <div className="grid  grid-rows-2 gap-4 bg-white">
+                    {handleTextArea(answerCount)}
+                </div>
+                {Object.keys(answerCount2).length !== 0 && (
+                <div className="grid  grid-rows-2  gap-4 bg-white">
+                    {handleTextArea(answerCount2)}
+                </div>
+                )}
             </div>
         </>
     )

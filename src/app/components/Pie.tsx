@@ -63,7 +63,7 @@ export default function PieChart({ questionName, questionIndex, roles, answerCou
                 type: 'pie',
                 data: {
                     labels: roles,
-                    datasets: (Object.keys(answer2Count).length > 0) ? datasetMaker(answerCount,answer2Count) : [{
+                    datasets: (Object.keys(answer2Count).length > 0) ? datasetMaker(answerCount, answer2Count) : [{
                         data: Object.values(answerCount) as [],
                         label: "Dataset 1",
                         backgroundColor: randomBackgroundColor,

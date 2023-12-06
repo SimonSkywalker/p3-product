@@ -37,7 +37,10 @@ export async function POST(request: NextRequest, response: NextResponse){
         const roleslist2: any[] | undefined = checkList.findRoles(formObject2)
         const path2 = process.cwd() + `/src/app/database/${decoded.userId}/${projectName}/${otherForm}/responses.json`;
         
-        
+        console.log(formObject);
+        console.log(formObject2);
+        let questionList = formObject.findMatchingQuestions(formObject2)
+        console.log(questionList);
         const responseFile2 = await fs.readFile(path2, "utf8")
         .then((responses) => {
             return JSON.parse(responses);
@@ -47,7 +50,11 @@ export async function POST(request: NextRequest, response: NextResponse){
             console.error('Error reading forms:', error);
             return [];
         });
-        return new NextResponse(JSON.stringify({formdata: {roles: roleslist, selectedForm: selectedForm, questions: formObject.questions}, formdata2:{roles: roleslist2, selectedForm: otherForm, questions: formObject2.questions}, mResponse: responseFile, oResponse: responseFile2}), {status: 200})
+
+        return new NextResponse(JSON.stringify({
+            formdata: {roles: roleslist, selectedForm: selectedForm, questions: questionList}, 
+            formdata2:{roles: roleslist2, selectedForm: otherForm, questions: questionList}, 
+            mResponse: responseFile, oResponse: responseFile2}), {status: 200})
 
     }else{
         return new NextResponse(JSON.stringify({formdata: {roles: roleslist, selectedForm: selectedForm, questions: formObject.questions}, mResponse: responseFile}), {status: 200})

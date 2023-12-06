@@ -10,11 +10,11 @@
 				]
 			},
 			"questions": {
-				"0": ["Option1"],
-				"1": ["Option10"],
+				"0": -1,
+				"1": ["Option11"],
 				"2": ["Strongly Agree"],
 				"3": 1,
-				"4": "Simon er dum!"
+				"4": "Simon er ikke dum!"
 			}
 		}
 	},

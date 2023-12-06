@@ -1,11 +1,6 @@
 import Form from "../formCreation/form";
 import Question, { MultipleChoice } from "../formCreation/question";
 
-interface chartDataType {
-    roles:[]
-    questions: []
-}
-
 const agreeDisagreeRanges = {
     9: [
       "Strongly Disagree",
@@ -97,10 +92,9 @@ export class dataMaker{
     }
 
     sortDataArray(formData: any, chartData: any){
-        if(chartData.roles.length != 0 || chartData.questions.length != 0){
-            return this.sortDataArray
-        }
         console.log(this.dataArray);
+        console.log(chartData);
+        
         this.sortedDataArray = {};
         this.dataArray.forEach((element : any, userIndex: number) => {
             const roles = element.roles;

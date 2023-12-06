@@ -137,8 +137,9 @@ export default class Form implements Nameable {
         let matchingQuestions : Array<Question> = new Array<Question>
         for(let i = 0; i < this.questions.length; i++){
             for(let j = 0; j < otherForm.questions.length; j++)
-            if(_.isEqual(otherForm.questions[j], this.questions[i]))
-                matchingQuestions.push(this.questions[i]);
+                if(_.isEqual(otherForm.questions[j], this.questions[i])){
+                    matchingQuestions.push(this.questions[i]);
+                }
         }
         return matchingQuestions;
     }
