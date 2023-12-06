@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
 import { FormObject } from '@/app/interfaces/interfaces';
-import Form from '@/app/formCreation/Form';
+import Form from '@/app/formCreation/form';
 import FormBuilder from '@/app/formCreation/FormBuilder';
 import Link from 'next/link';
 import FormValidator from '@/app/formCreation/FormValidator';
@@ -123,12 +123,6 @@ export const page = ({params}:ProjectParams) => {
     setActionOnProject({projectTitle:"", projectIndex: -1});
    
     setModalOpen({currentModalTitle: "deleteModal", isOpen: false});
-
-  }
-
-  function handleDelete(event: any): void {
-    event.preventDefault();
-    throw new Error('Function not implemented.');
 
   }
 
