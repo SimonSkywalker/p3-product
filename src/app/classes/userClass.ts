@@ -1,6 +1,8 @@
 import {promises as fs} from "fs"
 import { RegisterException } from '../exceptions/RegisterException';
 import { user } from "@nextui-org/react";
+import Form from "../formCreation/form";
+import Question, { MultipleChoice } from "../formCreation/question";
 
 interface UserObject{
     Username: string
@@ -8,7 +10,7 @@ interface UserObject{
     DisplayName: string
 }
 
-interface Question {
+/* interface Question {
     description: string;
     mandatory: boolean;
     userDisplay: boolean;
@@ -17,7 +19,7 @@ interface Question {
     options?: string[]; // options is an optional array of strings
     type?: number;
     range?: number;
-  }
+  } */
   
   interface Token {
     [key: string]: {
@@ -32,17 +34,6 @@ interface Question {
     tokens: Token[];
     isActive: boolean;
     parent: any[string];
-  }
-
-interface Question {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options?: string[]; // options is an optional array of strings
-    type?: number;
-    range?: number;
   }
 
 /**
@@ -168,9 +159,9 @@ export class checkList{
         return fs.readFile(formsFilePath, "utf8")
             .then((formsFile) => {
                 const formsFileparsed = JSON.parse(formsFile);
-                return formsFileparsed.forms
-                .filter((form: { name: string; isActive?: boolean }) => form.isActive !== true)
-                .map((form: { name: string }) => form.name);
+                return formsFileparsed
+                .filter((form: { _name: string; _isActive?: boolean }) => form._isActive !== true)
+                
             })
             .catch((error) => {
                 // Handle errors
@@ -185,56 +176,34 @@ export class checkList{
      * @param Form 
      * @returns 
      */
-    public static findRoles(userId: string, project: string, Form: string) {
-        const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
-    
-        // Return the Promise
-        return fs.readFile(formsFilePath, "utf8")
-            .then((formsFile) => {
-                const formsFileparsed = JSON.parse(formsFile);
-                const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === Form);
-                
-                // Find questions where saveRole is true and get options as an array
-                const questionsWithSaveRole = formObject.questions
-                .filter((question: Question) => question.saveRole)
-                .flatMap((question: Question) => question.options || []);
-
-                const uniqueQuestions = Array.from(new Set(questionsWithSaveRole));
-
-                return uniqueQuestions;
+    public static findRoles(Form: Form) {
+        //const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
+        
+        try {
+            const questionsWithSaveRole = Form.questions
+            .filter((question) => {
+                if (question instanceof MultipleChoice) {
+                    return question.saveRole;
+                }
+                return false
             })
-            .catch((error) => {
-                // Handle errors
-                console.error('Error reading forms:', error);
-                return [];
+            .flatMap((question) => {
+                if (question instanceof MultipleChoice) {
+                    return question.options;
+                }
+                return []
             });
-
+                
+                
+            const uniqueQuestions = Array.from(new Set(questionsWithSaveRole));
+                
+            return uniqueQuestions;
+        } catch (error) {
+            
+        }
         
     }
-    /**
-     * 
-     * @param userId 
-     * @param project 
-     * @param Form 
-     * @returns 
-     */
-    public static getQuestions(userId: string, project: string, Form: string) {
-        const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
-    
-        // Return the Promise
-        return fs.readFile(formsFilePath, "utf8")
-            .then((formsFile) => {
-                const formsFileparsed = JSON.parse(formsFile);
-                const formObject = formsFileparsed.forms.find((form: FormObject) => form.name === Form);
-                
-                return formObject.questions;
-            })
-            .catch((error) => {
-                // Handle errors
-                console.error('Error reading forms:', error);
-                return [];
-            });
-    }
+
 }
 
 /**

@@ -27,7 +27,7 @@ interface ProjectParams {
     }
 }
 
-export const page = ({params}:ProjectParams) => {
+let Puge = ({params}:ProjectParams) => {
   const router = useRouter();
   const { logout } = useAuth();
 
@@ -443,4 +443,4 @@ export const page = ({params}:ProjectParams) => {
   )
 }
 
-export default page
+export default Puge

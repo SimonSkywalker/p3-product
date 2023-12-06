@@ -27,7 +27,7 @@ export default class QuestionBuilder{
 
 
     public questionFromObject(object : any) : Question {
-        if(object._description == undefined || object._mandatory == undefined || object._userDisplay == undefined || object._number == undefined || object._questionType == undefined)
+        if(object._description == undefined || object._mandatory == undefined || object._userDisplay == undefined || object._questionType == undefined)
             throw new WrongTypeException;
         this._question.description = object._description;
         this._question.mandatory = object._mandatory;

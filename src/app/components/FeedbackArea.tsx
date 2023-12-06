@@ -5,6 +5,7 @@ interface FeedbackProps {
     questionIndex: number
     questions: any[]
     answerCount: {}
+    answerCount2: {}
   }
   
   export default function FeedbackArea({ questionName, questionIndex, questions, answerCount } : FeedbackProps) {
