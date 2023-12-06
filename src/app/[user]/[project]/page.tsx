@@ -28,7 +28,7 @@ interface ProjectParams {
     }
 }
 
-export const page = ({params}:ProjectParams) => {
+let Puge = ({params}:ProjectParams) => {
   const router = useRouter();
   const { logout } = useAuth();
 
@@ -110,9 +110,24 @@ export const page = ({params}:ProjectParams) => {
   
   }, []);
 
-  function handleDelete(event: any): void {
-    event.preventDefault();
-    throw new Error('Function not implemented.');
+
+  async function handleDelete(){
+  
+    // Has to .splice since useState value doesnt change
+    // immediately but only schedules a change. 
+    forms.splice(actionOnProject.projectIndex, 1);
+
+    const projectAltered = params.project.replace(/-/g, ' ');
+    await FileSystemService.writeToJSONFile(forms, ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' '));
+
+    FileSystemService.delete('../', ServerSidePaths.getProjectPath(params.user) + `/` + projectAltered.replace(/%20/g,' ') + `/${actionOnProject.projectTitle}`);
+
+    toast.info("Deleted " + actionOnProject.projectTitle);
+
+    //Resets the actionOnProject state
+    setActionOnProject({projectTitle:"", projectIndex: -1});
+   
+    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});
 
   }
 
@@ -186,8 +201,8 @@ export const page = ({params}:ProjectParams) => {
   }
   */
 
-  const publishedForms = forms.filter((form) => form.isActive);
-  const notPublishedForms = forms.filter((form) => !form.isActive);
+  const publishedForms = forms.filter((form) => !form.isActive);
+  const notPublishedForms = forms.filter((form) => form.isActive);
 
   return (
     <div className="flex flex-wrap">
@@ -281,7 +296,7 @@ export const page = ({params}:ProjectParams) => {
             <button 
                 type="button"
                 title="deleteButton"
-                onClick={handleDelete}
+                onClick={(event) => {event.preventDefault(); handleDelete();}}
                 className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
                 Delete
               </button>
@@ -351,7 +366,7 @@ export const page = ({params}:ProjectParams) => {
                 <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
  
                   {forms.map((form, i) => 
-                    !form.isActive ? (
+                    form.isActive ? (
 
                       <p key={"status" + form.name + i} className="hidden"></p>
 
@@ -407,7 +422,7 @@ export const page = ({params}:ProjectParams) => {
                 
                   
                   {forms.map((form, i) => 
-                    form.isActive ? (
+                    !form.isActive ? (
 
                       <p key={"status" + form.name + i} className="hidden"></p>
 
@@ -457,4 +472,4 @@ export const page = ({params}:ProjectParams) => {
   )
 }
 
-export default page
+export default Puge

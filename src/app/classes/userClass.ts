@@ -1,12 +1,40 @@
 import {promises as fs} from "fs"
 import { RegisterException } from '../exceptions/RegisterException';
 import { user } from "@nextui-org/react";
+import Form from "../formCreation/form";
+import Question, { MultipleChoice } from "../formCreation/question";
 
 interface UserObject{
     Username: string
     Password: string
     DisplayName: string
 }
+
+/* interface Question {
+    description: string;
+    mandatory: boolean;
+    userDisplay: boolean;
+    questionType: number;
+    saveRole: boolean;
+    options?: string[]; // options is an optional array of strings
+    type?: number;
+    range?: number;
+  } */
+  
+  interface Token {
+    [key: string]: {
+      isUsed: boolean;
+    };
+  }
+  
+  interface FormObject {
+    name: string;
+    description: string;
+    questions: Question[];
+    tokens: Token[];
+    isActive: boolean;
+    parent: any[string];
+  }
 
 /**
  * Class to make a User with a usename, password & displayname
@@ -101,7 +129,7 @@ export class User{
  * and check for a specific thing
  * that is defined through its methods
  */
-class checkList{
+export class checkList{
 
      /**
       * This method checks  for a duplicate member in a given list 
@@ -118,8 +146,66 @@ class checkList{
         });
         return bool;
     }
+    /**
+     * 
+     * @param userId 
+     * @param project 
+     * @returns 
+     */
+    public static findForms(userId: string, project: string) {
+        const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
+    
+        // Return the Promise
+        return fs.readFile(formsFilePath, "utf8")
+            .then((formsFile) => {
+                const formsFileparsed = JSON.parse(formsFile);
+                return formsFileparsed
+                .filter((form: { _name: string; _isActive?: boolean }) => form._isActive !== true)
+                
+            })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error reading forms:', error);
+                return [];
+            });
+    }
+    /**
+     * findRoles
+     * @param userId 
+     * @param project 
+     * @param Form 
+     * @returns 
+     */
+    public static findRoles(Form: Form) {
+        //const formsFilePath = process.cwd() + `/src/app/database/${userId}/${project}/forms.json`;
+        
+        try {
+            const questionsWithSaveRole = Form.questions
+            .filter((question) => {
+                if (question instanceof MultipleChoice) {
+                    return question.saveRole;
+                }
+                return false
+            })
+            .flatMap((question) => {
+                if (question instanceof MultipleChoice) {
+                    return question.options;
+                }
+                return []
+            });
+                
+                
+            const uniqueQuestions = Array.from(new Set(questionsWithSaveRole));
+                
+            return uniqueQuestions;
+        } catch (error) {
+            
+        }
+        
+    }
+
 }
- 
+
 /**
  * Class for changing or making new data in the database
  */

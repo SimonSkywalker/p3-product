@@ -27,7 +27,7 @@ export default class QuestionBuilder{
 
 
     public questionFromObject(object : any) : Question {
-        if(object._description == undefined || object._mandatory == undefined || object._userDisplay == undefined || object._number == undefined || object._questionType == undefined)
+        if(object._description == undefined || object._mandatory == undefined || object._userDisplay == undefined || object._questionType == undefined)
             throw new WrongTypeException;
         this._question.description = object._description;
         this._question.mandatory = object._mandatory;
@@ -35,16 +35,16 @@ export default class QuestionBuilder{
         this._question.number = object._number;
         this._question.questionType = object._questionType;
         if (this._question.questionType == QuestionTypes.multipleChoice){
-            if(object._saveRole == undefined || object._choiceType == undefined || object._options == undefined)
+            if(object._saveRole == undefined || object._type == undefined || object._options == undefined)
                 throw new WrongTypeException;
             (this._question as MultipleChoice).saveRole = object._saveRole;
-            (this._question as MultipleChoice).choiceType = object._choiceType;
+            (this._question as MultipleChoice).type = object._type;
             (this._question as MultipleChoice).options = object._options;
         } else if (this._question.questionType == QuestionTypes.slider){
-            if(object._range == undefined || object._sliderType == undefined)
+            if(object._range == undefined || object._type == undefined)
                 throw new WrongTypeException;
             (this._question as Slider).range = object._range;
-            (this._question as Slider).sliderType = object._sliderType;
+            (this._question as Slider).type = object._type;
         }
 
     return this._question;
