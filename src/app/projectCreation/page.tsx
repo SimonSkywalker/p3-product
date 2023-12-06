@@ -739,7 +739,18 @@ export default function ProjectPage() {
                         
                         {/* Archive Icon to archive the project */}
                         <div 
-                          className="flex justify-end items-center">
+                          className="flex justify-between items-center">
+                            
+                            <Link 
+                              href={"/" + user + "/" + project.getTitle().replace(/ /g, '-') + "/chart"}
+                            >
+                              <img 
+                                title={"Charts"} 
+                                className="w-6 h-6 hover:cursor-pointer  hover:scale-125" 
+                                src={ServerSidePaths.URLFunctionIconsPath + "/chart.png"}
+                              />
+                            </Link>
+                            
                             <img title={"Archive"} className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src={ServerSidePaths.URLFunctionIconsPath + "/archive.png"}
                             onClick={ e => {
                               setModalOpen({currentModalTitle: "archiveModal", isOpen: true});
@@ -873,17 +884,33 @@ export default function ProjectPage() {
                     ) : (
 
                       <div key={"DivHistory" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
-                      <p key={"ProjectHistory" + project.getTitle() + i} className="text-center pb-4">{project.getTitle()}</p><br/>
                       
-                      <Link href={"/" + user + "/" + project.getTitle()}>
+                      <div 
+                          className="flex justify-between items-center">
+                            
+                            <Link 
+                              href={"/" + user + "/" + project.getTitle().replace(/ /g, '-') + "/chart"}
+                            >
+                              <img 
+                                title={"Charts"} 
+                                className="w-6 h-6 hover:cursor-pointer  hover:scale-125" 
+                                src={ServerSidePaths.URLFunctionIconsPath + "/chart.png"}
+                              />
+                            </Link>
+                            
+                        </div>
+
+                      <p key={"ProjectHistory" + project.getTitle() + i} className="text-center">{project.getTitle()}</p><br/>
+                      
+                      
                         <img 
                         title={"Project"}
                         key={"Icon" + project.getIcon() + i} 
                         src={`${URLIconsPath}/${project.getIcon()}`}
                         width={50} 
                         height={50} 
-                        className="mt-4 mx-auto block rounded"/>      
-                      </Link><br/>
+                        className="mt-4 mx-auto block rounded"/><br/>     
+                      
                       
                       <div
                         key={"buttonsDiv" + i}
