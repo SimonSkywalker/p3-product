@@ -8,7 +8,7 @@ import ServerSidePaths from '../../components/ServerSidePaths';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
-import { actionProject, modalOperator } from '@/app/interfaces/interfaces';
+import { ProjectInterface, actionProject, modalOperator } from '@/app/interfaces/interfaces';
 import { Project } from '@/app/components/projectClass';
 import { FormObject } from '@/app/interfaces/interfaces';
 import Form from '@/app/formCreation/form';
@@ -19,6 +19,7 @@ import ObjectAlreadyExistsException from '@/app/exceptions/ObjectAlreadyExistsEx
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/Auth';
+import { z } from 'zod';
 
 interface ProjectParams {
     params:{
@@ -27,7 +28,7 @@ interface ProjectParams {
     }
 }
 
-export const page = ({params}:ProjectParams) => {
+let Puge = ({params}:ProjectParams) => {
   const router = useRouter();
   const { logout } = useAuth();
 
@@ -42,14 +43,18 @@ export const page = ({params}:ProjectParams) => {
   const [newForm, setNewForm] = useState<Project>(new Project());
   const [selectedValue, setSelectedValue] = useState("");
   const [forms, setForms] = useState<Form[]>([]);
-
+  const [projectState, setProjectState] = useState<boolean>();
   //console.log(params.user, params.project);
 
 
   async function getForms() {
   
     const projectAltered = params.project.replace(/-/g, ' ');
-  
+    let projects = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(params.user)) as ProjectInterface[];
+    let project = projects.filter((project) => project.title.replace(/-/g,' ') === projectAltered.replace(/%20/g," "));
+    
+    setProjectState(project[0].isActive);
+    
     const dataForms: Form[] = await FileSystemService.getJSONFile(ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' ')) as Form[];
     
     const buildedForms : Form[] = [];
@@ -105,9 +110,24 @@ export const page = ({params}:ProjectParams) => {
   
   }, []);
 
-  function handleDelete(event: any): void {
-    event.preventDefault();
-    throw new Error('Function not implemented.');
+
+  async function handleDelete(){
+  
+    // Has to .splice since useState value doesnt change
+    // immediately but only schedules a change. 
+    forms.splice(actionOnProject.projectIndex, 1);
+
+    const projectAltered = params.project.replace(/-/g, ' ');
+    await FileSystemService.writeToJSONFile(forms, ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' '));
+
+    FileSystemService.delete('../', ServerSidePaths.getProjectPath(params.user) + `/` + projectAltered.replace(/%20/g,' ') + `/${actionOnProject.projectTitle}`);
+
+    toast.info("Deleted " + actionOnProject.projectTitle);
+
+    //Resets the actionOnProject state
+    setActionOnProject({projectTitle:"", projectIndex: -1});
+   
+    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});
 
   }
 
@@ -129,8 +149,7 @@ export const page = ({params}:ProjectParams) => {
       FormValidator.nameTemplate.parse(copyForm.name);
         //maybe throws zod error
         //Check if validateName is unique
-      const isNotUnique : boolean = forms.some((form)=>{form.name == copyForm?.name})
-      console.log(isNotUnique)
+      const isNotUnique : boolean = forms.some((form)=>{return (form.name == copyForm?.name)})
       if(isNotUnique){
       throw new ObjectAlreadyExistsException("Form already exists");
       }
@@ -139,14 +158,21 @@ export const page = ({params}:ProjectParams) => {
       writeFormData();
       setModalOpen({currentModalTitle: "newFormModal", isOpen: false})
     } catch (e: any) {
+
+      if (e instanceof z.ZodError) {
+        e.errors.forEach((validationError) => {
+          toast.error(validationError.message);
+        });
+      } else {
         toast.error(e.message);
-        toast.error(copyForm.name);
+      }
+
+        
     }
   };
 
   const closeModal = () => {
     setModalOpen({ currentModalTitle: '', isOpen: false });
-    setSelectedForm(undefined);
     setNameInput('');
   };
 
@@ -175,8 +201,8 @@ export const page = ({params}:ProjectParams) => {
   }
   */
 
-  const publishedForms = forms.filter((form) => form.isActive);
-  const notPublishedForms = forms.filter((form) => !form.isActive);
+  const publishedForms = forms.filter((form) => !form.isActive);
+  const notPublishedForms = forms.filter((form) => form.isActive);
 
   return (
     <div className="flex flex-wrap">
@@ -198,6 +224,7 @@ export const page = ({params}:ProjectParams) => {
             onSubmit={() => setModalOpen({currentModalTitle: "", isOpen: false})}>
               <h2 className="text-3xl text-center m-4">Form Creation</h2>
               
+              
               <Link 
                 href={params.project + "/formCreator/newForm"}
                 type="button"
@@ -205,6 +232,7 @@ export const page = ({params}:ProjectParams) => {
                 className="float-left m-2 px-9 py-2 tracking-wide text-white bg-gray-700 hover:bg-gray-600 rounded-md focus:outline-none hover:scale-105" >
                 New Form
               </Link>
+              
 
               
               <select
@@ -231,22 +259,24 @@ export const page = ({params}:ProjectParams) => {
                 </optgroup>
               </select>
 
+
               <input
-              className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"   
-              
+              className={`px-16 ml-2 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${!selectedForm && 'disabled'}`}   
+              disabled={!selectedForm}
               onChange={(e) => {
                 setNameInput(e.target.value.toString());}}
+              placeholder='Name of copied form'
               >
               
               </input>
 
               <button
-               className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors hover:duration-200 bg-gray-700 rounded-md hover:bg-gray-600"
-               onClick={(e) => {selectedForm ? handleCopyForm(selectedForm, nameInput) : toast.warning("Please Select a Form");e.preventDefault()}}
-               >
+              className={`float-right m-2 px-12 py-2 tracking-wide text-white transition-colors hover:duration-200 bg-gray-700 rounded-md hover:bg-gray-600 ${!selectedForm && 'disabled'}`}
+              onClick={(e) => {selectedForm ? handleCopyForm(selectedForm, nameInput) : toast.warning("Please Select a Form");e.preventDefault()}}
+              disabled={!selectedForm}
+              >
                 Copy Form
               </button>
- 
             </form>
           </Modal>
 
@@ -259,14 +289,14 @@ export const page = ({params}:ProjectParams) => {
           >
             <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}></img>
             
-            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete {actionOnProject?.projectTitle} ?</p>
+            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete <span className="break-all">{actionOnProject?.projectTitle}</span> ?</p>
             
             <p className="mt-8 mb-8 text-l text-center">Deleted objects can never be recovered</p>
 
             <button 
                 type="button"
                 title="deleteButton"
-                onClick={handleDelete}
+                onClick={(event) => {event.preventDefault(); handleDelete();}}
                 className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
                 Delete
               </button>
@@ -336,7 +366,7 @@ export const page = ({params}:ProjectParams) => {
                 <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
  
                   {forms.map((form, i) => 
-                    !form.isActive ? (
+                    form.isActive ? (
 
                       <p key={"status" + form.name + i} className="hidden"></p>
 
@@ -355,7 +385,7 @@ export const page = ({params}:ProjectParams) => {
 
                         </Link><br/>
 
-                        <img title={"Delete"} className="w-4 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
+                        <img title={"Delete"} className="w-4 h-6 m-2 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
                           onClick={ e => {
                             setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
                             setActionOnProject({projectTitle: form.name, projectIndex: i});
@@ -378,22 +408,21 @@ export const page = ({params}:ProjectParams) => {
 
                 </div> 
                 
-                {/*---------------STOP HER-------------*/}
-                {/*---------------STOP HER-------------*/}
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
                   
+                
                   <div 
                     id="newProjectDiv" 
-                    className={(!creatingForm ? "block " : "hidden ") + "grid place-items-center h-25 w-40 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 "}>
+                    className={`grid place-items-center h-25 w-40 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ${projectState ? 'block' : 'hidden'}`}>
                       <h3 className='pt-2'>Create New</h3>
                       <button title={"New"} className={"text-5xl text-align-center hover:scale-125"}
-                      onClick={(e)=>{setModalOpen({currentModalTitle: "newFormModal", isOpen: true})}}
+                      onClick={(e)=>{setModalOpen({currentModalTitle: "newFormModal", isOpen: true});setSelectedForm(undefined)}}
                       >+</button>
                   </div>
-
+                
                   
                   {forms.map((form, i) => 
-                    form.isActive ? (
+                    !form.isActive ? (
 
                       <p key={"status" + form.name + i} className="hidden"></p>
 
@@ -412,7 +441,7 @@ export const page = ({params}:ProjectParams) => {
 
                         </Link><br/>
 
-                        <img title={"Delete"} className="w-4 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
+                        <img title={"Delete"} className="w-4 h-6 m-2 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
                           onClick={ e => {
                             setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
                             setActionOnProject({projectTitle: form.name, projectIndex: i});
@@ -443,4 +472,4 @@ export const page = ({params}:ProjectParams) => {
   )
 }
 
-export default page
+export default Puge

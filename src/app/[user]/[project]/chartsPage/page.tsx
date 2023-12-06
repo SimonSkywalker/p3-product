@@ -1,25 +1,35 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import PieChart from '../components/Pie'
-import BarChart from '../components/Bar'
-import FeedbackArea from '../components/FeedbackArea'
+import PieChart from '../../../components/Pie'
+import BarChart from '../../../components/Bar'
+import FeedbackArea from '../../../components/FeedbackArea'
 import { Suspense, useEffect, useState } from 'react'
-import { Token } from "../classes/tokenClass";
+import { Token } from "../../../classes/tokenClass";
 import Cookies from "js-cookie";
-import { QuestionHandler, dataMaker } from '../classes/chartMaker'
-import { APIHandle } from '../classes/handlerClass'
-
-
-
+import { dataMaker } from '../../../classes/chartMaker'
+import { APIHandle } from '../../../classes/handlerClass'
+import Question, { MultipleChoice } from '@/app/formCreation/question'
+import { param } from 'cypress/types/jquery'
+interface ChartParams {
+    params: {
+      user: string;
+      project: string;
+    }
+  }
 
 export default function ChartPage(response: any) {
     const router = useRouter()
+    //const searchParams = use
     const [chartData, setChartData] = useState({
         roles: [{} as any],
         questions: [{} as any]
       });
-    const [answerData, setAnswerData] = useState(new dataMaker)
-    
+      const [chartData2, setChartData2] = useState({
+        roles: [{} as any],
+        questions: [{} as any]
+      });
+    const [answerData, setAnswerData] = useState(new dataMaker);
+    const [answerData2, setAnswerData2] = useState(new dataMaker);
     const formData = response.searchParams;
 
     if (Object.keys(formData).length === 0) {
@@ -38,15 +48,30 @@ export default function ChartPage(response: any) {
         console.error(error);
         router.replace("/login");
         });
+        if(formData.otherForm){
+            Cookies.set('otherForm', formData.otherForm);
+            APIHandle.APIRequestRQ({selectedForm: formData.form})
+            .then((data) => {
+                setChartData2({
+                ...chartData,
+                roles: data.formdata2.roles,
+                questions: data.formdata2.questions
+                })
+                console.log(data)
+                answerData2.makeArray(data.oResponse, formData.rolePicks)
+                console.log(answerData2.dataArray);
 
-        APIHandle.APIRequestRQ(formData.form)
+            })
+        }
+
+        APIHandle.APIRequestRQ({selectedForm: formData.form})
         .then((data) => {
                 setChartData({
                 ...chartData,
                 roles: data.formdata.roles,
                 questions: data.formdata.questions
                 })
-                
+                console.log(data)
                 answerData.makeArray(data.mResponse, formData.rolePicks)
                 console.log(answerData.dataArray);
 
@@ -55,8 +80,10 @@ export default function ChartPage(response: any) {
                 console.error(`Error: ${error}`);
             });
     },[])
-
+    
     const sortedDataArray = answerData.sortDataArray(formData, chartData);
+    const sortedDataArray2 = answerData2.sortDataArray(formData, chartData2);
+
     console.log(sortedDataArray);
    
     if (typeof formData.questionPicks === "string") {
@@ -83,7 +110,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             roles={formData.rolePicks}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray2[option].roleAnswersCount}
                         />
                         )}
                         { //Multiple choice (checkboxes)
@@ -91,9 +118,9 @@ export default function ChartPage(response: any) {
                             <BarChart
                             questionName={sortedDataArray[option].description}
                             questionIndex={option}
-                            questions={chartData.questions[option].options}
+                            questions={chartData.questions[option]._options}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray2[option].roleAnswersCount}
                         />
                         )}
                         { //Slider (AgreeDisagree)
@@ -103,7 +130,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={sortedDataArray[option]?.questionLabels}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray2[option].roleAnswersCount}
                         />
                         )}
                         { //Slider (values)
@@ -113,7 +140,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={sortedDataArray[option]?.questionLabels}
                             answerCount={sortedDataArray[option].roleAnswersCount}
-                            answer2Count={sortedDataArray[option].roleAnswersCount}
+                            answer2Count={sortedDataArray2[option].roleAnswersCount}
                         />
                         )}
                         { //Text input
@@ -123,6 +150,7 @@ export default function ChartPage(response: any) {
                             questionIndex={option}
                             questions={formData.rolePicks}
                             answerCount={sortedDataArray[option].roleAnswers}
+                            answerCount2={sortedDataArray2[option].roleAnswers}
                         />
                         )}
                     </li>

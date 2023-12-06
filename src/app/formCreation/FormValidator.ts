@@ -5,7 +5,7 @@ import Question from "./question";
 import { MultipleChoice, Slider } from "./question";
 import ValidationError from "../exceptions/ValidationError";
 
-const nameMax : number = 127;
+const nameMax : number = 60;
 const descMax : number = 1023;
 
 

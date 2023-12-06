@@ -212,10 +212,13 @@ export class APIHandle{
   /**
    * APIRequestUser
    */
-  public static async APIRequestUser() {
+  public static async APIRequestUser(project: string) {
     let data;
     try{
-    const res = await fetch("/api/getuser") 
+    const res = await fetch("/api/getuser", {
+      method:"POST",
+      body: JSON.stringify(project)
+    }) 
       if(res.ok){
       
         data = await res.json();
@@ -228,7 +231,7 @@ export class APIHandle{
     }
   }
 
-  public static async APIRequestRQ(form: string) {
+  public static async APIRequestRQ(form: object) {
     
       const res = await fetch("/api/getFormdata", {
         method: "POST",

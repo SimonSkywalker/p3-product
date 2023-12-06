@@ -1,17 +1,9 @@
-interface Question {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options?: string[];
-    type?: number;
-    range?: number;
-}
+import Form from "../formCreation/form";
+import Question, { MultipleChoice } from "../formCreation/question";
 
-interface Responses {
-    roles:{}
-    question:{}
+interface chartDataType {
+    roles:[]
+    questions: []
 }
 
 const agreeDisagreeRanges = {
@@ -50,11 +42,7 @@ const agreeDisagreeRanges = {
   };
 
 
-export class QuestionHandler {
-    public static questionIndexGetter(questionPick: string, questionList: Question[] ) {
-        return questionList.findIndex((question) => question.description === questionPick);
-    }
-}
+
 
 export class dataMaker{
     
@@ -109,6 +97,9 @@ export class dataMaker{
     }
 
     sortDataArray(formData: any, chartData: any){
+        if(chartData.roles.length != 0 || chartData.questions.length != 0){
+            return this.sortDataArray
+        }
         console.log(this.dataArray);
         this.sortedDataArray = {};
         this.dataArray.forEach((element : any, userIndex: number) => {
@@ -121,12 +112,12 @@ export class dataMaker{
                     this.sortedDataArray[key] = {};
                 }
                 if (!this.sortedDataArray[key]["description"]) {
-                    this.sortedDataArray[key]["description"] = chartData.questions[key].description
+                    this.sortedDataArray[key]["description"] = chartData.questions[key]._description
                 }
                 if (!this.sortedDataArray[key]["roleAnswers"]) {
                     this.sortedDataArray[key]["roleAnswers"] = {};
                 }
-                if (!this.sortedDataArray[key]["roleAnswersCount"] && chartData.questions[key].questionType != 2) {
+                if (!this.sortedDataArray[key]["roleAnswersCount"] && chartData.questions[key]._questionType != 2) {
                     this.sortedDataArray[key]["roleAnswersCount"] = {};   
                 }
                 
@@ -134,13 +125,13 @@ export class dataMaker{
 
                     if (formData.rolePicks.includes(newElement)) {
 
-                        if (chartData.questions[key].questionType != 2) {
+                        if (chartData.questions[key]._questionType != 2) {
 
                             if (!this.sortedDataArray[key]["roleAnswers"][newElement]) {
                                 this.sortedDataArray[key]["roleAnswers"][newElement] = [];   
                             }
                         
-                            if (!this.sortedDataArray[key]["roleAnswersCount"][newElement] && chartData.questions[key].questionType != 2) {
+                            if (!this.sortedDataArray[key]["roleAnswersCount"][newElement] && chartData.questions[key]._questionType != 2) {
                                 this.sortedDataArray[key]["roleAnswersCount"][newElement] = 0;  
                             }
                         }
@@ -153,9 +144,9 @@ export class dataMaker{
                     
                     const value:[] = questions[key];
                     if (roles.includes(newElement)) {
-                        if (chartData.questions[key].saveRole && (chartData.questions[key].questionType == 0 && chartData.questions[key].type == 0)) {
+                        if (chartData.questions[key]._saveRole && (chartData.questions[key]._questionType == 0 && chartData.questions[key]._type == 0)) {
                             
-                            if (Array.isArray(value) && chartData.questions[key].questionType != 2) {
+                            if (Array.isArray(value) && chartData.questions[key]._questionType != 2) {
                                 this.sortedDataArray[key]["roleAnswers"][newElement].push(...value);
                                 
                                 value.forEach((newValue : any) => {
@@ -164,7 +155,7 @@ export class dataMaker{
                             }
                         } else {
 
-                            if (Array.isArray(value) && chartData.questions[key].questionType != 2) {
+                            if (Array.isArray(value) && chartData.questions[key]._questionType != 2) {
 
                                 if (!this.sortedDataArray[key]["roleAnswersCount"][newElement]) {
                                     this.sortedDataArray[key]["roleAnswersCount"][newElement] = {};  
@@ -172,22 +163,22 @@ export class dataMaker{
                                 
                                     this.sortedDataArray[key]["roleAnswers"][newElement].push(...value);
                                 
-                                    if(chartData.questions[key].questionType == 0 && chartData.questions[key].type == 1) {
-                                        chartData.questions[key].options.forEach((newValue : any) => {
+                                    if(chartData.questions[key]._questionType == 0 && chartData.questions[key]._type == 1) {
+                                        chartData.questions[key]._options.forEach((newValue : any) => {
                                             if (!this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue]) {
                                                 this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue] = 0;
                                             }
                                         })      
-                                    } else if (chartData.questions[key].questionType == 1) {
-                                        if (chartData.questions[key].type == 0) {
-                                            let rangeKey: keyof typeof agreeDisagreeRanges = chartData.questions[key].range;
+                                    } else if (chartData.questions[key]._questionType == 1) {
+                                        if (chartData.questions[key]._type == 0) {
+                                            let rangeKey: keyof typeof agreeDisagreeRanges = chartData.questions[key]._range;
                                             agreeDisagreeRanges[rangeKey].forEach((newValue : any) => {
                                                 if (!this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue]) {
                                                     this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue] = 0;
                                                 }
                                             })
-                                        } else if (chartData.questions[key].type == 1) {
-                                            let valueRange = Array.from({length: chartData.questions[key].range}, (_, i) => i + 1);
+                                        } else if (chartData.questions[key]._type == 1) {
+                                            let valueRange = Array.from({length: chartData.questions[key]._range}, (_, i) => i + 1);
                                             valueRange.forEach((newValue : any) => {
                                                 if (!this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue]) {
                                                     this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue] = 0;
@@ -197,7 +188,7 @@ export class dataMaker{
                                     }
                                 value.forEach((newValue : any) => {
 
-                                    if (chartData.questions[key].questionType != 2) {
+                                    if (chartData.questions[key]._questionType != 2) {
         
                                         if (!this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue]) {
                                             this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue] = 0;
@@ -206,7 +197,7 @@ export class dataMaker{
                                         this.sortedDataArray[key]["roleAnswersCount"][newElement][newValue] += 1;
                                     }
                                 })           
-                            } else if (chartData.questions[key].questionType == 2) {
+                            } else if (chartData.questions[key]._questionType == 2) {
                                 let userConcat = `User${userIndex + 1}`;
 
                                 if (!this.sortedDataArray[key]["roleAnswers"][userConcat]) {
@@ -224,20 +215,20 @@ export class dataMaker{
     
                 
  
-                this.sortedDataArray[key]["questionType"] = chartData.questions[key].questionType;
-                if (typeof chartData.questions[key].type != "undefined") {
-                    this.sortedDataArray[key]["type"] = chartData.questions[key].type;
+                this.sortedDataArray[key]["questionType"] = chartData.questions[key]._questionType;
+                if (typeof chartData.questions[key]._type != "undefined") {
+                    this.sortedDataArray[key]["type"] = chartData.questions[key]._type;
                 }
-                if (typeof chartData.questions[key].range != "undefined") {
-                    this.sortedDataArray[key]["range"] = chartData.questions[key].range;
+                if (typeof chartData.questions[key]._range != "undefined") {
+                    this.sortedDataArray[key]["range"] = chartData.questions[key]._range;
                 }
                 //Slider questions
-                if (chartData.questions[key].questionType == 1) {
-                    if (chartData.questions[key].type == 0) {
-                        let rangeKey: keyof typeof agreeDisagreeRanges = chartData.questions[key].range;
+                if (chartData.questions[key]._questionType == 1) {
+                    if (chartData.questions[key]._type == 0) {
+                        let rangeKey: keyof typeof agreeDisagreeRanges = chartData.questions[key]._range;
                         this.sortedDataArray[key]["questionLabels"] = agreeDisagreeRanges[rangeKey];
-                    } else if (chartData.questions[key].type == 1) {
-                        let valueRange = Array.from({length: chartData.questions[key].range}, (_, i) => i + 1);
+                    } else if (chartData.questions[key]._type == 1) {
+                        let valueRange = Array.from({length: chartData.questions[key]._range}, (_, i) => i + 1);
                         this.sortedDataArray[key]["questionLabels"] = valueRange;
                     }
                 }

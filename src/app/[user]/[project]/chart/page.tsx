@@ -1,15 +1,22 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { APIHandle } from "../classes/handlerClass";
-import { Token } from "../classes/tokenClass";
+import { APIHandle } from "../../../classes/handlerClass";
+import { Token } from "../../../classes/tokenClass";
 import Cookies from "js-cookie";
 import Menu1 from "./Menu1";
 import Menu2 from "./Menu2";
 
-export default function VisPage() {
+interface ChartParams {
+  params: {
+    user: string;
+    project: string;
+  }
+}
+
+export default function VisPage({params}:ChartParams) {
   const router = useRouter();
-  const [user, setUser] = useState({Id:"", project: "", forms:[], selectedForm: "", roles:[], questions:[]});
+  const [user, setUser] = useState({Id:"", project: params.project, forms:[], selectedForm: "", roles:[], questions:[]});
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -22,8 +29,9 @@ export default function VisPage() {
       console.error(error);
       router.replace("/login");
     });
-
-    APIHandle.APIRequestUser()
+    Cookies.set('userID', params.user);
+    Cookies.set('projectName', params.project);
+    APIHandle.APIRequestUser(user.project)
       .then(async(data) => {
         if (data) {
           setUser(await data);
@@ -38,7 +46,7 @@ export default function VisPage() {
     
     fetch("/api/getFormdata", {
         method: "POST",
-        body: JSON.stringify(e.target.value)
+        body: JSON.stringify({selectedForm: e.target.value})
     }) 
     .then((response) => response.json())
     .then((data) => {
@@ -89,14 +97,14 @@ export default function VisPage() {
     const listQuestions = user?.questions?.map((question: any, i: number) => (
       <div key={i}>
         <input type="checkbox" id={`questions-${i}`} name="questionPicks" value={i} />
-        <label htmlFor={`questions-${i}`}> Question {i+1}: {question.description} </label>
+        <label htmlFor={`questions-${i}`}> Question {i+1}: {question._description} </label>
       </div>
     ));
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="formDefault">
-      <form action="/api/createCharts" method="GET" className="space-y-5 flex flex-col justify-center text-center">
+      <form action="/api/createCharts" className="space-y-5 flex flex-col justify-center text-center">
         <div>
           <h3 className="block text-sm font-semibold text-gray-800">Select form for visualization</h3>
           <select name="form" className="bg-white-300" defaultValue={'DEFAULT'} 

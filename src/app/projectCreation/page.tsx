@@ -199,6 +199,7 @@ export default function ProjectPage() {
     });
 
     await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
+    console.log(ServerSidePaths.getProjectsPath(user));
 
   }
 
@@ -250,6 +251,7 @@ export default function ProjectPage() {
     await formattingProjectData();
     
     FileSystemService.delete('../', ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
+    console.log(ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
 
     toast.info("Deleted " + actionOnProject.projectTitle);
 
@@ -399,6 +401,11 @@ export default function ProjectPage() {
   * When a new project is submitted, the new project is placed as the first object in the projects state.
   * A new directory with the project title is made within the database.
   */
+  async function createFolders(){
+    await FileSystemService.makeDirectory('../', ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
+    await FileSystemService.writeToJSONFile([],ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}/` + "forms.json")
+  } 
+
   const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault();
@@ -421,8 +428,8 @@ export default function ProjectPage() {
      
       formattingProjectData();
       
-      FileSystemService.makeDirectory('../', ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
-
+      createFolders();
+      
       //Resets the newProject state with empty values
       setNewProject((prevProject) => {
         const updatedProject = new Project();
