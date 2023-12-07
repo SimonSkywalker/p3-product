@@ -1,13 +1,13 @@
-import DatabaseAccess from "@/app/formCreation/DatabaseAccess"
-import Form from "@/app/formCreation/Form"
+import DatabaseAccess from "@/app/(admin)/formCreation/DatabaseAccess"
+import Form from "@/app/(admin)/formCreation/Form"
 import {expect, jest, test} from '@jest/globals'
 import _ from "lodash"
 import z, { ZodError } from "zod";
-import TokenBuilder from "@/app/formCreation/TokenBuilder"
-import Token from "@/app/formCreation/Token"
-import Question, { MultipleChoice, QuestionTypes, Slider } from "@/app/formCreation/question"
-import FormBuilder from "@/app/formCreation/FormBuilder";
-import FormValidator from "@/app/formCreation/FormValidator"
+import TokenBuilder from "@/app/(admin)/formCreation/TokenBuilder"
+import Token from "@/app/(admin)/formCreation/Token"
+import Question, { MultipleChoice, QuestionTypes, Slider } from "@/app/(admin)/formCreation/question"
+import FormBuilder from "@/app/(admin)/formCreation/FormBuilder";
+import FormValidator from "@/app/(admin)/formCreation/FormValidator"
 
 const testForm1 : Form = new Form();
 testForm1.name = "work satisfaction";
