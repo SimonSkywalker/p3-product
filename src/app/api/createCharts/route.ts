@@ -2,12 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { redirect, usePathname } from "next/navigation";
 import { useSearchParams } from 'next/navigation';
 import { cookies } from "next/headers";
-interface ChartParams {
-    params: {
-      user: string;
-      project: string;
-    }
-  }
 
 export async function GET(request: NextRequest, response: NextResponse){
 
@@ -21,8 +15,7 @@ export async function GET(request: NextRequest, response: NextResponse){
     for (const [key, value] of searchParams.entries() as any) {
         chartsPageURL.searchParams.append(key, value)
     }
-    console.log(chartsPageURL);
-
+    
     return  NextResponse.redirect(chartsPageURL);
     
 } 

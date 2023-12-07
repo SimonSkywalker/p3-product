@@ -10,12 +10,6 @@ import { dataMaker } from '../../../classes/chartMaker'
 import { APIHandle } from '../../../classes/handlerClass'
 import Question, { MultipleChoice } from '@/app/formCreation/question'
 import { param } from 'cypress/types/jquery'
-interface ChartParams {
-    params: {
-      user: string;
-      project: string;
-    }
-  }
 
 export default function ChartPage(response: any) {
     const router = useRouter()
@@ -33,10 +27,7 @@ export default function ChartPage(response: any) {
     const [answerData2, setAnswerData2] = useState(new dataMaker);
     const formData = response.searchParams;
 
-    if (Object.keys(formData).length === 0) {
-        router.push('/chart');
-      return;
-    }
+    
 
     useEffect(()=>{
         const token = Cookies.get('token');

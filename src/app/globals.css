@@ -34,7 +34,7 @@ footer{
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
-.roleContainer:has(.roleResults:empty) {
+.roleContainer:has(.checkboxContainer:empty, .checkboxContainer2:empty) {
   display: none;
 }
 

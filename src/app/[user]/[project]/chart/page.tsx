@@ -6,6 +6,7 @@ import { Token } from "../../../classes/tokenClass";
 import Cookies from "js-cookie";
 import Menu1 from "./Menu1";
 import Menu2 from "./Menu2";
+import { toast } from "react-toastify";
 
 interface ChartParams {
   params: {
@@ -15,8 +16,11 @@ interface ChartParams {
 }
 
 export default function VisPage({params}:ChartParams) {
+  
   const router = useRouter();
   const [user, setUser] = useState({Id:"", project: params.project, forms:[], selectedForm: "", roles:[], questions:[]});
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -29,6 +33,7 @@ export default function VisPage({params}:ChartParams) {
       console.error(error);
       router.replace("/login");
     });
+    
     Cookies.set('userID', params.user);
     Cookies.set('projectName', params.project);
     if(Cookies.get('otherForm')){
@@ -65,20 +70,25 @@ export default function VisPage({params}:ChartParams) {
       });
         
   }
-  /*
-  const handleChange =  (value: string) => {
+  const validateForm = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
 
-    console.log(value)
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.checkboxContainer input[type="checkbox"]');
+    const isChecked = Array.from(checkboxes).some((checkbox) => checkbox.checked);
+    const checkboxes2 = document.querySelectorAll<HTMLInputElement>('.checkboxContainer2 input[type="checkbox"]');
+    const isChecked2 = Array.from(checkboxes2).some((checkbox) => checkbox.checked);
+    const select = document.getElementById('formSelector') as HTMLSelectElement;
+    console.log(select.value);
+    
 
-    // Checkboxes: Toggle the selected state of the clicked option
-    if (formData['roles'].includes(value)) {
-      // Remove the option if it's already selected
-      setFormData(formData.filter();
+    if (!isChecked || !isChecked2) {
+      setErrorMessage('Please select at least one checkbox for both Roles & Questions.');
     } else {
-      // Add the option if it's not selected
-      setFormData([...formData, value]);
+      setErrorMessage('');
+      event.currentTarget.submit();
+      // Perform other actions or submit the form
     }
-  }  */
+  };
   let otherForms: any = []
   if (typeof user?.selectedForm != 'undefined') {
     otherForms = user?.forms.filter(function(e) { return e !== user?.selectedForm })
@@ -106,19 +116,19 @@ export default function VisPage({params}:ChartParams) {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="formDefault">
-      <form action="/api/createCharts" className="space-y-5 flex flex-col justify-center text-center">
+      <form onSubmit={validateForm} action="/api/createCharts" method="GET" className="space-y-5 flex flex-col justify-center text-center">
         <div>
           <h3 className="block text-sm font-semibold text-gray-800">Select form for visualization</h3>
-          <select name="form" className="bg-white-300" defaultValue={'DEFAULT'} 
+          <select id="formSelector"name="form" className="bg-white-300" defaultValue={"DEFAULT"}
           onChange={handleSelect}>
-            <option disabled value="DEFAULT">-- select option --</option>
+            <option  value="DEFAULT" disabled hidden>-- select option --</option>
             {listForm}
           </select>
         </div>
         <div>
           <h3 className="block text-sm font-semibold text-gray-800">Select other form for comparison (optional)</h3>
           <select name="otherForm" className="bg-white-300" defaultValue={'DEFAULT'}>
-          <option disabled value="DEFAULT">-- select option --</option>
+          <option disabled hidden value="DEFAULT">-- select option --</option>
             {listFormOp}
           </select>
         </div>
@@ -135,6 +145,8 @@ export default function VisPage({params}:ChartParams) {
               title="submitButton">
               Submit
             </button>
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+
           </div>
       </form>
       </div>
