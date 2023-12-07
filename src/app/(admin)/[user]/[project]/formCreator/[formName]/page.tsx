@@ -370,8 +370,7 @@ useEffect(() => {
                 form.isActive = false;
                 setActive(false);
                 //If the form already exists in the database, remove it first
-                if(forms.checkDuplicate(form) && form.name == formName)
-                  forms.removeFromDatabase(form.name);
+                forms.removeFromDatabase(currForm.name);
                 forms.addToDatabase(form);
                 const database : FileFinder = new FileFinder(pathToSrc);
                 //Makes directory at the project path plus the current form name
@@ -388,9 +387,8 @@ useEffect(() => {
                 console.log(formName);
                 console.log((form.name == formName));
                 
-                //If the form already exists in the database, remove it first
-                if(forms.checkDuplicate(form) && form.name == formName)
-                  forms.removeFromDatabase(form.name);
+                //Removes the form that was edited from the database
+                forms.removeFromDatabase(currForm.name);
                 forms.addToDatabase(form);
                 const database : FileFinder = new FileFinder(pathToSrc);
                 //Makes directory at the project path plus the current form name
