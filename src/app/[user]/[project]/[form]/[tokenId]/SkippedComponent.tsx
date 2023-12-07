@@ -4,14 +4,14 @@ import React from 'react';
 
 interface SkippedProps {
   jsonData: {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options: any[string];
-    type: number;
-    range: number;
+    _description: string;
+    _mandatory: boolean;
+    _userDisplay: boolean;
+    _questionType: number;
+    _saveRole: boolean;
+    _options: any[string];
+    _type: number;
+    _range: number;
   };
 }
 
@@ -21,7 +21,7 @@ export default function SkippedComponent({ jsonData } : SkippedProps) {
   return (
     <>
       <h3 className="text-center text-base font-bold mb-5">
-        {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+        {jsonData._description}{jsonData._mandatory && <span style={{ color: 'red' }}>*</span>}
       </h3>
       <p className="text-center text-base">
         You have choosen to skip this question.
