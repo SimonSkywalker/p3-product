@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import ServerSidePaths from "@/app/components/ServerSidePaths";
+import { z } from "zod";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
@@ -321,6 +322,12 @@ useEffect(() => {
             } catch(e: any) {
               if(e instanceof ObjectAlreadyExistsException)
                 toast.error('A form with this name already exists in this project');
+              if(e instanceof z.ZodError){
+                e.errors.forEach((validationErr) => {
+                  toast.error(validationErr.message);
+                })
+              }
+
               let errorHandler = new FormErrorHandler();
               setValidationErrors(errorHandler.errorValidation(e));
             }

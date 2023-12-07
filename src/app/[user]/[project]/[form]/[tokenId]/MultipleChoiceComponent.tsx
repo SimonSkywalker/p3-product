@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react';
 
 interface MultipleChoiceProps {
   jsonData: {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options: any[string];
-    type: number;
-    range: number;
+    _description: string;
+    _mandatory: boolean;
+    _userDisplay: boolean;
+    _questionType: number;
+    _saveRole: boolean;
+    _options: any[string];
+    _type: number;
+    _range: number;
   };
   onUserInput: any;
   currentQuestionIndex: number;
@@ -41,7 +41,7 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
 
   // Event handler for option selection
   const handleOptionSelect = (optionIndex: number) => {
-    if (jsonData.type === 0) {
+    if (jsonData._type === 0) {
       // Radio buttons: Select the clicked option
       setSelectedOptions([optionIndex]);
     } else {
@@ -60,11 +60,11 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
   return (
     <form>
         <h3 className="text-center text-base font-bold mb-5">
-          {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+          {jsonData._description}{jsonData._mandatory && <span style={{ color: 'red' }}>*</span>}
         </h3>
-        {jsonData.options.map((option: string, optionIndex: number) => (
+        {jsonData._options.map((option: string, optionIndex: number) => (
         <div className="mb-[1rem] block min-h-[1.5rem] pl-[1.5rem]" key={optionIndex}>
-          {jsonData.type === 0 ? ( 
+          {jsonData._type === 0 ? ( 
             // Display radio buttons if type is 0
             <input
               type="radio"

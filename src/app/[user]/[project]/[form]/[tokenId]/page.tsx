@@ -5,22 +5,28 @@ import React, { useState, useEffect } from 'react';
 import FormRenderer from './FormRenderer';
 import { generateMetadata } from './metadata';
 
-// Define the type for your JSON data
-interface FormData {
-  forms: FormObject[];
+interface FormObject {
+  _name: string;
+  _description: string;
+  _questions: Question[];
+  _tokens: Token[];
+  _isActive: boolean;
 }
 
-interface FormObject {
-  name: string;
-  description: string;
-  questions: any[];
-  tokens: Token[];
+interface Question {
+  _description: string;
+  _mandatory: boolean;
+  _userDisplay: boolean;
+  _questionType: number;
+  _saveRole: boolean;
+  _options: any[string];
+  _type: number;
+  _range: number;
 }
 
 interface Token {
-  [key: string]: {
-    isUsed: boolean;
-  };
+  _tokenID: string;
+  _isUsed: boolean;
 }
 
 // Define an interface for the params object
@@ -54,7 +60,7 @@ export default function FormPage({ params } : FormPageParams) {
   const loadUserFormData = async () => {
     try {
       // Dynamic import of the forms JSON file based on the user and project names
-      const dataModule = await import(`@/app/database/${params.user}/${params.project}/forms.json`);
+      const dataModule = await import(`@/app/database/${params.user}/${(params.project).replace(/-/g," ")}/forms.json`);
       // Change For Jest
       //const dataModule = await import(`../../../../database/${params.user}/${params.project}/forms.json`); // For Jest
       return dataModule.default;
@@ -77,10 +83,12 @@ export default function FormPage({ params } : FormPageParams) {
         }
 
         // Assuming formList is an object of type FormData
-        const formData: FormData = userFormData;
+        const formData: FormObject[] = userFormData;
 
         // Find the form object with the specified key
-        const formObject = formData.forms.find((form) => form.name === params.form);
+        const formObject = formData.find((form) => form._name === params.form);
+
+        console.log(formObject)
 
         if (!formObject) {
           notFound();
@@ -88,7 +96,9 @@ export default function FormPage({ params } : FormPageParams) {
         }
 
         // Check if the specified "tokenId" exists in the formObject
-        const tokenIdExists = formObject.tokens.find((token) => token[params.tokenId]);
+        const tokenIdExists = formObject._tokens.some((token) => token._tokenID === params.tokenId);
+
+        console.log(tokenIdExists)
 
         if (!tokenIdExists) {
           notFound();

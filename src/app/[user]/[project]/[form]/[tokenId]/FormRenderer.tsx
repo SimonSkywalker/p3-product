@@ -21,27 +21,27 @@ interface FromRendererProps {
 }
 
 interface FormObject {
-  name: string;
-  description: string;
-  questions: Question[];
-  tokens: Token[];
+  _name: string;
+  _description: string;
+  _questions: Question[];
+  _tokens: Token[];
+  _isActive: boolean;
 }
 
 interface Question {
-  description: string;
-  mandatory: boolean;
-  userDisplay: boolean;
-  questionType: number;
-  saveRole: boolean;
-  options: any[string];
-  type: number;
-  range: number;
+  _description: string;
+  _mandatory: boolean;
+  _userDisplay: boolean;
+  _questionType: number;
+  _saveRole: boolean;
+  _options: any[string];
+  _type: number;
+  _range: number;
 }
 
 interface Token {
-  [key: string]: {
-    isUsed: boolean;
-  };
+  _tokenID: string;
+  _isUsed: boolean;
 }
 
 interface Params {
@@ -67,13 +67,17 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
   const [isOnSubmitPage, setIsOnSubmitPage] = useState<boolean>(false);
   const [isOnFinalPage, setIsOnFinalPage] = useState<boolean>(false);
   const [isOnAlreadyUsedPage, setIsOnAlreadyUsedPage] = useState<boolean>(
-    formObject.tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId))?.[params.tokenId]?.isUsed || false
+    formObject._tokens.find((tokens) => tokens.hasOwnProperty(params.tokenId))?._isUsed || false
   );
 
-  const totalQuestions = formObject.questions.length;
+  const totalQuestions = formObject._questions.length;
 
   // useEffect to check for changes in userResponses and update isResponseProvided and isSkippedResponse
   useEffect(() => {
+
+    document.querySelector('nav')?.remove();
+    document.querySelector('footer')?.remove();
+
     const isResponseEmpty = !userResponses[currentQuestionIndex] || Object.keys(userResponses[currentQuestionIndex]).length === 0;
     setIsResponseProvided(!isResponseEmpty);
 
@@ -151,8 +155,8 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
   // Return the JSX structure for the component
   return (
     <div className="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
-      <h1 className="text-2xl font-medium text-center">{formObject.name}</h1>
-      <p className="text-l font-medium mb-4 text-center">{formObject.description}</p>
+      <h1 className="text-2xl font-medium text-center">{formObject._name}</h1>
+      <p className="text-l font-medium mb-4 text-center">{formObject._description}</p>
       {isOnFirstPage || isOnSubmitPage || isOnFinalPage || isOnAlreadyUsedPage ? (
         <div className="relative flex pb-5 items-center">
           <div className="flex-grow border-t border-gray-400"></div>
@@ -171,10 +175,10 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
       {isOnFirstPage && !isOnAlreadyUsedPage && (
         <FirstPageComponent/>
       )}
-      {formObject.questions.map((question, index) => (
+      {formObject._questions.map((question, index) => (
         index === currentQuestionIndex && (
           <Suspense key={index} fallback={<div>Loading...</div>}>
-            {question.questionType === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+            {question._questionType === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <MultipleChoiceComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -182,7 +186,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && question.type === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+            {question._questionType === 1 && question._type === 0 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <AgreeDisagreeComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -190,7 +194,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 1 && question.type === 1 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+            {question._questionType === 1 && question._type === 1 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <SliderComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -198,7 +202,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
               userResponses={userResponses}
               />
             )}
-            {question.questionType === 2 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+            {question._questionType === 2 && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
               <TextInputComponent
               jsonData={question}
               onUserInput={handleUserInput}
@@ -247,20 +251,20 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
         {currentQuestionIndex < totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToNextQuestion}
-            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
-            className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
+            disabled={!isResponseProvided && formObject._questions[currentQuestionIndex]._mandatory}
+            className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject._questions[currentQuestionIndex]._mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
               Next
           </button>
         )}
         {currentQuestionIndex === totalQuestions - 1 && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button 
             onClick={goToSubmitPage}
-            disabled={!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory}
-            className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject.questions[currentQuestionIndex].mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
+            disabled={!isResponseProvided && formObject._questions[currentQuestionIndex]._mandatory}
+            className={`float-right bg-transparent py-2 px-4 border border-green-500 rounded ${!isResponseProvided && formObject._questions[currentQuestionIndex]._mandatory ? 'text-green-700 font-semibold opacity-50 cursor-not-allowed' : 'hover:bg-green-500 text-green-700 font-semibold hover:text-white cursor-pointer'}`}>
               Submit
           </button>
         )}
-        {currentQuestionIndex < totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+        {currentQuestionIndex < totalQuestions - 1 && !formObject._questions[currentQuestionIndex]._mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
@@ -270,7 +274,7 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
               Skip
           </button>
         )}
-        {currentQuestionIndex === totalQuestions - 1 && !formObject.questions[currentQuestionIndex].mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+        {currentQuestionIndex === totalQuestions - 1 && !formObject._questions[currentQuestionIndex]._mandatory && !isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
               handleUserInput([-1]); // Set the response to -1
@@ -281,18 +285,18 @@ export default function FormRenderer({ formObject, params } : FromRendererProps)
             Skip{/* and Submit*/}
           </button>
         )}
-        {!formObject.questions[currentQuestionIndex].mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
+        {!formObject._questions[currentQuestionIndex]._mandatory && isSkippedResponse && !isOnFirstPage && !isOnSubmitPage && !isOnFinalPage && !isOnAlreadyUsedPage && (
           <button
             onClick={() => {
               let initialValue: any;
 
-              if (formObject.questions[currentQuestionIndex].questionType === 0) {
+              if (formObject._questions[currentQuestionIndex]._questionType === 0) {
                 // For question type 0, set handleUserInput to an empty array
                 initialValue = [];
-              } else if (formObject.questions[currentQuestionIndex].questionType === 1) {
+              } else if (formObject._questions[currentQuestionIndex]._questionType === 1) {
                 // For question type 1, set handleUserInput to the range value
-                initialValue = Math.ceil(formObject.questions[currentQuestionIndex].range / 2);
-              } else if (formObject.questions[currentQuestionIndex].questionType === 2) {
+                initialValue = Math.ceil(formObject._questions[currentQuestionIndex]._range / 2);
+              } else if (formObject._questions[currentQuestionIndex]._questionType === 2) {
                 // For question type 2, set handleUserInput to an empty text string
                 initialValue = '';
               }

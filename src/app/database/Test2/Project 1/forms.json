@@ -68,7 +68,7 @@
 		],
 		"_tokens": [
 			{
-				"_tokenID": "_tokenId1",
+				"_tokenID": "tokenId",
 				"_isUsed": false
 			}
 		],
@@ -143,7 +143,7 @@
 		],
 		"_tokens": [
 			{
-				"_tokenID": "_tokenId1",
+				"_tokenID": "tokenId1",
 				"_isUsed": false
 			}
 		],

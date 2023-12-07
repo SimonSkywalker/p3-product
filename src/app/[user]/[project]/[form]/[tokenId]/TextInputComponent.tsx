@@ -4,14 +4,14 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 interface TextInputProps {
   jsonData: {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options: any[string];
-    type: number;
-    range: number;
+    _description: string;
+    _mandatory: boolean;
+    _userDisplay: boolean;
+    _questionType: number;
+    _saveRole: boolean;
+    _options: any[string];
+    _type: number;
+    _range: number;
   };
   onUserInput: any;
   currentQuestionIndex: number;
@@ -59,7 +59,7 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
   return (
     <form>
       <h3 className="text-center text-base font-bold mb-5">
-        {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+        {jsonData._description}{jsonData._mandatory && <span style={{ color: 'red' }}>*</span>}
       </h3>
       <div>
         <textarea

@@ -9,14 +9,14 @@ import './rc-slider.css';
 
 interface SliderProps {
   jsonData: {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options: any[string];
-    type: number;
-    range: number;
+    _description: string;
+    _mandatory: boolean;
+    _userDisplay: boolean;
+    _questionType: number;
+    _saveRole: boolean;
+    _options: any[string];
+    _type: number;
+    _range: number;
   };
   onUserInput: any;
   currentQuestionIndex: number;
@@ -25,7 +25,7 @@ interface SliderProps {
 
 export default function SliderComponent({ jsonData, onUserInput, currentQuestionIndex, userResponses } : SliderProps) {
   // State variable to track the slider value
-  const [sliderValue, setSliderValue] = useState(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
+  const [sliderValue, setSliderValue] = useState(userResponses[currentQuestionIndex] || Math.ceil(jsonData._range / 2));
 
   // useEffect to handle initial setup and update slider value
   useEffect(() => {
@@ -35,11 +35,11 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
         userResponses[currentQuestionIndex][0] !== -1) || 
         typeof userResponses[currentQuestionIndex] == 'undefined') {
       // This will set userResponses[currentQuestionIndex] only if it's not already set
-      onUserInput(Math.ceil(jsonData.range / 2));
+      onUserInput(Math.ceil(jsonData._range / 2));
     }
 
     // Update the slider value when the current question changes
-    setSliderValue(userResponses[currentQuestionIndex] || Math.ceil(jsonData.range / 2));
+    setSliderValue(userResponses[currentQuestionIndex] || Math.ceil(jsonData._range / 2));
   }, [currentQuestionIndex, userResponses]);
 
   // Event handler for slider value change
@@ -65,7 +65,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
   return (
     <form>
       <h3 className="text-center text-base font-bold mb-5">
-        {jsonData.description}{jsonData.mandatory && <span style={{ color: 'red' }}>*</span>}
+        {jsonData._description}{jsonData._mandatory && <span style={{ color: 'red' }}>*</span>}
       </h3>
       <div className="w-full px-1 mb-10 mt-5">
         { // New Slider
@@ -75,11 +75,11 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
           }}
           value={sliderValue}
           min={1}
-          max={(jsonData.range)}
+          max={(jsonData._range)}
           step={1} 
           dots
           //dotStyle={{display: 'none'}}
-          marks={generateMarks(jsonData.range)}
+          marks={generateMarks(jsonData._range)}
           styles={{
             handle: {
               borderColor: "#0075ff",
