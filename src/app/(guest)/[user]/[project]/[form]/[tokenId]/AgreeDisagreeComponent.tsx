@@ -293,9 +293,9 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         />
         */}
       </div>
-      {<div>
+      {/* 
         <p>DEBUG: Selected value: {sliderValue}</p>
-      </div>}
+      */}
     </form>
   );
 }

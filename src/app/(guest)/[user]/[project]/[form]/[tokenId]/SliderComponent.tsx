@@ -107,9 +107,9 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
         />
         */ }
       </div>
-      {
+      {/*
         <p className="mt-5">DEBUG: Selected value: {sliderValue}</p>
-      }
+      */}
     </form>
   );
 }
