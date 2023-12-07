@@ -152,7 +152,7 @@ const router = useRouter();
 
 const username : string = params.user;
 const project : string = params.project.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
-const formName : string = params.formName;
+const formName : string = params.formName.replace(/-/g,"\\-").replace(/%20/g,"-");
 const pathToSrc : string = "../../../..";
 
 /**
@@ -185,10 +185,10 @@ useEffect(() => {
     };
 
     validateToken();
-
+    
   //FileSystemService.APIRequestUser().then(async (data)=>{setUser(await data.Id);});
   
-});
+},[]);
 
 
   useEffect(() => {
@@ -207,19 +207,23 @@ useEffect(() => {
       forms = new DatabaseAccess(formsArray);
       console.dir(forms);
       try {
-        currForm =(forms.objects)[forms.getIndexFromDatabase(formName)] as Form;
+        currForm = (forms.objects)[forms.getIndexFromDatabase(formName)] as Form;
+        currForm.name = currForm.getUncleanName();
         console.log("hee hee");
       }
       catch (e: any) {
         console.log("fuuck");
         currForm = new Form;
       }
+      
       setForm(currForm);
       setActive(currForm.isActive);
+
       console.dir(form);
       console.dir(currForm);
       
     }
+    
     getForm();
 
   }, [])
@@ -231,6 +235,7 @@ useEffect(() => {
 
   
   function updateState() : void {
+    console.log(form);
     setForm(_.cloneDeep(form));
   }
 
@@ -248,10 +253,11 @@ useEffect(() => {
           type="text"
           color="secondary" 
           label="Form name"
-          value={form.getUncleanName()}
-          onValueChange={(name) => {
-            form.name = name;
+          value={form.name}
+          onChange={(name) => {
+            form.name = name.target.value;
             updateState();
+            console.log(forms);
           }}
         />
         {validationErrors._name && (
@@ -268,6 +274,8 @@ useEffect(() => {
           onValueChange={(description) => {
             form.description = description;
             updateState();
+            console.log(forms);
+            
           }}
         />
         {validationErrors._description && (
@@ -311,12 +319,13 @@ useEffect(() => {
             </DropdownMenu>
           </Dropdown>
           <div className='flex flex-wrap content-evenly'>
-            <Button className="bg-primary text-white" onClick={async () => {
+            <Button className="bg-primary text-white" onClick={() => {
 
             try {
               FormValidator.FormTemplate.parse(form);
               console.dir(forms);
-              if(forms.checkDuplicate(form) && form.name != formName)
+              form.cleanName();
+              if((forms.checkDuplicate(form) && form.name != formName) || form.name.trim() === "newForm")
                 throw(new ObjectAlreadyExistsException("Form of name " + form.name + " already exists"));
               setModalOpen(true);
             } catch(e: any) {
@@ -355,7 +364,7 @@ useEffect(() => {
                 tokenBuilder.setTokens(parseInt(value));
               }}/>
               <Button className="button" onClick={async () => {
-                form.cleanName();
+                
                 console.dir(tokenBuilder);
                 form.tokens = tokenBuilder.getTokens();
                 form.isActive = false;
@@ -374,7 +383,11 @@ useEffect(() => {
               }}>Publish form</Button>
 
               <Button className="button" onClick={async () => {
-                form.cleanName();
+                
+                console.log(form.name);
+                console.log(formName);
+                console.log((form.name == formName));
+                
                 //If the form already exists in the database, remove it first
                 if(forms.checkDuplicate(form) && form.name == formName)
                   forms.removeFromDatabase(form.name);

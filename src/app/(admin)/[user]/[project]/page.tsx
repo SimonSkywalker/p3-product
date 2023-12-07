@@ -62,9 +62,9 @@ let Puge = ({params}:ProjectParams) => {
     dataForms.map(form => {
       buildedForms.push(new FormBuilder().formFromObject(form));
     })
-    /* buildedForms.forEach((form)=>{
+    buildedForms.forEach((form)=>{
       form.name = form.getUncleanName()
-    }) */
+    })
     console.log("dataForms: ", dataForms);
 
     setForms(buildedForms);
@@ -118,14 +118,14 @@ let Puge = ({params}:ProjectParams) => {
     // Has to .splice since useState value doesnt change
     // immediately but only schedules a change. 
     forms.splice(actionOnProject.projectIndex, 1);
-
+    forms.forEach((form)=>form.cleanName())
     const projectAltered = params.project.replace(/-/g, ' ');
     await FileSystemService.writeToJSONFile(forms, ServerSidePaths.getFormsPath(params.user, projectAltered).replace(/%20/g,' '));
-
+    
     FileSystemService.delete('../', ServerSidePaths.getProjectPath(params.user) + `/` + projectAltered.replace(/%20/g,' ') + `/${actionOnProject.projectTitle}`);
 
     toast.info("Deleted " + actionOnProject.projectTitle);
-
+    forms.forEach((form)=>form.name = form.getUncleanName())
     //Resets the actionOnProject state
     setActionOnProject({projectTitle:"", projectIndex: -1});
    
@@ -146,7 +146,7 @@ let Puge = ({params}:ProjectParams) => {
   const handleCopyForm = (selectForm : Form, copiedName : string) => {
     let copyForm = selectForm.createChild();
     copyForm.name = copiedName;
-    copyForm.cleanName();
+    copyForm.cleanName(); 
     try{
       FormValidator.nameTemplate.parse(copyForm.name);
         //maybe throws zod error
