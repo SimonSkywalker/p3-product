@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import RegisterPage from '@/app/register/page'
+import RegisterPage from '@/app/(admin)/register/page'
 import {renderHook} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { registerFormSchema } from '@/app/lib/validations/registerForm'
+import { registerFormSchema } from '@/app/(admin)/lib/validations/registerForm'
 import {expect, jest, test} from '@jest/globals'
 
 describe("RegisterPage",()=>{
