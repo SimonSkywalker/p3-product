@@ -23,7 +23,7 @@ const Navbar = () => {
       
       <div className='flex-between mx-auto w-full max-w-screen-2x1 px-6 xs:px-8 sm:px-16'>
         <Link 
-            href={"/projectCreation"}
+            href={isLoggedIn ? "/projectCreation" : "/"}
             className='body-text text-palette-400 !font-bold'>
             Project Administration
         </Link>
