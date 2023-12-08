@@ -1,14 +1,10 @@
 import Link from "next/link";
 import ServerSidePaths from "./ServerSidePaths";
 import internal from "stream";
+import { ProjectObject } from "./projectClass";
 
 interface InactiveProjectProps {
-    project: {
-      getTitle: () => string;
-      getIsActive: () => boolean;
-      getIcon: () => string;
-      // Add other methods or properties of project as needed
-    };
+    project: ProjectObject;
     user: string;
     onDelete: (title: string, index: number) => void;
     URLIconsPath: string;

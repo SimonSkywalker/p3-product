@@ -1,37 +1,12 @@
 [
     {
-        "title": "fafadsf",
-        "isActive": false,
-        "icon": "person-team.svg"
-    },
-    {
-        "title": "Error",
-        "isActive": false,
-        "icon": "dinner.svg"
-    },
-    {
-        "title": "DTG",
-        "isActive": true,
-        "icon": "beer-mug.svg"
-    },
-    {
-        "title": "Group-Project",
+        "title": "Pro",
         "isActive": true,
         "icon": "person-team.svg"
     },
     {
-        "title": "Dice-n-Drinks",
+        "title": "Proof",
         "isActive": true,
-        "icon": "board-games.svg"
-    },
-    {
-        "title": "Save-The-Ocean",
-        "isActive": true,
-        "icon": "coral.svg"
-    },
-    {
-        "title": "Construction-Project",
-        "isActive": true,
-        "icon": "construction-worker.svg"
+        "icon": "person-team.svg"
     }
 ]

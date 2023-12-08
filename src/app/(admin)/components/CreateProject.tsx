@@ -113,6 +113,10 @@ const ProjectCreationForm: React.FC<ProjectCreationFormProps> = ({
   return (
 
     <div>
+      {/* 
+      * Elements in the following Div are hidden if 
+      * creatingProject useState is true
+      */}
       <div 
         id="newProjectDiv" 
         className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
@@ -122,6 +126,10 @@ const ProjectCreationForm: React.FC<ProjectCreationFormProps> = ({
           >+</button>
       </div>
 
+      {/* 
+      * Elements in the following Div are hidden if 
+      * creatingProject useState is false
+      */}
       <div 
         id="createProjectDiv" 
         className={`${creatingProject ? "block" : "hidden"} grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 bg-grey-400`}>
