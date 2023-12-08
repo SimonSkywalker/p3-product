@@ -169,7 +169,7 @@ export class APIHandle{
         if (response.ok) {
           //Request was successful
           return response.json();
-        }if(response.status == 409){
+        } else if(response.status == 409){
          
           //RegisterException if username already exsit
           throw new RegisterException;   

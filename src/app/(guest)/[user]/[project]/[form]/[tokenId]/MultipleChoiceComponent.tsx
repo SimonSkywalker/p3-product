@@ -92,9 +92,9 @@ export default function MultipleChoiceComponent({ jsonData, onUserInput, current
           </label>
         </div>
         ))}
-        {
+        {/*
           <p>DEBUG: Selected options: {selectedOptions.join(', ')}</p>
-        }
+        */}
     </form>
   );
 }

@@ -91,19 +91,18 @@ export class User{
             fs.access(process.cwd() +'/src/app/(admin)/database/userLogins.json')
             let tmp = await fs.readFile(process.cwd() +'/src/app/(admin)/database/userLogins.json', 'utf-8').catch()
             userList = JSON.parse(tmp) ;
-        }catch{
+        } catch {
             userList = []
-            }
-            //Checks if user already exists
-             if(checkList.isDuplicate(userList, this.username)){
-                throw new RegisterException();
-            }  
+        }
+
+        if (checkList.isDuplicate(userList, this.username)){
+            throw new RegisterException();
+        } 
             
-            //Writes to database
-            userList.push({Username: this.username, Password: this.password, DisplayName: this.displayName});
-            dataManipulation.saveListData(userList);
-            dataManipulation.makeUserFolder(this.username); 
-        
+        //Writes to database
+        userList.push({Username: this.username, Password: this.password, DisplayName: this.displayName});
+        dataManipulation.saveListData(userList);
+        dataManipulation.makeUserFolder(this.username); 
     }
 
     /**

@@ -1,6 +1,6 @@
 [
     {
-        "_name": "13-10",
+        "_name": "13\\-10",
         "_description": "Dette er en beskrivelse af 13-10",
         "_questions": [
             {
@@ -80,7 +80,7 @@
         "_isActive": false
     },
     {
-        "_name": "20-10",
+        "_name": "20\\-10",
         "_description": "Dette er en beskrivelse af 20-10",
         "_questions": [
             {
@@ -157,26 +157,6 @@
                 "_isUsed": true
             }
         ],
-        "_isActive": false
-    },
-    {
-        "_name": "30\\-10",
-        "_description": "jajaja",
-        "_questions": [
-            {
-                "_description": "du?",
-                "_mandatory": false,
-                "_userDisplay": false,
-                "_questionType": 0,
-                "_number": 1,
-                "_saveRole": false,
-                "_options": [
-                    "en"
-                ],
-                "_type": 0
-            }
-        ],
-        "_tokens": [],
         "_isActive": false
     }
 ]
