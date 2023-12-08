@@ -9,12 +9,17 @@ import Form from "@/app/(admin)/formCreation/Form";
 export async function POST(request: NextRequest, response: NextResponse){
     const token = cookies().get('token');
     const decoded = jwt.verify(token?.value, process.env.JWT_SECRET);
-    const {selectedForm} = await request.json();
-    const projectName = (cookies().get('projectName')?.value as string).replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
-
     
-    const forms = await checkList.findForms(decoded.userId, projectName);
-    const selectForm = forms.find((form: any) => form._name == selectedForm)
+    const selectedForm  = (await request.json())?.selectedForm as string;
+    const editSelectedForm = selectedForm.replace(/-/g, "\\-").replace(/ /g, "-");
+    console.log(selectedForm);
+    
+    const projectName = (cookies().get('projectName')?.value as string).replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
+    
+    const forms = await checkList.findForms(decoded.userId, projectName); 
+     
+    const selectForm = forms.find((form: any) => form._name == editSelectedForm)
+    
     const formObject =  new FormBuilder().formFromObject(selectForm)
     const roleslist: any[] | undefined = checkList.findRoles(formObject)
     const path = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${selectedForm}/responses.json`;
@@ -22,6 +27,8 @@ export async function POST(request: NextRequest, response: NextResponse){
     
     const responseFile = await fs.readFile(path, "utf8")
     .then((responses) => {
+        console.log(responses);
+        
         return JSON.parse(responses);
     })
     .catch((error) => {
@@ -30,9 +37,10 @@ export async function POST(request: NextRequest, response: NextResponse){
         return [];
     });
     if(cookies().get('otherForm')){
-        const otherForm = cookies().get('otherForm')?.value;
+        
+        const otherForm = cookies().get('otherForm')?.value as string;
         const forms2 = await checkList.findForms(decoded.userId, projectName);
-        const selectForm2 = forms.find((form: any) => form._name == otherForm)
+        const selectForm2 = forms2.find((form: any) => form._name == otherForm)
         const formObject2 =  new FormBuilder().formFromObject(selectForm2)
         const roleslist2: any[] | undefined = checkList.findRoles(formObject2)
         const path2 = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${otherForm}/responses.json`;

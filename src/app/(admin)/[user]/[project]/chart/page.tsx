@@ -57,6 +57,8 @@ export default function VisPage({params}:ChartParams) {
     }) 
     .then((response) => response.json())
     .then((data) => {
+      console.log(data.formdata.selectedForm);
+      
         setUser({
           ...user,
           selectedForm: data.formdata.selectedForm,
@@ -95,10 +97,10 @@ export default function VisPage({params}:ChartParams) {
   }
 
   const listForm = user?.forms.map((form: any) => (
-    <option value={form} key={form}>{form}</option>
+    <option value={form.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-")} key={form}>{form.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-")}</option>
   ));
   const listFormOp = otherForms.map((form: any) => (
-    <option value={form} key={form}>{form}</option>
+    <option value={form} key={form}>{form.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-")}</option>
   ));
   const listRoles = user?.roles?.map((role: any, i: number) => (
       <div key={i}>
