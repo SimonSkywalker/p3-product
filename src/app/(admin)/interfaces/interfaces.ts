@@ -26,12 +26,12 @@ export interface projectObject extends ProjectInterface {
 }
 
 export interface actionProject {
-    projectTitle: string,
-    projectIndex: number,
+    itemTitle: string,
+    itemIndex: number,
 }
   
 export interface modalOperator {
-    currentModalTitle: String,
+    currentModalTitle: string,
     isOpen: boolean,
 }
 

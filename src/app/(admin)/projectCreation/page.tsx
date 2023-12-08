@@ -1,18 +1,7 @@
-
 /*
-New To Do
-
-Comment code
-Hvis man klikker på projectet DTG. redirect localhost:3000/{user}/DTG/
-IKON MODAL GÅR UNDER NAV BAR!!!!!!!!!!!!!!!!!!!!!!!! - Done
-Get Username from token - Done
-Check Token - Done
 Describe Integration Tests
 Active / History Tabs Stay right below NavBar
-
-
 */
-
 'use client'
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
@@ -29,13 +18,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import { validateProjectData } from "@/app/(admin)/lib/validation/project";
 import { z } from "zod";
 import Link from 'next/link';
-import { APIHandle } from "@/app/(admin)/classes/handlerClass";
-import { log } from "console";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useAuth } from "@/app/(admin)/context/Auth";
-
-
+import { InactiveProjects } from "../components/ProjectElement";
+import IconModal from "../components/IconModal";
+import ProjectDeleteConfirmModal from "../components/ProjectDeleteModal";
+import ArchiveConfirmModal from "../components/ArchiveModal";
+import Tabs from "../components/StateTabs";
+import ProjectCreationForm from "../components/CreateProject";
 
 export default function ProjectPage() {
   const router = useRouter();
@@ -45,12 +36,14 @@ export default function ProjectPage() {
   const [user, setUser] = useState("");
   
   const [openTab, setOpenTab] = useState<number>(1);
+  const tabLabels: string[] = ["Active", "History"];
+
   const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
 
   const [icons, setIcons] = useState<string[]>([]);
   const [projects, setProjects] = useState<ProjectObject[]>([]);
   
-  const [actionOnProject, setActionOnProject] = useState<actionProject>({projectTitle:"", projectIndex: -1});
+  const [actionOnProject, setActionOnProject] = useState<actionProject>({itemTitle:"", itemIndex: -1});
   
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [newProject, setNewProject] = useState<Project>(new Project());
@@ -101,9 +94,6 @@ export default function ProjectPage() {
       setIcons(iconFiles);
     });
     
-    
-    
-    
   }, []);
   
   if (isLoading) {
@@ -137,46 +127,6 @@ export default function ProjectPage() {
 
   }
   
-  
-  /**
-   * useEffect is called when the page renders. 
-   * Calls the listFiles function which returns icons and sets them as the state of Icons.
-   * Also calls the getProjects function. 
-   */
-  const fetchData = async () => {
-    try {
-      await FileSystemService.APIRequestUser().then((data)=>{
-        console.log(data.Id);
-        setUser(data.Id);
-      });
-     
-  
-     
-
-      console.log(user);
-      
-      // Now, user state has been updated, and you can log it
-      
-
-      // Rest of your code
-      const appElement: HTMLElement | null = document.getElementById('outerDiv');
-      if (appElement) {
-        Modal.setAppElement(appElement);
-      }
-
-      const iconFiles = await FileSystemService.listFiles(ServerSidePaths.getIconsPath());
-      setIcons(iconFiles);
-
-      getProjects(user);
-    } catch (error) {
-      // Handle errors here
-      console.error("Error fetching user data:", error);
-    }
-  };
-  
-
-  
-
   /**
    * getProjectDataArray returns an array with each field of a project for all the projects. 
    * This data is modified with its properties and then written to the project database with the
@@ -201,89 +151,6 @@ export default function ProjectPage() {
     await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
     console.log(ServerSidePaths.getProjectsPath(user));
 
-  }
-
-  /**
-   * Handles when an icon is uploaded. 
-   * Sets a variable 'file' as the file at index[0] if more files are uploaded. 
-   * Creates new FormData with the file as the value of the field file. 
-   * The formData is used to call the postIcon function to post the new icon to the icon folder.
-   * The icons state is updated with the updated icon folder.
-   */
-  async function handleUploadIcon(e:React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-
-    const fileInput = e.target;
-
-    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-      // Handle the case where there are no files selected
-      return;
-    }
-
-    const file = fileInput.files[0];
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const result: { [key: string]: any } = await FileSystemService.postIcon(formData);
-    console.log("filename:", result["filename"]);
-    console.log("size:", result["size"]);
-  
-    //Resets the file input field
-    e.target.value = '';                
-
-    FileSystemService.listFiles(ServerSidePaths.getIconsPath()).then((iconFiles) => {
-      setIcons(iconFiles);
-    });
-
-  }
-  
-  /**
-   * Deletes the selected project from the projects state
-   * Also deletes the selected project folder with delete function from FileSystemService
-   */
-  async function handleDelete(){
-  
-    // Has to .splice since useState value doesnt change
-    // immediately but only schedules a change. 
-    projects.splice(actionOnProject.projectIndex, 1);
-
-    await formattingProjectData();
-    
-    FileSystemService.delete('../', ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
-    console.log(ServerSidePaths.getProjectPath(user) + `/${actionOnProject.projectTitle}`);
-
-    toast.info("Deleted " + actionOnProject.projectTitle);
-
-    //Resets the actionOnProject state
-    setActionOnProject({projectTitle:"", projectIndex: -1});
-
-    setModalOpen({currentModalTitle: "deleteModal", isOpen: false});
-
-  }
-  
-  /**
-   * Runs through the projects state and looks for the one to archive. 
-   * Sets IsActive to false for the selected project
-   */
-  async function handleArchive(){
-  
-    projects.map((project) => {
-      if(project.getTitle() === actionOnProject.projectTitle){
-        project.setIsActive(false)
-      }
-    })
-    //projects[actionOnProject.projectIndex].setIsActive(false);
-    
-    await formattingProjectData();
-    
-    toast.info("Moved " + actionOnProject.projectTitle + " to archive" );
-
-    //Resets the actionOnProject state
-    setActionOnProject({projectTitle:"", projectIndex: -1});
-
-    setModalOpen({currentModalTitle: "archiveModal", isOpen: false});
-    
   }
 
   /**
@@ -318,28 +185,7 @@ export default function ProjectPage() {
 
     }
 
-
   }
-
-  /**
-   * Checks if the user is currently editing a project, if not - creating state is set to true
-   */
-  const handleCreateButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    try {
-      const editingProject = projects.filter((project) => project.getBeingEdited());
-  
-      if (editingProject.length) {
-        throw new CreateWhileEdit(editingProject[0].getTitle());
-      }
-  
-      setCreating(true);
-    } catch (err) {
-      if (err instanceof CreateWhileEdit) {
-        toast.warning(err.message);
-      }
-    }
-  };
 
   /**
    * Case 1 - The user cancels editing a project:
@@ -382,7 +228,7 @@ export default function ProjectPage() {
         throw new EditingAlreadyActive(editingProject[0].getTitle());
       }
       //SAD project.getTitle() 
-      setActionOnProject({projectTitle: project.getTitle(), projectIndex: -1});
+      setActionOnProject({itemTitle: project.getTitle(), itemIndex: -1});
       handleEdit(project);
 
     } catch (err){
@@ -397,230 +243,44 @@ export default function ProjectPage() {
     }
   }
 
-/**
-  * When a new project is submitted, the new project is placed as the first object in the projects state.
-  * A new directory with the project title is made within the database.
-  */
-  async function createFolders(){
-    await FileSystemService.makeDirectory('../', ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
-    await FileSystemService.writeToJSONFile([],ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}/` + "forms.json")
-  } 
-
-  const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
-
-    e.preventDefault();
-
-    try {
-
-      let validatedTitle = validateProjectData.parse({ title: newProject.getTitle() });
-      newProject.setTitle(validatedTitle.title);
-      isTitleUnique(newProject.getTitle(), creatingProject);
-    
-      //Sets a default icon if none is chosen
-      if(newProject.getIcon() === ""){
-        newProject.setIcon("allan.jpg");
-      }
-      
-      //converts the new project to an ProjectObject as the already existing objects
-      const projectObject: ProjectObject = newProject.convertToProjectObject();
-      
-      projects.unshift(projectObject);
-     
-      formattingProjectData();
-      
-      createFolders();
-      
-      //Resets the newProject state with empty values
-      setNewProject((prevProject) => {
-        const updatedProject = new Project();
-        updatedProject.setProject({ ...prevProject.getProject(), title: '', icon: '' });
-        return updatedProject;
-      });
-
-      setCreating(false);
-      
-      toast.success("Created Project: " + newProject.getTitle());
-
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        err.errors.forEach((validationError) => {
-          toast.error(validationError.message);
-        });
-      }
-
-      if (err instanceof TitleDuplicateException) {
-        toast.error(err.message);
-      }
-    }
-  };
-
-  
   return (
     <>
       <div className="flex flex-wrap">
       <ToastContainer />
         <div id="outerDiv" className="w-full">
 
-          <Modal
-            
-            isOpen={(modalOpen.currentModalTitle === "iconModal") ? modalOpen.isOpen : false}
-            onRequestClose={() => setModalOpen({currentModalTitle: "", isOpen: false})}
-            contentLabel="Choose Icon Modal"
-            className="modal-icon"
-           
-          >
-            <img className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} title={"Cancel"} onClick={() => setModalOpen({currentModalTitle: "", isOpen: false})}></img>
-            
-            <form 
-            className="mt-6" 
-            onSubmit={() => setModalOpen({currentModalTitle: "", isOpen: false})}>
-              <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
-              <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
+          <IconModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            icons={icons}
+            setIcons={setIcons}
+            URLIconsPath={URLIconsPath}
+            newProject={newProject}
+          />
 
-                {icons.map(icon => ( 
-
-                  <div key={icon + "Div"}>
-                    <label>
-                      <input type="radio" onChange={(e) => newProject.setIcon(e.target.value)} name="icon" value={icon} className="hidden"></input>
-                      <img src={`${URLIconsPath}/${icon}`} alt={icon} title={icon} width={50} height={50} className="hover:scale-125"/>
-                    </label>
-                  </div>
-                ))}
-    
-              </div>
-                
-              <hr className="rounded-lg border-2"></hr>
-
-              <h2 className="text-3xl text-center m-4">Or Upload Image</h2>
-              <div id="uploadIcon" className="grid place-items-center m-12">
-
-                <label htmlFor="file-input">
-                  <img title={"upload"} className="w-10 h-10 hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/upload.png"}/>
-                </label>
-                <input id="file-input" type="file" onChange={e => handleUploadIcon(e)} className="hidden"/>
-
-              </div>
- 
-              <button 
-                type="submit"
-                title="submitButton"
-                onClick={() => setModalOpen({currentModalTitle: "", isOpen: false})}
-                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
-                Submit
-              </button>
-
-            </form>
-          </Modal>
-
-          <Modal
-            
-            isOpen={(modalOpen.currentModalTitle === "deleteModal") ? modalOpen.isOpen : false}
-            onRequestClose={() => setModalOpen({currentModalTitle: "", isOpen: false})}
-            contentLabel="Delete confirm modal"
-            className="modal-confirm"
-          >
-            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}></img>
-            
-            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to delete {actionOnProject?.projectTitle} ?</p>
-            
-            <p className="mt-8 mb-8 text-l text-center">Deleted objects can never be recovered</p>
-
-            <button 
-                type="button"
-                title="deleteButton"
-                onClick={handleDelete}
-                className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
-                Delete
-              </button>
-            <button 
-                type="button"
-                title="cancelButton"
-                onClick={() => setModalOpen({currentModalTitle: "deleteModal", isOpen: false})}
-                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
-                Cancel
-              </button>
-          </Modal>
+          <ProjectDeleteConfirmModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            projects={projects}
+            setProjects={setProjects}
+            actionOnProject={actionOnProject}
+            setActionOnProject={setActionOnProject}
+            formattingProjectData={formattingProjectData}
+            user={user}
+          />
           
-          <Modal
-            className="modal-confirm"
-            isOpen={(modalOpen.currentModalTitle === "archiveModal") ? modalOpen.isOpen : false}
-            onRequestClose={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}
-            contentLabel="Archive confirm modal"
-            
-          >
-            <img title={"Cancel"} className="w-6 h-6 float-right hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"} onClick={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}></img>
-            
-            <p className="mt-8 mb-8 text-xl text-center">Are you sure you would like to archive {actionOnProject?.projectTitle} ?</p>
-
-            <button 
-                type="button"
-                title="archiveButton" 
-                onClick={handleArchive}
-                className="float-left m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 hover:scale-105" >
-                Archive
-              </button>
-            <button 
-                type="button"
-                title="cancelButton"
-                onClick={() => setModalOpen({currentModalTitle: "archiveModal", isOpen: false})}
-                className="float-right m-2 px-12 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 hover:scale-105" >
-                Cancel
-              </button>
-
-          </Modal>
-          
-
-          {/* 
-          * Begin Active / History Tab
-          */}
-          <ul key="ul1" 
-            className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row max-w-screen-2xl mx-auto"
-            role="tablist"
-          >
-            <li key="activeTab" className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-              <a key="activeTabLink"
-                className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                  (openTab === 1
-                    ? "text-white bg-palette-500"
-                    : "text-palette-500 bg-white-300")
-                }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(1);
-                }}
-                data-toggle="tab"
-                href="#link1"
-                role="tablist"
-              >
-                Active
-              </a>
-            </li>
-            <li key="historyTab" className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-              <a key="historyTabLink"
-                className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                  (openTab === 2
-                    ? "text-white bg-palette-500"
-                    : "text-palette-500 bg-white-300")
-                }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(2);
-                }}
-                data-toggle="tab"
-                href="#link2"
-                role="tablist"
-              >
-                History
-              </a>
-            </li>
-          </ul>
-          {/* 
-          * End Active / History Tab
-          */}
-
-
+          <ArchiveConfirmModal
+            modalOpen={modalOpen}
+            projects={projects}
+            setProjects={setProjects}
+            setModalOpen={setModalOpen}
+            setActionOnProject={setActionOnProject}
+            formattingProjectData={formattingProjectData}
+            actionOnProject={actionOnProject}
+          />
+                     
+          {/* Active / History Tab */}
+          <Tabs activeTab={openTab} setActiveTab={setOpenTab} tabLabels={tabLabels} />
 
           <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
@@ -635,96 +295,30 @@ export default function ProjectPage() {
                   * Elements in the following Div are hidden if 
                   * creatingProject useState is true
                   */}
-                  <div 
+                  {/* <div 
                     id="newProjectDiv" 
                     className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
                       <h3>Create New</h3>
                       <button title={"New"} className={"text-5xl text-align-center hover:scale-125"}
                       onClick={handleCreateButtonClick}
                       >+</button>
-                  </div>
+                  </div> */}
 
                   {/* 
                   * Elements in the following Div are hidden if 
                   * creatingProject useState is false
                   */}
-                  <div 
-                  id="createProjectDiv" 
-                  className={(creatingProject ? "block " : "hidden ") + "grid shadow-xl h-30 w-60 border-solid border-4 border-grey-800 bg-grey-400 p-8 inline-block m-12 inline-block bg-grey-400"}>
-
-                    <form className="mt-6" onSubmit={handleFormSubmit}>
-                      <div 
-                        className="mb-4">
-                          <input
-                            type="text" 
-                            id="projectname" 
-                            placeholder="Project Name" 
-                            autoComplete="Project Name" 
-                            name="title"
-                            value={newProject.getTitle()} 
-                            onChange={(e) => setNewProject((prevProject) => {
-                              const updatedProject = new Project();
-                              updatedProject.setProject({ ...prevProject.getProject(), title: e.target.value });
-                              return updatedProject;
-                            })}
-
-                            className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                          />
-                      </div>
-                      
-                      <div className="mt-2 grid place-items-center">
-                        {(newProject.getIcon() === "") ? 
-                        (
-                          <button type="button">
-                            <img className="w-10 h-10 hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/upload.png"} title={"Upload"}
-                            onClick={ e => {
-                              e.preventDefault();
-                              setModalOpen({currentModalTitle: "iconModal", isOpen: true});
-                            }}></img>
-                        </button>
-                        ) : (
-                          <button type="button">
-                          <img title={"Project"} className="w-10 h-10 hover:scale-125" src={"icons/" + newProject.getIcon()}
-                          onClick={ e => {
-                          e.preventDefault();
-                          setModalOpen({currentModalTitle: "iconModal", isOpen: true});
-    
-                        }}></img>
-                        </button>
-                        )
-                        } 
-                        
-                      </div>
-
-                      <div>
-                        <br/>
-                        <img title={"Cancel"} className="w-6 h-6 float-left hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/cross.png"}
-                        onClick={ e => {
-                          setNewProject((prevProject) => {
-                            const updatedProject = new Project();
-                            updatedProject.setProject({ ...prevProject.getProject(), icon: '' , title: ''});
-                            return updatedProject;
-                          });
-                          setCreating(false);
-                          e.preventDefault(); // Prevent the form submission
-                        }}></img>
-                        <button
-                          type="submit"
-                          className="p-0 m-0 float-right border-none bg-none cursor-pointer"
-                        >
-                          <img
-                            title={"Submit"}
-                            className="w-6 h-6 float-right hover:scale-125"
-                            src={ServerSidePaths.URLFunctionIconsPath + "/checkmark.png"}
-                            alt="Submit"
-                          />
-                        </button>
-                        
-                      </div>
-                      
-                    </form>
-
-                  </div>
+                      <ProjectCreationForm
+                        creatingProject={creatingProject}
+                        setCreating={setCreating}
+                        user={user}
+                        projects={projects}
+                        isTitleUnique={isTitleUnique}
+                        formattingProjectData={formattingProjectData}
+                        setModalOpen={setModalOpen}
+                        newProject={newProject}
+                        setNewProject={setNewProject}
+                      />
                   
 
                   {/*
@@ -754,7 +348,7 @@ export default function ProjectPage() {
                             <img title={"Archive"} className="w-6 h-6 hover:scale-125 hover:cursor-pointer" src={ServerSidePaths.URLFunctionIconsPath + "/archive.png"}
                             onClick={ e => {
                               setModalOpen({currentModalTitle: "archiveModal", isOpen: true});
-                              setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
+                              setActionOnProject({itemTitle: project.getTitle(), itemIndex: i});
                               console.log(project.getTitle());
                             }}>
                             </img>
@@ -773,14 +367,14 @@ export default function ProjectPage() {
                             <div className="relative ">
                               <input
                               type="text" 
-                              value={actionOnProject?.projectTitle}
+                              value={actionOnProject?.itemTitle}
                               key={"inputField" + i}
-                              onChange={(e)=>{setActionOnProject({projectTitle: e.target.value, projectIndex: -1})                              }}
+                              onChange={(e)=>{setActionOnProject({itemTitle: e.target.value, itemIndex: -1})                              }}
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                   e.preventDefault(); // Prevent the form submission
                                   try {
-                                    let validatedTitle = validateProjectData.parse({title: actionOnProject.projectTitle});
+                                    let validatedTitle = validateProjectData.parse({title: actionOnProject.itemTitle});
                                     project.setTitle(validatedTitle.title);
                                     isTitleUnique(project.getTitle(), creatingProject);
                                     project.setBeingEdited(false);
@@ -794,9 +388,7 @@ export default function ProjectPage() {
                                       err.errors.forEach((validationError)=> {
                                         toast.error(validationError.message);
                                       })  
-                                    
-                                  }
-
+                                    }
                                     if (err instanceof TitleDuplicateException){
 
                                       toast.error(err.message);
@@ -844,7 +436,7 @@ export default function ProjectPage() {
                             <img title={"Delete"} className="w-4 h-6 hover:cursor-pointer  hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
                             onClick={ e => {
                               setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
-                              setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
+                              setActionOnProject({itemTitle: project.getTitle(), itemIndex: i});
                               console.log(project.getTitle());
                             }}>
                             </img>
@@ -875,58 +467,20 @@ export default function ProjectPage() {
                 */}
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-3 gap-2 place-items-center"} id="link2">
                   
-                  {projects.map((project, i) => 
-                    
-                    project.getIsActive() ? (
+                {projects.map((project, i) => (
+                  <InactiveProjects
+                    key={`project-${project.getTitle()}-${i}`}
+                    index={i}
+                    project={project}
+                    user={user}
+                    onDelete={(title, index) => {
+                      setModalOpen({ currentModalTitle: "deleteModal", isOpen: true });
+                      setActionOnProject({ itemTitle: title, itemIndex: index });
+                    }}
+                    URLIconsPath={URLIconsPath}
+                  />
+                ))}
 
-                      <p key={project.getTitle() + "" + i} className="hidden"/>
-
-                    ) : (
-
-                      <div key={"DivHistory" + project.getTitle() + i} className="hover:scale-105 shadow-xl h-30 w-60 border rounded-md border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400">
-                      
-                      <div 
-                          className="flex justify-between items-center">
-                            
-                            <Link 
-                              href={"/" + user + "/" + project.getTitle().replace(/ /g, '-') + "/chart"}
-                            >
-                              <img 
-                                title={"Charts"} 
-                                className="w-6 h-6 hover:cursor-pointer  hover:scale-125" 
-                                src={ServerSidePaths.URLFunctionIconsPath + "/chart.png"}
-                              />
-                            </Link>
-                            
-                        </div>
-
-                      <p key={"ProjectHistory" + project.getTitle() + i} className="text-center">{project.getTitle()}</p><br/>
-                      
-                      
-                        <img 
-                        title={"Project"}
-                        key={"Icon" + project.getIcon() + i} 
-                        src={`${URLIconsPath}/${project.getIcon()}`}
-                        width={50} 
-                        height={50} 
-                        className="mt-4 mx-auto block rounded"/><br/>     
-                      
-                      
-                      <div
-                        key={"buttonsDiv" + i}
-                            className="flex justify-between items-center ">
-                        
-                        <img title={"Delete"} className="w-4 h-6 float-left hover:scale-125" src={ServerSidePaths.URLFunctionIconsPath + "/trash.png"}
-                        onClick={ e => {
-                              setModalOpen({currentModalTitle: "deleteModal", isOpen: true});
-                              setActionOnProject({projectTitle: project.getTitle(), projectIndex: i});
-                        
-                        }}>
-                        </img>
-                      </div>
-                    </div>  
-                    )
-                  )}
                 </div>  
                 {/* 
                 *  End Elements shown when on History Tab

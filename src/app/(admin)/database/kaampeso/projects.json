@@ -1,0 +1,12 @@
+[
+    {
+        "title": "Test-Project-2",
+        "isActive": true,
+        "icon": "water.svg"
+    },
+    {
+        "title": "Test-Project-1",
+        "isActive": true,
+        "icon": "person-team.svg"
+    }
+]
