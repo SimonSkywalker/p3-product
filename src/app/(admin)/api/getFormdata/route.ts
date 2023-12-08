@@ -11,9 +11,7 @@ export async function POST(request: NextRequest, response: NextResponse){
     const decoded = jwt.verify(token?.value, process.env.JWT_SECRET);
     
     const selectedForm  = (await request.json())?.selectedForm as string;
-    const editSelectedForm = selectedForm.replace(/-/g, "\\-").replace(/ /g, "-");
-    console.log(selectedForm);
-    
+    const editSelectedForm = selectedForm.replace(/-/g, "\\-").replace(/ /g, "-");    
     const projectName = (cookies().get('projectName')?.value as string).replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
     
     const forms = await checkList.findForms(decoded.userId, projectName); 
@@ -26,9 +24,7 @@ export async function POST(request: NextRequest, response: NextResponse){
     
     
     const responseFile = await fs.readFile(path, "utf8")
-    .then((responses) => {
-        console.log(responses);
-        
+    .then((responses) => {        
         return JSON.parse(responses);
     })
     .catch((error) => {
@@ -39,8 +35,9 @@ export async function POST(request: NextRequest, response: NextResponse){
     if(cookies().get('otherForm')){
         
         const otherForm = cookies().get('otherForm')?.value as string;
+        const editOtherForm = otherForm.replace(/-/g, "\\-").replace(/ /g, "-")
         const forms2 = await checkList.findForms(decoded.userId, projectName);
-        const selectForm2 = forms2.find((form: any) => form._name == otherForm)
+        const selectForm2 = forms2.find((form: any) => form._name == editOtherForm)
         const formObject2 =  new FormBuilder().formFromObject(selectForm2)
         const roleslist2: any[] | undefined = checkList.findRoles(formObject2)
         const path2 = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${otherForm}/responses.json`;
@@ -60,11 +57,11 @@ export async function POST(request: NextRequest, response: NextResponse){
         });
 
         return new NextResponse(JSON.stringify({
-            formdata: {roles: roleslist, selectedForm: selectedForm, questions: questionList}, 
-            formdata2:{roles: roleslist2, selectedForm: otherForm, questions: questionList}, 
+            formdata: {roles: roleslist, selectedForm: editSelectedForm, questions: questionList}, 
+            formdata2:{roles: roleslist2, selectedForm: editOtherForm, questions: questionList}, 
             mResponse: responseFile, oResponse: responseFile2}), {status: 200})
 
     }else{
-        return new NextResponse(JSON.stringify({formdata: {roles: roleslist, selectedForm: selectedForm, questions: formObject.questions}, mResponse: responseFile}), {status: 200})
+        return new NextResponse(JSON.stringify({formdata: {roles: roleslist, selectedForm: editSelectedForm, questions: formObject.questions}, mResponse: responseFile}), {status: 200})
     }
 } 
