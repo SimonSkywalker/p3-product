@@ -1,42 +1,7 @@
 [
     {
-        "Username": "",
-        "Password": "",
-        "DisplayName": ""
-    },
-    {
-        "Username": "Test2",
-        "Password": "$2b$10$Qw/qi31tGFzwasthjQ05vOjj4pdCxTK5TLfqeB4DGl8aHXPBunr5a",
-        "DisplayName": "Test2"
-    },
-    {
-        "Username": "Mka16",
-        "Password": "$2b$10$1HhSeBjJ3MDLF2YmDIUkxOGoypk/5yWGDSpVkPMQXAZtzy0T/yls6",
-        "DisplayName": "Mka16"
-    },
-    {
-        "Username": "BLAH",
-        "Password": "$2b$10$xi5vdqsNmpDryYlxt0IIHeAfSczcUcU7QJ3h2sblz6UKoQnbbC5D.",
-        "DisplayName": "BLAH"
-    },
-    {
-        "Username": "sinagaming69",
-        "Password": "$2b$10$ynAdw1A0EvrcYAEKZMUPiOg6a8bgZ62LKQBMro7i7LPLCnKZ1tVaS",
-        "DisplayName": "sinagaming69"
-    },
-    {
-        "Username": "olivierpaulpelgrin69",
-        "Password": "$2b$10$YKvhwquZNIoSW4yuDTcC3.3vSl4sVqlwxTppnZx1/MIVg/uHM5AAq",
-        "DisplayName": "olivierpaulpelgrin69"
-    },
-    {
-        "Username": "allan6",
-        "Password": "$2b$10$Yeq/1o6jEfBHso4UuT/PZO/r5WV0Z2ZBVGPiCB8n.ZwXkEHQsm8E.",
-        "DisplayName": "allan6"
-    },
-    {
-        "Username": "TTT",
-        "Password": "$2b$10$5ECoRYgJb/mZjrNRJHRvse0F2XqjlgdNmKoP9snHoFz5N8oNHhwh2",
-        "DisplayName": "TTT"
+        "Username": "Testing",
+        "Password": "$2b$10$JnVILQFf5x.hOVmSDViKIeR/0I8Sy1cMtRwmFppIwvVzuM23VIgGu",
+        "DisplayName": "Testing"
     }
 ]
