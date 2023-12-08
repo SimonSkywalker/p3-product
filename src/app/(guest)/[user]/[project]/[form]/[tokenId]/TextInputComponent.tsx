@@ -70,9 +70,9 @@ export default function TextInputComponent({ jsonData, onUserInput, currentQuest
           placeholder="Enter your answer here."
         />
       </div>
-      {
+      {/*
         <p>DEBUG: Inputted text: {inputValue}</p>
-      }
+      */}
     </form>
   );
 }
