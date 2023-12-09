@@ -38,5 +38,10 @@
         "Username": "bigdaddy69",
         "Password": "$2b$10$DnIVGqJgVX/CRPSd4XWSReN3RT4joBy9Hnk3dd6bTe5yBqV1aPbmm",
         "DisplayName": "bigdaddy69"
+    },
+    {
+        "Username": "Test2",
+        "Password": "$2b$10$Qw/qi31tGFzwasthjQ05vOjj4pdCxTK5TLfqeB4DGl8aHXPBunr5a",
+        "DisplayName": "Test2"
     }
 ]
