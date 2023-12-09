@@ -330,8 +330,7 @@ let Puge = ({params}:ProjectParams) => {
                 </div> 
                 
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
-                  
-                
+
                   <div 
                     id="newProjectDiv" 
                     className={`grid place-items-center h-25 w-40 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ${projectState ? 'block' : 'hidden'}`}>

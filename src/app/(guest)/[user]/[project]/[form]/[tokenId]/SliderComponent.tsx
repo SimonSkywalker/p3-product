@@ -35,7 +35,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
         userResponses[currentQuestionIndex][0] !== -1) || 
         typeof userResponses[currentQuestionIndex] == 'undefined') {
       // This will set userResponses[currentQuestionIndex] only if it's not already set
-      onUserInput(Math.ceil(jsonData._range / 2));
+      onUserInput([Math.ceil(jsonData._range / 2)]);
     }
 
     // Update the slider value when the current question changes
@@ -47,7 +47,7 @@ export default function SliderComponent({ jsonData, onUserInput, currentQuestion
     const sliderValue = Array.isArray(value) ? value[0] : value;
     setSliderValue(sliderValue);
     // Send the response to the parent component
-    onUserInput(sliderValue);
+    onUserInput([sliderValue]);
   };
 
   // Function to generate marks for the slider based on the range
