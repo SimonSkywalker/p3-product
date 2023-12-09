@@ -1,17 +1,12 @@
 [
     {
-        "Username": "",
-        "Password": "",
-        "DisplayName": ""
-    },
-    {
-        "Username": "Test2",
-        "Password": "$2b$10$Qw/qi31tGFzwasthjQ05vOjj4pdCxTK5TLfqeB4DGl8aHXPBunr5a",
-        "DisplayName": "Test2"
+        "Username": "Testing",
+        "Password": "$2b$10$JnVILQFf5x.hOVmSDViKIeR/0I8Sy1cMtRwmFppIwvVzuM23VIgGu",
+        "DisplayName": "Testing"
     },
     {
         "Username": "Mka16",
-        "Password": "$2b$10$1HhSeBjJ3MDLF2YmDIUkxOGoypk/5yWGDSpVkPMQXAZtzy0T/yls6",
+        "Password": "$2b$10$IiB.aBcDwvz4qYzp91rl6OwxNlWPD2vgGVzpZ8VYrhb7awxH48.BW",
         "DisplayName": "Mka16"
     },
     {

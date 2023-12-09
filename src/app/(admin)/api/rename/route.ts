@@ -1,6 +1,6 @@
 "use server"
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
+import * as fs from 'fs-extra';
 import path from 'path';
 
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -16,11 +16,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     try {
         let file = path.join(process.cwd(), filePath);
         let newFile = path.join(process.cwd(), newPath);
-        fs.rename(file, newFile, err => {
-            if (err) {
-                console.error(err);
-            }
-        })
+
+        fs.copySync(file, newFile)
+        fs.rmSync(file, { recursive: true });
+
         return NextResponse.json({status: 200});
     }
     catch (error) {
