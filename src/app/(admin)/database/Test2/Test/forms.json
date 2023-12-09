@@ -1,0 +1,82 @@
+[
+	{
+		"_name": "TestForm",
+		"_description": "prøve",
+		"_questions": [
+			{
+				"_description": "Roles?",
+				"_mandatory": true,
+				"_userDisplay": false,
+				"_questionType": 0,
+				"_number": 1,
+				"_saveRole": true,
+				"_options": [
+					"Role1",
+					"Role2"
+				],
+				"_type": 0
+			},
+			{
+				"_description": "Options",
+				"_mandatory": false,
+				"_userDisplay": false,
+				"_questionType": 0,
+				"_number": 2,
+				"_saveRole": false,
+				"_options": [
+					"Option1",
+					"Option2"
+				],
+				"_type": 1
+			},
+			{
+				"_description": "SliderAD",
+				"_mandatory": false,
+				"_userDisplay": false,
+				"_questionType": 1,
+				"_number": 3,
+				"_type": 0,
+				"_range": 7
+			},
+			{
+				"_description": "SliderNV",
+				"_mandatory": false,
+				"_userDisplay": true,
+				"_questionType": 1,
+				"_number": 4,
+				"_type": 1,
+				"_range": 7
+			},
+			{
+				"_description": "TEXT",
+				"_mandatory": false,
+				"_userDisplay": true,
+				"_questionType": 2,
+				"_number": 5
+			}
+		],
+		"_tokens": [
+			{
+				"_tokenID": "TKytGsj5dM",
+				"_isUsed": true
+			},
+			{
+				"_tokenID": "aqG6bmIQDP",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "V2cTQRqyys",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "UnwD7EzgEh",
+				"_isUsed": false
+			},
+			{
+				"_tokenID": "s9qrlwSbAH",
+				"_isUsed": false
+			}
+		],
+		"_isActive": false
+	}
+]
