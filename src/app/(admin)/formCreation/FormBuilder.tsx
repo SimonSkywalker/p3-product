@@ -42,10 +42,6 @@ export default class FormBuilder {
     public getForm() : Form {
         return this.form;
     }
-    /*public getFormArray{ 
-
-    }*/
-
 
     /**
      * Takes any object, and if it has the same fields as a Form, return a new Form object

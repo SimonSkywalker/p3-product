@@ -1,11 +1,11 @@
 [
     {
-        "title": "Pro",
+        "title": "Test-Project-2",
         "isActive": true,
-        "icon": "person-team.svg"
+        "icon": "water.svg"
     },
     {
-        "title": "Proof",
+        "title": "Test-Project-1",
         "isActive": true,
         "icon": "person-team.svg"
     }
