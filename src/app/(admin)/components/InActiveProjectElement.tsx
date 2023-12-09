@@ -28,13 +28,16 @@ export const InactiveProjects: React.FC<InactiveProjectProps> = ({ project, user
   
           <p className="text-center">{project.getTitle()}</p><br/>
   
-          <img
-            title={"Project"}
-            src={`${URLIconsPath}/${project.getIcon()}`}
-            width={50} 
-            height={50}
-            className="mt-4 mx-auto block rounded"
-          /><br/>     
+          <Link 
+            href={"/" + user + "/" + project.getTitle().replace(/ /g, '-')}> 
+              <img
+                title={project.getTitle()}
+                src={`${URLIconsPath}/${project.getIcon()}`}
+                width={50} 
+                height={50}
+                className="mt-4 mx-auto block rounded"
+              /><br/>     
+          </Link>
   
           <div className="flex justify-between items-center ">
             <img

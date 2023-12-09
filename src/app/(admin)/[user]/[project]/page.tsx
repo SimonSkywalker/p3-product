@@ -36,8 +36,8 @@ let Puge = ({params}:ProjectParams) => {
   const { logout } = useAuth();
 
 
-  const [openTab, setOpenTab] = useState<number>(2);
-  const tabLabels: string[] = ["Published", "Not Published"];
+  const [openTab, setOpenTab] = useState<number>(1);
+  const tabLabels: string[] = ["Not Published", "Published"];
 
   const [modalOpen, setModalOpen] = useState<modalOperator>({currentModalTitle: "", isOpen: false});
 
@@ -283,7 +283,7 @@ let Puge = ({params}:ProjectParams) => {
           <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
-                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
+                <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
  
                   {/*Reverses the forms array such that the newest saved is displayed first*/}
                   {forms.toReversed().map((form, i) => 
@@ -329,7 +329,7 @@ let Puge = ({params}:ProjectParams) => {
 
                 </div> 
                 
-                <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
+                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
 
                   <div 
                     id="newProjectDiv" 

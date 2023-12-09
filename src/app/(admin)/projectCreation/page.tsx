@@ -177,7 +177,7 @@ export default function ProjectPage() {
     }
 
   }
-
+  
   return (
     <>
       <div className="flex flex-wrap">

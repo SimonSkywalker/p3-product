@@ -190,7 +190,10 @@ export const ActiveProjectElement: React.FC<ProjectItemProps> = ({
         * Link if you click on the icon redirecting
         * the user to the clicked project page
         */}
-        <Link href={"/" + user + "/" + project.getTitle().replace(/ /g, '-')}>
+        <Link 
+        href={"/" + user + "/" + project.getTitle().replace(/ /g, '-')} 
+        onClick={(e)=>{if(project.getBeingEdited()){e.preventDefault()}}}
+        className={`${project.getBeingEdited() && 'disabled'}`}>
           <img 
           title={"Project"}
           key={"Icon" + project.getIcon() + index} 
