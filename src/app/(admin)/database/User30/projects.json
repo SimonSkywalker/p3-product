@@ -1,0 +1,77 @@
+[
+    {
+        "title":  "Crafty-Pints",
+        "icon":  "beer-mug.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "GameDesign",
+        "icon":  "board-games.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "High-Perform",
+        "icon":  "person-team.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Beer-Quest",
+        "icon":  "beer-mug.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Water-Save",
+        "icon":  "water.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Equip-Sales",
+        "icon":  "construction-tools.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Code-Review",
+        "icon":  "github.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "AutoTech",
+        "icon":  "car.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "GameBox",
+        "icon":  "board-games.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "GameCafe",
+        "icon":  "board-games.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "DevOps",
+        "icon":  "github.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Resi-Repair",
+        "icon":  "pipe-leak.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "GameCafe-1",
+        "icon":  "board-games.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Tap-Joy",
+        "icon":  "beer-mug.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Trans-Mob",
+        "icon":  "transport.svg",
+        "isActive":  true
+    }
+]
