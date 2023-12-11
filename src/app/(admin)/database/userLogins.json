@@ -58,5 +58,10 @@
         "Username": "User200",
         "Password": "$2b$10$4TDBAUQKexY.t9Xi4xq2TeKGxhCQ3baAzr4nqiDDATpvwNuTeAPIq",
         "DisplayName": "User200"
+    },
+    {
+        "Username": "BThordal",
+        "Password": "$2b$10$SYMyfkwB535o3I9yfmjWHeowP4hOCXhP2SNKrAWZbswHCCudHrIy.",
+        "DisplayName": "BThordal"
     }
 ]
