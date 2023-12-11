@@ -9,8 +9,8 @@ class CsvMaker {
      * @param array A 2-Dimensional array of objects
      * @returns An array of strings with values from the input array separated by comma
      */
-    public static arrayToCsv(array : Array<Array<any>>) : Array<string> {
-        let csvText : Array<string> = [];
+    public static arrayToCsv(array : Array<Array<any>>) : string {
+        let csvText : string = "";
         for(let i = 0; i < array.length; i++) {
             let csvLine : string = "";
             for(let j = 0; j < array[i].length; j++) {
@@ -18,7 +18,7 @@ class CsvMaker {
                 if (j < array[i].length+1)
                     csvLine += ","
             }
-            csvText.push(csvLine);
+            csvText += csvLine + "";
         }
         return csvText;
     }

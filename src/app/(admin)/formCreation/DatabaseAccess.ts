@@ -51,11 +51,11 @@ export default class DatabaseAccess {
     }
 
     /**
-     * Pushes a nameable object to the database
+     * Pushes a nameable object to the database at the beginning
      * @param object A nameable object
      */
     public addToDatabase(object : Nameable) : void {
-            this._objects.push(object);
+            this._objects.unshift(object);
     }
 
     

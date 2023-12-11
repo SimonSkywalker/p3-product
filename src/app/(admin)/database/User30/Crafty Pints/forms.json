@@ -1,1286 +1,1266 @@
 [
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "January Survey",
-        "_name":  "January",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  true
+        "_name": "November",
+        "_description": "November Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "35PcY33R5L",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "its7Qcwf9L",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "B6hayZO99t",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "Ipc33y1c2L",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "iPnZkRS9fd",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "February Survey",
-        "_name":  "February",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  false
+        "_name": "January",
+        "_description": "January Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": true
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "March Survey",
-        "_name":  "March",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  true
+        "_name": "February",
+        "_description": "February Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "April Survey",
-        "_name":  "April",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  false
+        "_name": "March",
+        "_description": "March Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": true
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "May Survey",
-        "_name":  "May",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  true
+        "_name": "April",
+        "_description": "April Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "June Survey",
-        "_name":  "June",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  false
+        "_name": "May",
+        "_description": "May Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": true
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "July Survey",
-        "_name":  "July",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  true
+        "_name": "June",
+        "_description": "June Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "August Survey",
-        "_name":  "August",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  false
+        "_name": "July",
+        "_description": "July Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": true
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "September Survey",
-        "_name":  "September",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  true
+        "_name": "August",
+        "_description": "August Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "October Survey",
-        "_name":  "October",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  false
+        "_name": "September",
+        "_description": "September Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": true
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "November Survey",
-        "_name":  "November",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  true
+        "_name": "October",
+        "_description": "October Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     },
     {
-        "_tokens":  [
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token0"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token1"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token2"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token3"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token4"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token5"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token6"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token7"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token8"
-                        },
-                        {
-                            "_isUsed":  false,
-                            "_tokenID":  "token9"
-                        }
-                    ],
-        "_description":  "December Survey",
-        "_name":  "December",
-        "_questions":  [
-                           {
-                               "_mandatory":  true,
-                               "_saveRole":  true,
-                               "_questionType":  0,
-                               "_description":  "Roles",
-                               "_userDisplay":  false,
-                               "_number":  1,
-                               "_type":  1,
-                               "_options":  [
-                                                "Role1",
-                                                "Role2",
-                                                "Role3",
-                                                "Role4",
-                                                "Role5",
-                                                "Role6",
-                                                "Role7",
-                                                "Role8",
-                                                "Role9"
-                                            ]
-                           },
-                           {
-                               "_userDisplay":  false,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  0,
-                               "_description":  "How Happy Are You",
-                               "_mandatory":  true,
-                               "_number":  2
-                           },
-                           {
-                               "_userDisplay":  true,
-                               "_questionType":  1,
-                               "_range":  7,
-                               "_type":  1,
-                               "_description":  "I am motivated",
-                               "_mandatory":  false,
-                               "_number":  3
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_description":  "Tell Me About Life",
-                               "_number":  4,
-                               "_userDisplay":  false,
-                               "_questionType":  2
-                           },
-                           {
-                               "_mandatory":  false,
-                               "_saveRole":  false,
-                               "_questionType":  0,
-                               "_description":  "Do you feel Stressed",
-                               "_userDisplay":  false,
-                               "_number":  5,
-                               "_type":  0,
-                               "_options":  [
-                                                "Ja",
-                                                "Nej"
-                                            ]
-                           }
-                       ],
-        "_isActive":  false
+        "_name": "December",
+        "_description": "December Survey",
+        "_questions": [
+            {
+                "_description": "Roles",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 1,
+                "_saveRole": true,
+                "_options": [
+                    "Role1",
+                    "Role2",
+                    "Role3",
+                    "Role4",
+                    "Role5",
+                    "Role6",
+                    "Role7",
+                    "Role8",
+                    "Role9"
+                ],
+                "_type": 1
+            },
+            {
+                "_description": "How Happy Are You",
+                "_mandatory": true,
+                "_userDisplay": false,
+                "_questionType": 1,
+                "_number": 2,
+                "_type": 0,
+                "_range": 7
+            },
+            {
+                "_description": "I am motivated",
+                "_mandatory": false,
+                "_userDisplay": true,
+                "_questionType": 1,
+                "_number": 3,
+                "_type": 1,
+                "_range": 7
+            },
+            {
+                "_description": "Tell Me About Life",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 2,
+                "_number": 4
+            },
+            {
+                "_description": "Do you feel Stressed",
+                "_mandatory": false,
+                "_userDisplay": false,
+                "_questionType": 0,
+                "_number": 5,
+                "_saveRole": false,
+                "_options": [
+                    "Ja",
+                    "Nej"
+                ],
+                "_type": 0
+            }
+        ],
+        "_tokens": [
+            {
+                "_tokenID": "token0",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token1",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token2",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token3",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token4",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token5",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token6",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token7",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token8",
+                "_isUsed": false
+            },
+            {
+                "_tokenID": "token9",
+                "_isUsed": false
+            }
+        ],
+        "_isActive": false
     }
 ]

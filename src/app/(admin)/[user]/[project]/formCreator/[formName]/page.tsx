@@ -6,7 +6,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org
 import {Button} from "@nextui-org/button"
 import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
-import {Modal, ModalContent} from "@nextui-org/react";
+import {Modal, ModalBody, ModalContent, ModalHeader} from "@nextui-org/react";
 import FileSystemService from "@/app/(admin)/components/FileSystemService";
 import Form from '@/app/(admin)/formCreation/Form';
 import Question from "@/app/(admin)/formCreation/question";
@@ -24,10 +24,11 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { usePathname } from 'next/navigation'
 import { z } from "zod";
+import ResponseCsvMaker, { ResponseData } from "@/app/(admin)/components/CsvMaker";
+import CsvMaker from "@/app/(admin)/components/CsvMaker";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
-const rootLink : string = "https://www.testwebsite.com"
 let databaseFile: string;
 let forms: DatabaseAccess;
 let currForm = new Form;
@@ -37,7 +38,7 @@ class FormCreator{
   public static createOptions(question: MultipleChoice, errors : FormErrorHandler, updateState: () => void){
     errors.addOptionErrors(question.number-1, question.options.length);
     return <>
-    {question.options.map((e, index) => {return <ul key={index}> <Input value={e} color="secondary"  onValueChange={(input) =>{
+    {question.options.map((e, index) => {return <ul key={index}> <Input value={e} color="secondary" variant="bordered"  onValueChange={(input) =>{
       question.renameOption(index, input);
       updateState();
     }}></Input>
@@ -47,12 +48,12 @@ class FormCreator{
               {errors.validationErrors._questions[question.number-1]._options[index]}
             </div>
           )}
-    <Button className="button" onClick={() => {
+    <Button className="button mb-5" onClick={() => {
       question.removeOption(index);
       errors.cleanOption(question.number-1, index);
       updateState();
       }}>Remove option</Button> </ul>})}
-    <Button className="button" onClick={() => {
+    <Button className="button mb-5" onClick={() => {
       question.addOption();
       updateState();
     }}>Add option</Button>
@@ -62,7 +63,7 @@ class FormCreator{
   public static renderSwitch(question: Question, errors : FormErrorHandler, updateState: () => void){
     switch(question.questionType){
       case QuestionTypes.slider: {
-        return <><Input color="secondary" value={((question as Slider).range).toString()} type="number" label="Amount of steps" min="3" max="9" step="2" onValueChange={(value) => {
+        return <><Input color="secondary" variant="bordered" value={((question as Slider).range).toString()} type="number" label="Amount of steps" min="3" max="9" step="2" onValueChange={(value) => {
           (question as Slider).range = parseInt(value);
           updateState();
         }}/>
@@ -108,7 +109,7 @@ class FormCreator{
     errors.addQuestionErrors(question.number);
     console.dir(errors);
     return <><p> Question number {question.number}</p>
-    <Input color="secondary"  label="Question name" value={question.description} onValueChange={(value) => {
+    <Input color="secondary" variant="bordered"  label="Question name" value={question.description} onValueChange={(value) => {
         question.description = value;
         updateState();
       }}></Input>
@@ -127,7 +128,7 @@ class FormCreator{
         updateState();
       }}>Show answers to respondents</Checkbox>
     {FormCreator.renderSwitch(question, errors, updateState)}
-    <Button className="button" onClick={() => {
+    <Button className="button mb-5" onClick={() => {
       form.removeQuestion(question.number-1);
       errors.cleanQuestion(question.number-1);
       updateState();
@@ -147,10 +148,10 @@ interface CreationPageParams {
 }
 
 export default function FormCreation({params} : CreationPageParams) {
-  console.log("goofy");
-
 const router = useRouter();
 
+//The rootLink is the current pathname until a slash
+const rootLink = window.location.hostname + (window.location.hostname == "localhost" ? (":" + window.location.port) : "");
 const username : string = params.user;
 const project : string = params.project.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
 const formName : string = params.formName.replace(/-/g,"\\-").replace(/%20/g,"-");
@@ -253,6 +254,7 @@ useEffect(() => {
           <Input
           type="text"
           color="secondary" 
+          variant="bordered"
           label="Form name"
           value={form.name}
           onChange={(name) => {
@@ -270,6 +272,7 @@ useEffect(() => {
           <Input
           type="text"
           color="secondary" 
+          variant="bordered"
           label="Form description"
           value={form.description}
           onValueChange={(description) => {
@@ -285,14 +288,14 @@ useEffect(() => {
                   {validationErrors._description}
                 </div>
               )}
+          <div className="flex-grow border-t border-gray-400"></div>
           <ul>
             {form.questions.map((e, index) => {return <li key={index}> {FormCreator.createQuestionBox(form, e, errorHandler, updateState)}</li>})}
           </ul>
           <label htmlFor="Qtype"/>
-          <div className="flex-grow border-t border-gray-400"></div>
           <Dropdown>
             <DropdownTrigger>
-              <Button className="button" variant="bordered">New Question</Button>
+              <Button className="button mb-5" variant="bordered">New Question</Button>
             </DropdownTrigger>
             <DropdownMenu 
               aria-label="Link Actions"
@@ -346,7 +349,7 @@ useEffect(() => {
               console.dir(form);
 
             }}>Save form</Button>
-            <Button className="button" onClick={async () => {
+            <Button className="button mb-5" onClick={async () => {
               try{
                 //Uses currForm since it uses the values that were gained on page load
                 //If form was used, you could accidentally name your new form the same as an existing one and delete that
@@ -363,10 +366,14 @@ useEffect(() => {
           </div>
           <Modal isOpen={modalOpen}>
             <ModalContent>
-              <Input color="secondary" type="number" label="How many people should answer this form?" min="0" max="1024" step="1" onValueChange={(value) => {
+              <ModalHeader>
+                Publish form
+              </ModalHeader>
+              <ModalBody>
+              <Input color="secondary" variant="bordered" type="number" label="How many people should answer this form?" min="0" max="1024" step="1" onValueChange={(value) => {
                 tokenBuilder.setTokens(parseInt(value));
               }}/>
-              <Button className="button" onClick={async () => {
+              <Button className="button mb-5" onClick={async () => {
                 
                 console.dir(tokenBuilder);
                 form.tokens = tokenBuilder.getTokens();
@@ -384,7 +391,9 @@ useEffect(() => {
                 updateState();
               }}>Publish form</Button>
 
-              <Button className="button" onClick={async () => {
+              <div className="flex-grow border-t border-gray-400"></div>
+
+              <Button className="button mb-5" onClick={async () => {
                 
                 console.log(form.name);
                 console.log(formName);
@@ -403,13 +412,10 @@ useEffect(() => {
                 router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))
               }}>Save without publishing</Button>
 
-              <Button className="button" onClick={() => {
+              <Button className="button mb-5" onClick={() => {
                 setModalOpen(false);  
               }}>Don't save</Button>
-
-              {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}
-              Answer sent: {token.isUsed ? "yes" : "no"}</li>})}
-
+              </ModalBody>
             </ModalContent>
           </Modal>
         </div>
@@ -419,8 +425,27 @@ useEffect(() => {
     (
       <main>
       {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}
-      Answer sent: {token.isUsed ? "yes" : "no"}</li>})}
-
+      <br/>Answer sent: {token.isUsed ? "yes" : "no"}</li>})}
+        <Button onClick={async ()=> {
+          let fileFinder = new FileFinder(pathToSrc);
+          let JSONobjects : Array<any> = []
+          let responses : Array<ResponseData> = [];
+          try{
+            //Try to get an array of JSON objects form the responses.json file corresponding to this form
+            let responseFile = fileFinder.findJSONFile([username, project, form.name], "responses");
+            JSONobjects = await FileSystemService.getJSONFile(await responseFile);
+            //Convert each JSON object to a ResponseData instance into the response array
+            JSONobjects.forEach((object) => {
+              responses.push(ResponseData.responseFromObject(object));
+            })
+            //Convert the responses into an array that is then converted into a string using the CsvMaker
+            CsvMaker.arrayToCsv(ResponseCsvMaker.responsesToArray(responses, form));
+          }
+          catch(e : any) {
+            toast.error(e.message)
+          }
+          ResponseCsvMaker.responsesToArray
+        }}> Download responses</Button>
         <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
           Go back to forms
         </Button>
