@@ -77,7 +77,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
         userResponses[currentQuestionIndex][0] !== -1) || 
         typeof userResponses[currentQuestionIndex] == 'undefined') {
       // This will set userResponses[currentQuestionIndex] only if it's not already set
-      onUserInput(Math.ceil(jsonData._range / 2));
+      onUserInput([Math.ceil(jsonData._range / 2)]);
     }
 
     // Update the slider value when the current question changes
@@ -90,7 +90,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
     setSliderValue(sliderValue);
     setSelectedResponse(sliderValue);
     // Send the response to the parent component
-    onUserInput(sliderValue);
+    onUserInput([sliderValue]);
   };
 
   // Return the JSX structure for the component
@@ -102,7 +102,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react1"
         style={{
-          display: (jsonData._range === 3 || jsonData._range === 5 || jsonData._range === 7 || jsonData._range === 9) ? (userResponses[currentQuestionIndex] === 1 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 3 || jsonData._range === 5 || jsonData._range === 7 || jsonData._range === 9) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 1 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -117,7 +117,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react2"
         style={{
-          display: (jsonData._range === 7 || jsonData._range === 9) ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 7 || jsonData._range === 9) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 2 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -132,7 +132,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react3"
         style={{
-          display: (jsonData._range === 5) ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 5) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 2 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 3 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -147,7 +147,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react4"
         style={{
-          display: (jsonData._range === 7) ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 7) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 3 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 4 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -162,7 +162,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react5"
         style={{
-          display: !userResponses[currentQuestionIndex] ? 'block' : jsonData._range === 3 ? (userResponses[currentQuestionIndex] === 2 ? 'block' : 'none') : jsonData._range === 5 ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : jsonData._range === 7 ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : 'none',
+          display: !(Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) ? 'block' : jsonData._range === 3 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 2 ? 'block' : 'none') : jsonData._range === 5 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 3 ? 'block' : 'none') : jsonData._range === 7 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 4 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 5 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -177,7 +177,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react6"
         style={{
-          display: (jsonData._range === 7) ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 6 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 7) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 5 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 6 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -192,7 +192,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react7"
         style={{
-          display: (jsonData._range === 5) ? (userResponses[currentQuestionIndex] === 4 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 7 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 5) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 4 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 7 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -207,7 +207,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react8"
         style={{
-          display: (jsonData._range === 7) ? (userResponses[currentQuestionIndex] === 6 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 8 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 7) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 6 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 8 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -222,7 +222,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react9"
         style={{
-          display: (jsonData._range === 5) ? (userResponses[currentQuestionIndex] === 5 ? 'block' : 'none') : jsonData._range === 7 ? (userResponses[currentQuestionIndex] === 7 ? 'block' : 'none') : jsonData._range === 9 ? (userResponses[currentQuestionIndex] === 9 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 5) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 5 ? 'block' : 'none') : jsonData._range === 7 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 7 ? 'block' : 'none') : jsonData._range === 9 ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 9 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >
@@ -237,7 +237,7 @@ export default function AgreeDisagreeComponent({ jsonData, onUserInput, currentQ
       <div
         id="react10"
         style={{
-          display: (jsonData._range === 3) ? (userResponses[currentQuestionIndex] === 3 ? 'block' : 'none') : 'none',
+          display: (jsonData._range === 3) ? ((Array.isArray(userResponses[currentQuestionIndex]) ? userResponses[currentQuestionIndex][0] : userResponses[currentQuestionIndex]) === 3 ? 'block' : 'none') : 'none',
         }}
         className="border mx-auto rounded-full w-[64px] h-[64px] relative mt-6 mb-6"
       >

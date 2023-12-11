@@ -1,12 +1,1 @@
-[
-    {
-        "title": "Pro",
-        "isActive": true,
-        "icon": "person-team.svg"
-    },
-    {
-        "title": "Proof",
-        "isActive": true,
-        "icon": "person-team.svg"
-    }
-]
+[]

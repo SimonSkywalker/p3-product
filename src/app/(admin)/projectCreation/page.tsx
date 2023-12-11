@@ -19,6 +19,9 @@ import Tabs from "../components/StateTabs";
 import ProjectCreationForm from "../components/CreateProject";
 import {ActiveProjectElement} from "../components/ActiveProjectElement";
 
+
+
+
 export default function ProjectPage() {
   const router = useRouter();
   const { logout } = useAuth();
@@ -38,7 +41,6 @@ export default function ProjectPage() {
   
   const [creatingProject, setCreating] = useState<boolean>(false);
   const [newProject, setNewProject] = useState<Project>(new Project());
-
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -105,15 +107,14 @@ export default function ProjectPage() {
     
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(theUser)) as ProjectInterface[];
     
-    const modifiedData = data.map((project) => {
-      // Assuming project.title is the property you want to modify
-      const modifiedTitle = project.title.replace(/-/g, ' '); // Replace all occurrences of '-' with a space
-    
-      // Return a new object with the modified title
-      return { ...project, title: modifiedTitle };
+    const projectsWithBeingEdited: ProjectObject[] = data.map((projectData) => {
+      // Modify the title by replacing all occurrences of '-' with a space
+      const modifiedTitle = projectData.title.replace(/-/g, ' ');
+
+      // Return a new ProjectObject with the modified title and other properties
+      return new ProjectObject({ ...projectData, title: modifiedTitle });
     });
     
-    const projectsWithBeingEdited: ProjectObject[] = modifiedData.map((projectData) => {return new ProjectObject(projectData)});
     setProjects(projectsWithBeingEdited);
 
   }
@@ -124,20 +125,19 @@ export default function ProjectPage() {
    * writeToJSONFile function. 
    */
   async function formattingProjectData() {
-    
-    const data = projects.map((project) => project.getProjectDataArray()); 
+  const transformedData = projects.map((project) => {
+    const [title, isActive, icon] = project.getProjectDataArray();
 
-    const transformedData = data.map(([title, isActive, icon]) => {
-      // Replace spaces with hyphens in the title
-      const modifiedTitle = title.replace(/ /g, '-');
-    
-      // Return a new object with the modified title and other properties
-      return {
-        title: modifiedTitle,
-        isActive,
-        icon,
-      };
-    });
+    // Replace spaces with hyphens in the title
+    const modifiedTitle = title.replace(/ /g, '-');
+
+    // Return a new object with the modified title and other properties
+    return {
+      title: modifiedTitle,
+      isActive,
+      icon,
+    };
+  });
 
     await FileSystemService.writeToJSONFile(transformedData, ServerSidePaths.getProjectsPath(user));
     console.log(ServerSidePaths.getProjectsPath(user));
@@ -177,7 +177,7 @@ export default function ProjectPage() {
     }
 
   }
-
+  
   return (
     <>
       <div className="flex flex-wrap">

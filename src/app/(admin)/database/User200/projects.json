@@ -1,0 +1,77 @@
+[
+    {
+        "title":  "Coral-Restore",
+        "icon":  "coral.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Trans-Effi",
+        "icon":  "transport.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Clean-H2O",
+        "icon":  "water.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Kickstart-Games",
+        "icon":  "board-games.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "BrewHub",
+        "icon":  "beer-mug.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "High-Perform",
+        "icon":  "person-team.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Career-Dev",
+        "icon":  "study-university.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Gourmet-Del",
+        "icon":  "dinner.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Leak-Detect",
+        "icon":  "pipe-leak.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Label-Magic",
+        "icon":  "beer-mug.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "Coral-Fund",
+        "icon":  "coral.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Crafty-Pints",
+        "icon":  "beer-mug.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "AutoTech",
+        "icon":  "car.svg",
+        "isActive":  true
+    },
+    {
+        "title":  "Study-Abroad",
+        "icon":  "study-university.svg",
+        "isActive":  false
+    },
+    {
+        "title":  "GameClubs",
+        "icon":  "board-games.svg",
+        "isActive":  true
+    }
+]

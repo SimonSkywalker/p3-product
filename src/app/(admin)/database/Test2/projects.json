@@ -1,6 +1,11 @@
 [
     {
-        "title": "Project 1",
+        "title": "Test",
+        "isActive": true,
+        "icon": "person-team.svg"
+    },
+    {
+        "title": "Project-1",
         "isActive": true,
         "icon": "allan.jpg"
     }
