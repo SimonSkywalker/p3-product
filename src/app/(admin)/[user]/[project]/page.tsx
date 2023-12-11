@@ -140,7 +140,7 @@ let Puge = ({params}:ProjectParams) => {
                 <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
  
                   {/*Reverses the forms array such that the newest saved is displayed first*/}
-                  {forms.toReversed().map((form, i) => 
+                  {forms.map((form, i) => 
                   
                   <ActiveFormElement
                   index={i}
@@ -174,7 +174,7 @@ let Puge = ({params}:ProjectParams) => {
                   </div>
                 
                   {/*Reverses the forms array such that the newest saved is displayed first*/}
-                  {forms.toReversed().map((form, i) => 
+                  {forms.map((form, i) => 
                     <InActiveFormElement
                     form={form}
                     project={params.project}
