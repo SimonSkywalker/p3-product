@@ -7,6 +7,8 @@ import ValidationError from "@/app/(admin)/exceptions/ValidationError";
 
 const nameMax : number = 60;
 const descMax : number = 1023;
+const sliderMin : number = 3;
+const sliderMax : number = 9;
 
 
 
@@ -21,7 +23,8 @@ export default class FormValidator {
                             .max(descMax, { message: "No more than " + descMax + " characters" }),
             _options : z.array(z.string().min(1, { message: "Text required" })
             .max(descMax, { message: "No more than " + descMax + " characters" }))
-            .optional()
+            .optional(),
+            _range : z.number().gte(sliderMin).lte(sliderMax).refine((data) => data % 2 == 1).optional()
         }))
     })    
 
@@ -38,7 +41,7 @@ export default class FormValidator {
     static optionTemplate = z.string().min(1, { message: "Text required" })
                         .max(descMax, { message: "No more than " + descMax + " characters" });
 
-    static sliderTemplate = z.number().gte(3).lte(9).refine((data) => data % 2 == 1);
+    static sliderTemplate = z.number().gte(sliderMax).lte(sliderMax).refine((data) => data % 2 == 1);
 
     static validateForm(form: Form) : void {
         this.FormTemplate.parse(form)   

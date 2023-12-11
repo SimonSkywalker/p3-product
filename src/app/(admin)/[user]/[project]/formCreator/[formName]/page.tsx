@@ -133,7 +133,9 @@ class FormCreator{
       errors.cleanQuestion(question.number-1);
       updateState();
     }}>Remove question</Button>
+    <div className="flex-grow border-t border-gray-400"></div>
     </>
+    
   }
 }
 
@@ -288,9 +290,10 @@ useEffect(() => {
             {form.questions.map((e, index) => {return <li key={index}> {FormCreator.createQuestionBox(form, e, errorHandler, updateState)}</li>})}
           </ul>
           <label htmlFor="Qtype"/>
+          <div className="flex-grow border-t border-gray-400"></div>
           <Dropdown>
             <DropdownTrigger>
-              <Button className="button" variant="bordered">Question type</Button>
+              <Button className="button" variant="bordered">New Question</Button>
             </DropdownTrigger>
             <DropdownMenu 
               aria-label="Link Actions"
@@ -318,6 +321,7 @@ useEffect(() => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+          <div className="flex-grow border-t border-gray-400"></div>
           <div className='flex flex-wrap content-evenly'>
             <Button className="bg-primary text-white" onClick={() => {
 

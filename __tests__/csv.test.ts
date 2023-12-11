@@ -3,7 +3,7 @@ import _ from "lodash"
 import z, { ZodError } from "zod";
 import ResponseCsvMaker from '@/app/(admin)/components/CsvMaker';
 import { ResponseData } from '@/app/(admin)/components/CsvMaker';
-import Form from '@/app/(admin)/formCreation/form';
+import Form from '@/app/(admin)/formCreation/Form';
 
 
 describe('ResponseCsvMaker', () => {
