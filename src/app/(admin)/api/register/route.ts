@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     //Creates user object with input
     let u : User = new User(username, HashedPassword);
     //Writes to database
-    await u.createUser();    
+    await u.createUser();
 
     const res = JSON.stringify('it works')
     return new NextResponse(res);
