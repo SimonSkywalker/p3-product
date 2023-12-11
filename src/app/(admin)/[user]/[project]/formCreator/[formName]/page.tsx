@@ -15,15 +15,14 @@ import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from 
 import { useEffect, useState} from "react";
 import TokenBuilder from "@/app/(admin)/formCreation/TokenBuilder";
 import DatabaseAccess from "@/app/(admin)/formCreation/DatabaseAccess";
-import _, { update } from 'lodash';
+import _ from 'lodash';
 import FormBuilder from "@/app/(admin)/formCreation/FormBuilder";
 import FormErrorHandler, { FormFormData } from "@/app/(admin)/formCreation/FormErrorHandler";
 import ObjectAlreadyExistsException from "@/app/(admin)/exceptions/ObjectAlreadyExistsException";
-import { error } from "console";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import ServerSidePaths from "@/app/(admin)/components/ServerSidePaths";
+import { usePathname } from 'next/navigation'
 import { z } from "zod";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
@@ -408,7 +407,8 @@ useEffect(() => {
                 setModalOpen(false);  
               }}>Don't save</Button>
 
-              {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}</li>})}
+              {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}
+              Answer sent: {token.isUsed ? "yes" : "no"}</li>})}
 
             </ModalContent>
           </Modal>
@@ -418,7 +418,8 @@ useEffect(() => {
     :
     (
       <main>
-      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}</li>})}
+      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}
+      Answer sent: {token.isUsed ? "yes" : "no"}</li>})}
 
         <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
           Go back to forms

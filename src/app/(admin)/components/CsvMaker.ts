@@ -23,6 +23,28 @@ class CsvMaker {
         return csvText;
     }
 
+    /**
+     * A quick method to download a text file for a user without adding it to the server
+     * @param filename name of file
+     * @param text text of file
+     * https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server/18197341#18197341 
+     */
+    public static download(filename : string, text :string) {
+        if(filename == ""){
+            filename = "form.csv"
+        }
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+      
+        element.style.display = 'none';
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);
+      }
+
 }
 
 export default class ResponseCsvMaker extends CsvMaker {
