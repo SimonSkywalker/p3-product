@@ -107,7 +107,6 @@ class FormCreator{
 
   public static createQuestionBox(form: Form, question : Question, errors: FormErrorHandler, updateState: () => void) {
     errors.addQuestionErrors(question.number);
-    console.dir(errors);
     return <><p> Question number {question.number}</p>
     <Input color="secondary" variant="bordered"  label="Question name" value={question.description} onValueChange={(value) => {
         question.description = value;
@@ -153,9 +152,9 @@ const router = useRouter();
 //The rootLink is the current pathname until a slash
 const rootLink = window.location.hostname + (window.location.hostname == "localhost" ? (":" + window.location.port) : "");
 const username : string = params.user;
-const project : string = params.project.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
-const formName : string = params.formName.replace(/-/g,"\\-").replace(/%20/g,"-");
-const pathToSrc : string = "../../../..";
+const project : string = params.project.replace(/-/g," ");
+const formName : string = params.formName.replace(/%20/g,"-");
+const pathToSrc : string = "@";
 
 /**
  * This useEffect checks for the user's cookies to see if they are logged in
@@ -163,7 +162,6 @@ const pathToSrc : string = "../../../..";
  */
 useEffect(() => {
   const token = Cookies.get("token");
-  console.log(token)
   if (!token) {
     toast.error("No user found"); 
     router.replace("/login"); // If no token is found, redirect to login page
@@ -180,7 +178,6 @@ useEffect(() => {
 
         if (!res.ok) throw new Error("Token validation failed");
       } catch (error) {
-        console.error(error);
         toast.error("You do not have access to this page");
         router.replace("/login"); // Redirect to login if token validation fails
       }
@@ -196,33 +193,25 @@ useEffect(() => {
   useEffect(() => {
     const getForm = async () => {
       const database : FileFinder = new FileFinder(pathToSrc);
-      console.log(database.directoryPath);
       databaseFile = await database.findJSONFile(["database", username, project], "forms");
       let formsArray : Array<Form> = [];
       let objectsArray : Array<Object> = await FileSystemService.getJSONFile(databaseFile);
       for(let i = 0; i < objectsArray.length; i++){
         let formBuilder = new FormBuilder();
-        console.dir(objectsArray[i] as Form);
         formsArray.push(formBuilder.formFromObject(objectsArray[i] as Form))
       }
 
       forms = new DatabaseAccess(formsArray);
-      console.dir(forms);
       try {
         currForm = (forms.objects)[forms.getIndexFromDatabase(formName)] as Form;
         currForm.name = currForm.getUncleanName();
-        console.log("hee hee");
       }
       catch (e: any) {
-        console.log("fuuck");
         currForm = new Form;
       }
       
       setForm(currForm);
       setActive(currForm.isActive);
-
-      console.dir(form);
-      console.dir(currForm);
       
     }
     
@@ -237,7 +226,6 @@ useEffect(() => {
 
   
   function updateState() : void {
-    console.log(form);
     setForm(_.cloneDeep(form));
   }
 
@@ -260,7 +248,6 @@ useEffect(() => {
           onChange={(name) => {
             form.name = name.target.value;
             updateState();
-            console.log(forms);
           }}
         />
         {validationErrors._name && (
@@ -278,7 +265,6 @@ useEffect(() => {
           onValueChange={(description) => {
             form.description = description;
             updateState();
-            console.log(forms);
             
           }}
         />
@@ -303,21 +289,18 @@ useEffect(() => {
               <DropdownItem key="mchoice" onClick={() => {
                 form.addQuestion(QuestionTypes.multipleChoice);
                 updateState();
-                console.dir(form);
               }}>
                 Multiple choice
               </DropdownItem>
               <DropdownItem key="slider" onClick={() => {
                 form.addQuestion(QuestionTypes.slider);
                 updateState();
-                console.dir(form);
               }}>
                 Slider
               </DropdownItem>
               <DropdownItem key="input" onClick={() => {
                 form.addQuestion(QuestionTypes.textInput);
                 updateState();
-                console.dir(form);
               }}>
                 Text input
               </DropdownItem>
@@ -329,7 +312,6 @@ useEffect(() => {
 
             try {
               FormValidator.FormTemplate.parse(form);
-              console.dir(forms);
               form.cleanName();
               if((forms.checkDuplicate(form) && form.name != formName) || form.name.trim() === "newForm")
                 throw(new ObjectAlreadyExistsException("Form of name " + form.name + " already exists"));
@@ -346,7 +328,6 @@ useEffect(() => {
               let errorHandler = new FormErrorHandler();
               setValidationErrors(errorHandler.errorValidation(e));
             }
-              console.dir(form);
 
             }}>Save form</Button>
             <Button className="button mb-5" onClick={async () => {
@@ -360,7 +341,7 @@ useEffect(() => {
                 console.log("didn't delete");
               }
             }}>Delete form</Button>
-            <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
+            <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/ /g, "-"))}}>
               Go back to forms
             </Button>
           </div>
@@ -375,7 +356,6 @@ useEffect(() => {
               }}/>
               <Button className="button mb-5" onClick={async () => {
                 
-                console.dir(tokenBuilder);
                 form.tokens = tokenBuilder.getTokens();
                 form.isActive = false;
                 setActive(false);
@@ -395,9 +375,6 @@ useEffect(() => {
 
               <Button className="button mb-5" onClick={async () => {
                 
-                console.log(form.name);
-                console.log(formName);
-                console.log((form.name == formName));
                 
                 //Removes the form that was edited from the database
                 forms.removeFromDatabase(currForm.name);
@@ -409,7 +386,7 @@ useEffect(() => {
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
                 setModalOpen(false);
-                router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))
+                router.replace("/" + username + "/" + project.replace(/ /g, "-"))
               }}>Save without publishing</Button>
 
               <Button className="button mb-5" onClick={() => {
@@ -424,7 +401,7 @@ useEffect(() => {
     :
     (
       <main>
-      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/-/g, "\\-").replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}
+      {form.tokens.map((token, index) => {return <li key={index}>Token number {index+1}: {rootLink+"/"+username+"/"+project.replace(/ /g, "-")+"/"+form.name+"/"+token.tokenID}
       <br/>Answer sent: {token.isUsed ? "yes" : "no"}</li>})}
         <Button onClick={async ()=> {
           let fileFinder = new FileFinder(pathToSrc);
@@ -432,21 +409,23 @@ useEffect(() => {
           let responses : Array<ResponseData> = [];
           try{
             //Try to get an array of JSON objects form the responses.json file corresponding to this form
-            let responseFile = fileFinder.findJSONFile([username, project, form.name], "responses");
+            let responseFile = fileFinder.findJSONFile(["database", username, project, form.name], "responses");
             JSONobjects = await FileSystemService.getJSONFile(await responseFile);
             //Convert each JSON object to a ResponseData instance into the response array
+            console.dir(JSONobjects);
             JSONobjects.forEach((object) => {
               responses.push(ResponseData.responseFromObject(object));
             })
+            console.dir(responses);
             //Convert the responses into an array that is then converted into a string using the CsvMaker
-            CsvMaker.arrayToCsv(ResponseCsvMaker.responsesToArray(responses, form));
+            CsvMaker.download("responses.csv", CsvMaker.arrayToCsv(ResponseCsvMaker.responsesToArray(responses, form)));
           }
           catch(e : any) {
-            toast.error(e.message)
+            console.log(e.message);
+            toast.error(e.message);
           }
-          ResponseCsvMaker.responsesToArray
         }}> Download responses</Button>
-        <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/-/g, "\\-").replace(/ /g, "-"))}}>
+        <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/ /g, "-"))}}>
           Go back to forms
         </Button>
       </main>

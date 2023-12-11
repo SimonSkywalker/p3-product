@@ -18,7 +18,7 @@ class CsvMaker {
                 if (j < array[i].length+1)
                     csvLine += ","
             }
-            csvText += csvLine + "";
+            csvText += csvLine + "\n";
         }
         return csvText;
     }
@@ -57,7 +57,7 @@ export default class ResponseCsvMaker extends CsvMaker {
      */
     public static responsesToArray(responses : Array<ResponseData>, form : Form) : Array<Array<any>>{
         let finalArray : Array<Array<any>> = [[]];
-        finalArray[0][0] = "Questions";
+        finalArray[0][0] = "Respondents";
         for(let i = 0; i < responses.length; i++){
             finalArray[0].push(responses[i].tokenID);
         }
@@ -98,11 +98,11 @@ export class ResponseData {
      */
     public static responseFromObject(response : any) : ResponseData {
         let responseData = new ResponseData;
-        let answers = Object.values(response.questions);
-
-        if(response.tokenID == undefined || response.questions == undefined)
-            throw WrongTypeException
-        responseData._tokenID = response.tokenID;
+        console.log(response.tokenID);
+        responseData._tokenID = Object.keys(response)[0];
+        if(response[responseData._tokenID].questions == undefined)
+            throw new WrongTypeException;
+        let answers = Object.values(response[responseData._tokenID].questions);
         for(let i = 0; i < answers.length; i++){
             responseData.answers.push(new AnswerData);
             if(answers[i] != undefined)
@@ -145,11 +145,11 @@ export class AnswerData {
     }
 
     public toString() : string {
-        if(this._singleAnswer)
+        if(this._singleAnswer != "")
             return this._singleAnswer;
         //Adding quotes so that in csv, they will count as one entity
         if(this._multipleAnswer.length > 0)
-            return '""' + this._multipleAnswer.join(",") + '""';
+            return '"' + this._multipleAnswer.join(",") + '"';
         else throw Error;
     }
 

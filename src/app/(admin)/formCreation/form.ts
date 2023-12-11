@@ -103,7 +103,7 @@ export default class Form implements Nameable {
      * Also trims in order to remove spaces
      */
     public cleanName() : void {
-        this.name = this.name.trim().replace(/-/g, "\\-").replace(/ /g, "-");
+        this.name = this.name.trim().replace(/ /g, "-");
     }
 
 
@@ -113,7 +113,7 @@ export default class Form implements Nameable {
      */
     public getUncleanName() : string {
         let newName : string = this.name;
-        return newName.replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
+        return newName.replace(/-/g," ");
     }
 
     /**
