@@ -32,7 +32,6 @@ class FileFinder {
                 newDirectoryPath += '/' + desiredFilePath[i];
             }   
             if (await FileSystemService.getType(newDirectoryPath) == FileTypes.directory.valueOf()) {
-                console.log("Directory found");
                 return newDirectoryPath;
             }
             else throw new NoFileNameException;
