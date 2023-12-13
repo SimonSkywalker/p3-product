@@ -319,11 +319,11 @@ useEffect(() => {
             } catch(e: any) {
               if(e instanceof ObjectAlreadyExistsException)
                 toast.error('A form with this name already exists in this project');
-              if(e instanceof z.ZodError){
+              else if(e instanceof z.ZodError){
                 e.errors.forEach((validationErr) => {
                   toast.error(validationErr.message);
                 })
-              }
+              } else {toast.error(e.message)}
 
               let errorHandler = new FormErrorHandler();
               setValidationErrors(errorHandler.errorValidation(e));
