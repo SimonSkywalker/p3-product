@@ -54,43 +54,39 @@ export default function PieChart({ questionName, questionIndex, roles, answerCou
         
         return tempArray;
       }
-    let runOnce = false
     useEffect(() => {
-        if (!runOnce) {
-            const canvas = document.getElementById(`myChart${questionIndex}`) as HTMLCanvasElement;
-            const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-            var myChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: roles,
-                    datasets: (Object.keys(answer2Count).length > 0) ? datasetMaker(answerCount, answer2Count) : [{
-                        data: Object.values(answerCount) as [],
-                        label: "Dataset 1",
-                        backgroundColor: randomBackgroundColor,
-                        borderWidth: 2,
-                    }]
-                    
-                },
-                options: {
-                    responsive: true,
-                    tooltips: {
-                        callbacks: {
-                            title: function (tooltipItems: any, data: any) {
-                                return data.labels[tooltipItems[0].index];
-                            },
-                            label: function (tooltipItems: any, data: any) {
-                                const dataset = data.datasets[tooltipItems.datasetIndex];
-                                const label = dataset.label || '';
-                                const value = dataset.data[tooltipItems.index];
-                                return `${label}: ${value}`;
-                            }
+        const canvas = document.getElementById(`myChart${questionIndex}`) as HTMLCanvasElement;
+        const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: roles,
+                datasets: (Object.keys(answer2Count).length > 0) ? datasetMaker(answerCount, answer2Count) : [{
+                    data: Object.values(answerCount) as [],
+                    label: "Dataset 1",
+                    backgroundColor: randomBackgroundColor,
+                    borderWidth: 2,
+                }]
+                
+            },
+            options: {
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        title: function (tooltipItems: any, data: any) {
+                            return data.labels[tooltipItems[0].index];
+                        },
+                        label: function (tooltipItems: any, data: any) {
+                            const dataset = data.datasets[tooltipItems.datasetIndex];
+                            const label = dataset.label || '';
+                            const value = dataset.data[tooltipItems.index];
+                            return `${label}: ${value}`;
                         }
                     }
-                },
+                }
+            },
 
-            });
-            runOnce = true
-        }
+        });
     }, [])
 
 
