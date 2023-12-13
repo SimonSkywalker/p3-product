@@ -46,7 +46,7 @@ describe('Project creation page', {
     cy.get('ul > li:nth-child(1) > ul:nth-child(7) > div > div > div > div > input').focus().clear().should('have.value', '').type('Role 1');
     cy.get('ul > li:nth-child(1) > ul:nth-child(8) > div > div > div > div > input').focus().clear().should('have.value', '').type('Role 2');
 
-    cy.get('ul > li:nth-child(2) > .flex > .relative > .inline-flex > input[aria-label="Question name"]').focus().clear().should('have.value', '').type('Testing - Role Question (Radio Buttons)');
+    cy.get('ul > li:nth-child(2) > .flex > .relative > .inline-flex > input[aria-label="Question name"]').focus().clear().should('have.value', '').type('Testing - Option Question (Checkboxes)');
     cy.get('ul > li:nth-child(2) > label:nth-child(3) > span:nth-child(2)').click(); // Required
     cy.get('ul > li:nth-child(2) > label:nth-child(4) > span:nth-child(2)').click(); // Show answers to respondents
     cy.get('ul > li:nth-child(2) > label:nth-child(5) > span:nth-child(2)').click(); // Allow multiple options checked
@@ -79,9 +79,9 @@ describe('Project creation page', {
     //cy.contains('div.flex.flex-wrap.content-evenly > button', 'Go back to forms').click(); // Go back to forms
 
     cy.get('input[aria-label="How many people should answer this form?"]').focus().clear().should('have.value', '').type('1')
-    cy.contains('section > button', 'Publish form').click(); // Publish form
-    //cy.contains('section > button', 'Save without publishing').click(); // Save without publishing
-    //cy.contains('section > button', 'Don\'t save').click(); // Don't save
+    cy.contains('section button', 'Publish form').click(); // Publish form
+    //cy.contains('section button', 'Save without publishing').click(); // Save without publishing
+    //cy.contains('section button', 'Don\'t save').click(); // Don't save
 
     cy.url().should('eq', 'http://localhost:3000/Testing/Testing/formCreator/newForm')
   })

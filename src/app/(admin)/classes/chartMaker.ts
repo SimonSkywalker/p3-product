@@ -134,7 +134,7 @@ export class dataMaker {
         formData.rolePicks.forEach((newElement: any) => {
           const value: [] = questions[key];
           if (roles.includes(newElement)) {
-            if (chartData.questions[key]._saveRole && chartData.questions[key]._questionType == 0 && chartData.questions[key]._type == 0) {
+            if (chartData.questions[key]._questionType == 0 && chartData.questions[key]._type == 0) {
               if (Array.isArray(value) && chartData.questions[key]._questionType != 2) {
                 this.sortedDataArray[key]["roleAnswers"][newElement].push(...value);
 
