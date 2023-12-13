@@ -28,12 +28,6 @@ import ResponseCsvMaker, { ResponseData } from "@/app/(admin)/components/CsvMake
 import CsvMaker from "@/app/(admin)/components/CsvMaker";
 import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 
-let tokenBuilder : TokenBuilder = new TokenBuilder();
-const maxQuestions : number = 255;
-let databaseFile: string;
-let forms: DatabaseAccess;
-let currForm = new Form;
-const errorHandler = new FormErrorHandler();
 
 class FormCreator{
   public static createOptions(question: MultipleChoice, errors : FormErrorHandler, updateState: () => void){
@@ -157,6 +151,14 @@ const project : string = params.project.replace(/-/g," ");
 const formName : string = params.formName.replace(/%20/g,"-");
 const pathToSrc : string = "@";
 
+//Declaring more constant objects and variables used throughout page
+let tokenBuilder : TokenBuilder = new TokenBuilder();
+const maxQuestions : number = 255;
+let databaseFile: string;
+let forms: DatabaseAccess = new DatabaseAccess([]);
+let currForm = new Form;
+const errorHandler = new FormErrorHandler();
+
 /**
  * This useEffect checks for the user's cookies to see if they are logged in
  * If no token is found from the cookies, or if it is not validated, send a message and reroute to the login page
@@ -190,14 +192,14 @@ useEffect(() => {
           let formBuilder = new FormBuilder();
           formsArray.push(formBuilder.formFromObject(objectsArray[i] as Form))
         }
-
         forms = new DatabaseAccess(formsArray);
+
         currForm = (forms.objects)[forms.getIndexFromDatabase(formName)] as Form;
         currForm.name = currForm.getUncleanName();
       }
       catch (e: any) {
         currForm = new Form;
-        forms = new DatabaseAccess([]);
+        toast.error("Failed to get existing forms");
       }
       
       setForm(currForm);
