@@ -336,9 +336,11 @@ useEffect(() => {
                 //If form was used, you could accidentally name your new form the same as an existing one and delete that
                 forms.removeFromDatabase(formName);
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
+                toast.success("Deleted form");
+                router.replace("/" + username + "/" + project.replace(/ /g, "-"));
               }
               catch(e : any) {
-                console.log("didn't delete");
+                toast.error("didn't delete");
               }
             }}>Delete form</Button>
             <Button onClick={()=> {router.replace("/" + username + "/" + project.replace(/ /g, "-"))}}>
