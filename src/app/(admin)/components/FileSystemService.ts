@@ -92,8 +92,6 @@ export default class FileSystemService {
 
       if (response.data && response.status === 200) {
         result = response.data;
-        console.log('filename:', result.filename);
-        console.log('size:', result.size);
       } else {
         console.error('Server error:', response.data ? response.data.error : 'Unknown error');
       }
@@ -172,8 +170,7 @@ export default class FileSystemService {
     const res = await fetch("/api/getCurrentUser") 
       if(res.ok){
       
-        data = await res.json();
-        //console.log(data);
+        data = await res.json();  
         return data;
       }
     

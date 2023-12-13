@@ -69,7 +69,7 @@ const IconModal: React.FC<IconModalProps> = ({ modalOpen, setModalOpen, icons, s
             
             <form 
             className="mt-6" 
-            onSubmit={() => setModalOpen({currentModalTitle: "", isOpen: false})}>
+            onSubmit={(e) => {e.preventDefault(); setModalOpen({currentModalTitle: "", isOpen: false})}}>
               <h2 className="text-3xl text-center m-4">Select Project Icon</h2>
               <div id="chooseIcon" className="grid grid-cols-3 gap-2 place-items-center m-12">
 

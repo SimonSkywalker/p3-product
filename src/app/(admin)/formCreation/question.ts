@@ -43,7 +43,7 @@ export default class Question {
 
     constructor(type : QuestionTypes, number: number) {
         this._description = "";
-        this._mandatory = false;
+        this._mandatory = true;
         this._userDisplay = false;
         this._questionType = type;
         this._number = number;
