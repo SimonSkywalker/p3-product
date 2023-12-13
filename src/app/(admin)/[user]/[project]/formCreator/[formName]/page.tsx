@@ -197,6 +197,7 @@ useEffect(() => {
       }
       catch (e: any) {
         currForm = new Form;
+        forms = new DatabaseAccess([]);
       }
       
       setForm(currForm);
