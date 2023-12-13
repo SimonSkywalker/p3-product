@@ -245,6 +245,7 @@ export default function ProjectPage() {
                   */}
                   {projects.map((project, i) => (
                       <ActiveProjectElement
+                        key={i}
                         index={i}
                         project={project}
                         projects={projects}
@@ -274,6 +275,7 @@ export default function ProjectPage() {
                   
                 {projects.map((project, i) => (
                   <InactiveProjects
+                    key={i}
                     index={i}
                     project={project}
                     user={user}

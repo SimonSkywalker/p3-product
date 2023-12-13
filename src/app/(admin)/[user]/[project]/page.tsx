@@ -137,12 +137,14 @@ let Puge = ({params}:ProjectParams) => {
           <div className="relative flex flex-col min-w-72 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">
-                <div className={(openTab === 2 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
+                <div className={(openTab === 2 ? "block" : "hidden") }  id="link1">
  
-                  {/*Reverses the forms array such that the newest saved is displayed first*/}
-                  {forms.map((form, i) => 
+                  <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center">
+                    {/*Reverses the forms array such that the newest saved is displayed first*/}
+                    {forms.map((form, i) => 
                   
                   <ActiveFormElement
+                  key={i}
                   index={i}
                   setModalOpen={setModalOpen}
                   setActionOnProject={setActionOnProject}
@@ -150,50 +152,58 @@ let Puge = ({params}:ProjectParams) => {
                   project={params.project}
                   />
 
-                  )}
+                    )}
 
-                  <p className="text-xs font-bold uppercase  shadow-lg rounded block leading-normal text-white bg-palette-500">
-                    <Link 
-                    href={"/projectCreation"}
-                    className='px-5 py-3 bg-palette-500 rounded'>
-                      Back to projectpage
-                    </Link>
-                  </p>
-
-                </div> 
-                
-                <div className={(openTab === 1 ? "block" : "hidden") + " grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center"}  id="link1">
-
-                  <div 
-                    id="newProjectDiv" 
-                    className={`grid place-items-center h-25 w-40 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ${projectState ? 'block' : 'hidden'}`}>
-                      <h3 className='pt-2'>Create New</h3>
-                      <button title={"New"} className={"text-5xl text-align-center hover:scale-125"}
-                      onClick={(e)=>{setModalOpen({currentModalTitle: "newFormModal", isOpen: true});setSelectedForm(undefined)}}
-                      >+</button>
                   </div>
-                
-                  {/*Reverses the forms array such that the newest saved is displayed first*/}
-                  {forms.map((form, i) => 
-                    <InActiveFormElement
-                    form={form}
-                    project={params.project}
-                    setActionOnProject={setActionOnProject}
-                    setModalOpen={setModalOpen}
-                    index={i}
-                      />
-                  )}
 
-                  <p className="text-xs font-bold uppercase shadow-lg rounded block leading-normal text-white bg-palette-500">
-                    <Link 
-                    href={"/projectCreation"}
-                    className='px-5 py-3 bg-palette-500 rounded'>
-                      Back to projectpage
-                    </Link>
-                  </p>
+                  <div className="float-left m-2">
+                    <p className="text-xs font-bold uppercase  shadow-lg rounded block leading-normal text-white bg-palette-500">
+                      <Link 
+                      href={"/projectCreation"}
+                      className='px-5 py-3 bg-palette-500 rounded'>
+                        Back to projectpage
+                      </Link>
+                    </p>
+                  </div>
+                 
 
                 </div> 
+                
+                <div className={(openTab === 1 ? "block" : "hidden")}  id="link1">
 
+                  <div className="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-5 place-items-center">
+                    <div 
+                      id="newProjectDiv" 
+                      className={`grid place-items-center h-25 w-40 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ${projectState ? 'block' : 'hidden'}`}>
+                        <h3 className='pt-2'>New Form</h3>
+                        <button title={"New"} className={"text-5xl text-align-center hover:scale-125"}
+                        onClick={(e)=>{setModalOpen({currentModalTitle: "newFormModal", isOpen: true});setSelectedForm(undefined)}}
+                        >+</button>
+                    </div>
+                  
+                    {/*Reverses the forms array such that the newest saved is displayed first*/}
+                    {forms.map((form, i) => 
+                      <InActiveFormElement
+                    key={i}
+                      form={form}
+                      project={params.project}
+                      setActionOnProject={setActionOnProject}
+                      setModalOpen={setModalOpen}
+                      index={i}
+                        />
+                    )}
+
+                  </div>
+                  <div className="float-left m-2">
+                    <p className="text-xs font-bold uppercase  shadow-lg rounded block leading-normal text-white bg-palette-500">
+                      <Link 
+                      href={"/projectCreation"}
+                      className='px-5 py-3 bg-palette-500 rounded'>
+                        Back to projectpage
+                      </Link>
+                    </p>
+                  </div>
+                </div> 
               </div>
             </div>
           </div>
