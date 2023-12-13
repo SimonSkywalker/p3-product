@@ -192,17 +192,17 @@ useEffect(() => {
 
   useEffect(() => {
     const getForm = async () => {
-      const database : FileFinder = new FileFinder(pathToSrc);
-      databaseFile = await database.findJSONFile(["database", username, project], "forms");
-      let formsArray : Array<Form> = [];
-      let objectsArray : Array<Object> = await FileSystemService.getJSONFile(databaseFile);
-      for(let i = 0; i < objectsArray.length; i++){
-        let formBuilder = new FormBuilder();
-        formsArray.push(formBuilder.formFromObject(objectsArray[i] as Form))
-      }
-
-      forms = new DatabaseAccess(formsArray);
       try {
+        const database : FileFinder = new FileFinder(pathToSrc);
+        databaseFile = await database.findJSONFile(["database", username, project], "forms");
+        let formsArray : Array<Form> = [];
+        let objectsArray : Array<Object> = await FileSystemService.getJSONFile(databaseFile);
+        for(let i = 0; i < objectsArray.length; i++){
+          let formBuilder = new FormBuilder();
+          formsArray.push(formBuilder.formFromObject(objectsArray[i] as Form))
+        }
+
+        forms = new DatabaseAccess(formsArray);
         currForm = (forms.objects)[forms.getIndexFromDatabase(formName)] as Form;
         currForm.name = currForm.getUncleanName();
       }

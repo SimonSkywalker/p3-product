@@ -1,4 +1,4 @@
-import { ProjectInterface, projectObject } from '@/app/(admin)/interfaces/interfaces';
+import { ProjectInterface} from '@/app/(admin)/interfaces/interfaces';
 
 
 

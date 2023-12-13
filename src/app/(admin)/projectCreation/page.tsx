@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import FileSystemService from "@/app/(admin)/components/FileSystemService";
 import ServerSidePaths from '@/app/(admin)/components/ServerSidePaths';
 import {Project, ProjectObject} from '@/app/(admin)/components/projectClass';
-import {ProjectInterface, projectObject, actionProject, modalOperator} from '@/app/(admin)/interfaces/interfaces';
+import {ProjectInterface, actionProject, modalOperator} from '@/app/(admin)/interfaces/interfaces';
 import { TitleDuplicateException } from "@/app/(admin)/exceptions/TitleDuplicateException";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
