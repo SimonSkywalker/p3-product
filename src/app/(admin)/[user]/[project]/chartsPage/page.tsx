@@ -4,7 +4,7 @@ import PieChart from '@/app/(admin)/components/Pie'
 import BarChart from '@/app/(admin)/components/Bar'
 import FeedbackArea from '@/app/(admin)/components/FeedbackArea'
 import { Suspense, useEffect, useState } from 'react'
-import { Token } from "@/app/(admin)/classes/tokenClass";
+import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 import Cookies from "js-cookie";
 import { dataMaker } from '@/app/(admin)/classes/chartMaker'
 import { APIHandle } from '@/app/(admin)/classes/handlerClass'
@@ -36,7 +36,7 @@ export default function ChartPage(response: any) {
           router.push('/');
           return;
         }
-        Token.validateToken(token).catch((error) => {
+        TokenValidator.validateToken(token).catch((error) => {
         console.error(error);
         router.replace("/login");
         });

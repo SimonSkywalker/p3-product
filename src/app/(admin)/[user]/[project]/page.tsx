@@ -19,6 +19,7 @@ import FormsDeleteModal from '../../components/FormsDeleteModal';
 import FormCreationModal from '../../components/FormCreationModal';
 import { ActiveFormElement } from '../../components/ActiveFormElement';
 import { InActiveFormElement } from '../../components/InActiveFormElement';
+import { TokenValidator } from '../../classes/tokenClass';
 
 interface ProjectParams {
     params:{
@@ -76,23 +77,10 @@ let Puge = ({params}:ProjectParams) => {
       return;
     }
       // Validate the token by making an API call
-      const validateToken = async () => {
-        try {
-          const res = await fetch("/api/protected", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
-          if (!res.ok) {throw new Error("Token validation failed");}
-        } catch (error) {
-          console.error(error);
-          logout();
-          router.replace("/login"); // Redirect to login if token validation fails
-        }
-      };
-  
-      validateToken();
+      TokenValidator.validateToken(token).catch((error) => {
+        console.error(error);
+        router.replace("/login");
+        });
 
     getForms();
 

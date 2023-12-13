@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { APIHandle } from "@/app/(admin)/classes/handlerClass";
-import { Token } from "@/app/(admin)/classes/tokenClass";
+import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 import Cookies from "js-cookie";
 import Menu1 from "./Menu1";
 import Menu2 from "./Menu2";
@@ -29,7 +29,7 @@ export default function VisPage({params}:ChartParams) {
       return;
     }
 
-    Token.validateToken(token).catch((error) => {
+    TokenValidator.validateToken(token).catch((error) => {
       console.error(error);
       router.replace("/login");
     });

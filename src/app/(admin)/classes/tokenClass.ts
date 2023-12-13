@@ -1,8 +1,8 @@
 
 
-export class Token{
+export class TokenValidator{
     
-    public static async validateToken(token: any){
+    public static async validateToken(token: any) : Promise<void> {
         
         await fetch("/api/protected", {
             headers: {

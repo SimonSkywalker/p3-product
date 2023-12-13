@@ -26,6 +26,7 @@ import { usePathname } from 'next/navigation'
 import { z } from "zod";
 import ResponseCsvMaker, { ResponseData } from "@/app/(admin)/components/CsvMaker";
 import CsvMaker from "@/app/(admin)/components/CsvMaker";
+import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 
 let tokenBuilder : TokenBuilder = new TokenBuilder();
 const maxQuestions : number = 255;
@@ -71,8 +72,8 @@ class FormCreator{
         label="Slider type"
         //Default value is a string equal to the name of the sliderType enum
         defaultValue={SliderTypes[(question as Slider).type]}
-        onValueChange={(value) => {
-          switch (value){
+        onChange={(value) => {
+          switch (value.target.value){
             case "agreeDisagree":{
               (question as Slider).type = SliderTypes.agreeDisagree;
               break;
@@ -168,22 +169,10 @@ useEffect(() => {
     return;
   }
     // Validate the token by making an API call
-    const validateToken = async () => {
-      try {
-        const res = await fetch("/api/protected", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) throw new Error("Token validation failed");
-      } catch (error) {
-        toast.error("You do not have access to this page");
-        router.replace("/login"); // Redirect to login if token validation fails
-      }
-    };
-
-    validateToken();
+    TokenValidator.validateToken(token).catch((error) => {
+      console.error(error);
+      router.replace("/login");
+    });
     
   //FileSystemService.APIRequestUser().then(async (data)=>{setUser(await data.Id);});
   
