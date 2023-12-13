@@ -143,13 +143,14 @@ let Puge = ({params}:ProjectParams) => {
                     {/*Reverses the forms array such that the newest saved is displayed first*/}
                     {forms.map((form, i) => 
                   
-                      <ActiveFormElement
-                      index={i}
-                      setModalOpen={setModalOpen}
-                      setActionOnProject={setActionOnProject}
-                      form={form}
-                      project={params.project}
-                      />
+                  <ActiveFormElement
+                  key={i}
+                  index={i}
+                  setModalOpen={setModalOpen}
+                  setActionOnProject={setActionOnProject}
+                  form={form}
+                  project={params.project}
+                  />
 
                     )}
 
@@ -174,7 +175,7 @@ let Puge = ({params}:ProjectParams) => {
                     <div 
                       id="newProjectDiv" 
                       className={`grid place-items-center h-25 w-40 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 inline-block m-24 inline-block bg-grey-400 ${projectState ? 'block' : 'hidden'}`}>
-                        <h3 className='pt-2'>Create New</h3>
+                        <h3 className='pt-2'>New Form</h3>
                         <button title={"New"} className={"text-5xl text-align-center hover:scale-125"}
                         onClick={(e)=>{setModalOpen({currentModalTitle: "newFormModal", isOpen: true});setSelectedForm(undefined)}}
                         >+</button>
@@ -183,6 +184,7 @@ let Puge = ({params}:ProjectParams) => {
                     {/*Reverses the forms array such that the newest saved is displayed first*/}
                     {forms.map((form, i) => 
                       <InActiveFormElement
+                    key={i}
                       form={form}
                       project={params.project}
                       setActionOnProject={setActionOnProject}

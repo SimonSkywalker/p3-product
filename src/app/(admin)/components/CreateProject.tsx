@@ -120,7 +120,7 @@ const ProjectCreationForm: React.FC<ProjectCreationFormProps> = ({
       <div 
         id="newProjectDiv" 
         className={(!creatingProject ? "block " : "hidden ") + "grid place-items-center h-30 w-30 border-dashed rounded-lg border-4 border-grey-600 bg-grey-400 p-8 inline-block m-24 inline-block bg-grey-400 "}>
-          <h3>Create New</h3>
+          <h3>New Project</h3>
           <button title={"New"} className={"text-5xl text-align-center hover:scale-125"}
           onClick={handleCreateButtonClick}
           >+</button>
