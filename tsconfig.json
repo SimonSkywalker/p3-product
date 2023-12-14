@@ -19,12 +19,12 @@
       "plugins": [
         {
           "name": "next"
-        }
+      }
       ],
       "paths": {
         "@/*": ["./src/*"]
       }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/jest.config.js", "pages/api/icons.js", "src/app/api/getProjectList", "__tests__/loginPage.test.jsx", "__tests__/registerPage.test.jsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/jest.config.js", "pages/api/icons.js", "src/app/api/getProjectList", "src/app/(admin)/login/__test__/loginPage.test.jsx", "__tests__/registerPage.test.jsx", "__tests__/chartMenu.test.jsx"],
     "exclude": ["node_modules"]
   }

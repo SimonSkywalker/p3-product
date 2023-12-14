@@ -1,5 +1,4 @@
 "use client"
-
 import React from 'react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -55,8 +54,13 @@ export default function LoginPage() {
       const validatedData = loginFormSchema.parse(loginHandler.formData);
 
       //Sends the data to server validation and handling
-      APIHandle.APIRequestLogin(validatedData)
-      .then(()=>{login();router.push('/projectCreation')})
+      await APIHandle.APIRequestLogin(validatedData)
+      .then(()=>{
+        login();
+       
+        router.push('/projectCreation')
+
+      })
       .catch((err)=>{
         //Is true if the wrong credentials are inputted
         if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}

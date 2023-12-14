@@ -28,6 +28,13 @@ import ResponseCsvMaker, { ResponseData } from "@/app/(admin)/classes/CsvMaker";
 import CsvMaker from "@/app/(admin)/classes/CsvMaker";
 import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 
+//Declaring more constant objects and variables used throughout page
+let tokenBuilder : TokenBuilder = new TokenBuilder();
+const maxQuestions : number = 255;
+let databaseFile: string;
+let forms: DatabaseAccess = new DatabaseAccess([]);
+let currForm = new Form;
+const errorHandler = new FormErrorHandler();
 
 class FormCreator{
   public static createOptions(question: MultipleChoice, errors : FormErrorHandler, updateState: () => void){
@@ -153,14 +160,6 @@ const username : string = params.user;
 const project : string = params.project.replace(/-/g," ");
 const formName : string = params.formName.replace(/%20/g,"-");
 const pathToSrc : string = "@";
-
-//Declaring more constant objects and variables used throughout page
-let tokenBuilder : TokenBuilder = new TokenBuilder();
-const maxQuestions : number = 255;
-let databaseFile: string;
-let forms: DatabaseAccess = new DatabaseAccess([]);
-let currForm = new Form;
-const errorHandler = new FormErrorHandler();
 
 /**
  * This useEffect checks for the user's cookies to see if they are logged in

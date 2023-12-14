@@ -48,7 +48,7 @@ export default function FormPage({ params } : FormPageParams) {
       // Dynamic import of the projects JSON file based on the project name
       const dataModule = await import(`@/app/(admin)/database/${params.user}/projects.json`);
       // Change For Jest
-      //const dataModule = await import(`../../../../database/${params.user}/projects.json`);
+      //const dataModule = await import(process.cwd()+`/src/app/(admin)/database/${params.user}/projects.json`);
       return dataModule.default;
     } catch (error) {
       // Errors should, in theory, not be displayed to the user
@@ -62,7 +62,7 @@ export default function FormPage({ params } : FormPageParams) {
       // Dynamic import of the forms JSON file based on the user and project names
       const dataModule = await import(`@/app/(admin)/database/${params.user}/${(params.project).replace(/-/g," ")}/forms.json`);
       // Change For Jest
-      //const dataModule = await import(`../../../../database/${params.user}/${params.project}/forms.json`); // For Jest
+      //const dataModule = await import(process.cwd()+`/src/app/(admin)/database/${params.user}/${params.project}/forms.json`); // For Jest
       return dataModule.default;
     } catch (error) {
       // Errors should, in theory, not be displayed to the user

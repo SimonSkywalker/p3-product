@@ -10,7 +10,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const dirPath : string = body.path;
 
     if (typeof dirPath !== 'string') {
-        console.log("ERROR BITCH");
+        console.log("Invalid path");
         return NextResponse.json({ error: 'Invalid path' , status: 400});
     }
     try {
