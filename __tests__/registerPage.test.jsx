@@ -6,8 +6,9 @@ import {renderHook} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { registerFormSchema } from '@/app/(admin)/lib/validations/registerForm'
 import {expect, jest, test} from '@jest/globals'
+import { act } from 'react-dom/test-utils';
 import { useRouter } from "next/navigation";
-
+import { APIHandle } from '@/app/(admin)/classes/handlerClass';
 describe("RegisterPage",()=>{
     
     it('Username named filled with userdata that is formatted correctly', async() => {
@@ -16,8 +17,11 @@ describe("RegisterPage",()=>{
         const mockPush = jest.fn();
 
         useRouter.mockReturnValue({ push: mockPush });
-        render(<RegisterPage />); 
-        
+        APIHandle.APIRequestRegister = jest.fn().mockImplementation(() => Promise.resolve());
+
+        await act(()=>{
+            render(<RegisterPage />); 
+        })        
         const Username = screen.getByLabelText("Username") // ACT
         await user.type(Username,'Simona')
 
@@ -33,7 +37,10 @@ describe("RegisterPage",()=>{
         expect(await screen.queryByText('String must contain at least 3 character(s)')).toBeNull();
         expect(await screen.queryByText('String must contain at least 5 character(s)')).toBeNull();
         expect(await screen.queryByText('String must contain at least 5 character(s)')).toBeNull();
-        
+        await waitFor( () => {
+    
+            expect(mockPush).toHaveBeenCalledWith('/login'); // Check the push call
+        });
     })
 
     it('Username named filled with userdata that is formatted wrong', async() => {
@@ -58,7 +65,9 @@ describe("RegisterPage",()=>{
         await user.click(submitB);
 
         expect(await screen.queryByText('String must contain at least 3 character(s)')).toBeInTheDocument();
-        
+        await waitFor( () => {
+            expect(mockPush).toHaveBeenCalledWith('/login'); // Check the push call
+        });
         
     })
 
