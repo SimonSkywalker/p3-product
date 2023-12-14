@@ -63,7 +63,7 @@ export default function LoginPage() {
       })
       .catch((err)=>{
         //Is true if the wrong credentials are inputted
-        if (err instanceof LoginException) {setValidationErrors({...validationErrors, password:  err.message, username: ''})}
+        if (err instanceof LoginException){setValidationErrors({...validationErrors, password:  err.message, username: ''})}
       });
 
       
@@ -124,7 +124,7 @@ export default function LoginPage() {
             />
             {validationErrors.password && (
               <div 
-                className="error">
+                className="error" title='errorP'>
                 {validationErrors.password}
               </div>
             )}

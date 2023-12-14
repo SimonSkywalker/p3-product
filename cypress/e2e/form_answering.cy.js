@@ -2,7 +2,7 @@ describe('Form Answering page', {
     defaultCommandTimeout: 100000
   }, () => {
   it('Navigates to Form Answering page', () => {
-    let tokenId = 'J8dETKIhpQ'
+    let tokenId = 'hY0V7JgBKL'
     cy.visit('http://localhost:3000/Testing/Testing/Testing/' + tokenId);
 
     cy.url().should('eq', 'http://localhost:3000/Testing/Testing/Testing/' + tokenId);
