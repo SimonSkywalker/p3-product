@@ -104,7 +104,7 @@ export default class FileSystemService {
 
   public static async makeDirectory(originPath : string, directoryPath : string) : Promise<void> {
     try {
-      await fetch(originPath + '/api/createDirectory', {
+      await fetch('/api/createDirectory', {
           method: 'POST',
           body: JSON.stringify({path: directoryPath})
         })
@@ -123,7 +123,7 @@ export default class FileSystemService {
 
   public static async delete(originPath : string, directoryPath : string) : Promise<void> {
     try {
-      await fetch(originPath + '/api/delete', {
+      await fetch('/api/delete', {
           method: 'POST',
           body: JSON.stringify({path: directoryPath})
         })
@@ -147,7 +147,7 @@ export default class FileSystemService {
     splitPath[splitPath.length-1] = newName;
     let newPath = splitPath.join("/");
     try {
-      await fetch(originPath + '/api/rename', {
+      await fetch('/api/rename', {
           method: 'POST',
           body: JSON.stringify({path: path, newPath: newPath})
         })
