@@ -18,5 +18,6 @@ jest.mock('./src/app/(admin)/context/Auth', () => ({
     ...jest.requireActual('./src/app/(admin)/classes/handlerClass'),
     APIHandle: {
       APIRequestLogin: jest.fn(),
+      APIRequestRegister: jest.fn(),
     },
   }));
