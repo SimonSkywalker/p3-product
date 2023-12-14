@@ -1,18 +1,18 @@
-import AgreeDisagree from '../src/app/[user]/[project]/[form]/[tokenId]/AgreeDisagreeComponent'
-import AlreadyUsedPage from '../src/app/[user]/[project]/[form]/[tokenId]/AlreadyUsedPageComponent'
-import FinalPage from '../src/app/[user]/[project]/[form]/[tokenId]/FinalPageComponent'
-import FirstPage from '../src/app/[user]/[project]/[form]/[tokenId]/FirstPageComponent'
-import FormRenderer from '../src/app/[user]/[project]/[form]/[tokenId]/FormRenderer'
-import MultipleChoice from '../src/app/[user]/[project]/[form]/[tokenId]/MultipleChoiceComponent'
-import Page from '../src/app/[user]/[project]/[form]/[tokenId]/page'
-import Skipped from '../src/app/[user]/[project]/[form]/[tokenId]/SkippedComponent'
-import Slider from '../src/app/[user]/[project]/[form]/[tokenId]/SliderComponent'
-import SubmitPage from '../src/app/[user]/[project]/[form]/[tokenId]/SubmitPageComponent'
-import TextInput from '../src/app/[user]/[project]/[form]/[tokenId]/TextInputComponent'
+import AgreeDisagree from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/AgreeDisagreeComponent'
+import AlreadyUsedPage from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/AlreadyUsedPageComponent'
+import FinalPage from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/FinalPageComponent'
+import FirstPage from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/FirstPageComponent'
+import FormRenderer from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/FormRenderer'
+import MultipleChoice from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/MultipleChoiceComponent'
+import Page from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/page'
+import Skipped from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/SkippedComponent'
+import Slider from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/SliderComponent'
+import SubmitPage from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/SubmitPageComponent'
+import TextInput from '@/app/(guest)/[user]/[project]/[form]/[tokenId]/TextInputComponent'
 
 //import Slider from "rc-slider";
 
-import { act, render, screen, fireEvent } from '@testing-library/react'
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 const params = {
@@ -29,16 +29,16 @@ describe('page.tsx', () => {
         /**
          * First page (make sure "isUsed"-boolean is set to false when starting)
          */
-        act(() => {
+        await act(() => {
             render(<Page
                 params={params} />)
         });
 
         //https://github.com/testing-library/dom-testing-library/issues/1234
         let p = document.querySelector('p')
-        let h1List = screen.getAllByRole('heading', {level: 1})
-        let h3 = screen.getByRole('heading', {level: 3})
-        let letsGoButton = screen.getByRole('button')
+        let h1List = await screen.getAllByRole('heading', {level: 1})
+        let h3 = await screen.getByRole('heading', {level: 3})
+        let letsGoButton = await screen.getByRole('button')
 
         expect(p).toHaveTextContent('Dette er en beskrivelse af 20-10');
 
@@ -247,7 +247,7 @@ describe('page.tsx', () => {
         */
 
         await act(() => {
-            fireEvent.change(screen.getByRole('slider'), { target: { value: '1' }})
+            fireEvent.change( screen.getByRole('slider'), { target: { value: '1' }})
         });
         expect(screen.getByRole('slider')).toHaveValue('1');
         expect(sliderText).toHaveTextContent('Strongly Disagree');

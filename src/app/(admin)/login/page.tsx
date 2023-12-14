@@ -14,7 +14,7 @@ export default function LoginPage() {
   const router = useRouter();
   
   //Constants used to handle data
-  //const { login } = useAuth();
+  const { login } = useAuth();
   const loginHandler = new LoginHandler();
   const [formData, setFormData] = useState(loginHandler.formData);
   const [validationErrors, setValidationErrors] = useState(loginHandler.validationErrors);
@@ -54,12 +54,11 @@ export default function LoginPage() {
       const validatedData = loginFormSchema.parse(loginHandler.formData);
 
       //Sends the data to server validation and handling
-      APIHandle.APIRequestLogin(validatedData)
+      await APIHandle.APIRequestLogin(validatedData)
       .then(()=>{
-        //login();
-        console.log('Before navigation');
+        login();
+       
         router.push('/projectCreation')
-        console.log('After navigation');
 
       })
       .catch((err)=>{
