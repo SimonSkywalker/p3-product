@@ -18,7 +18,7 @@ interface ChartParams {
 export default function VisPage({params}:ChartParams) {
   
   const router = useRouter();
-  const [user, setUser] = useState({Id:"", project: params.project, forms:['13\\-10','20\\-10'], selectedForm: "", roles:['role1','role2','role3'], questions:[]});
+  const [user, setUser] = useState({Id:"", project: params.project, forms:[], selectedForm: "", roles:[], questions:[]});
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
@@ -46,18 +46,15 @@ export default function VisPage({params}:ChartParams) {
       })
       .catch((error) => {
         console.error(error);
-        console.log('1');
-        
       });
   }, [router]);
 
   const handleSelect =  (e: React.ChangeEvent<HTMLSelectElement>) => {
     
-    /* fetch("/api/getFormdata", {
+    fetch("/api/getFormdata", {
         method: "POST",
         body: JSON.stringify({selectedForm: e.target.value})
-    }) */
-    APIHandle.APIRequestRQ({selectedForm: e.target.value}) 
+    }) 
     .then((response) => response.json())
     .then((data) => {
       console.log(data.formdata.selectedForm);
@@ -68,7 +65,7 @@ export default function VisPage({params}:ChartParams) {
           roles: data.formdata.roles,
           questions: data.formdata.questions
         })
-        //console.log(data.mResponse)
+        console.log(data.mResponse)
       })
       .catch((error) => {
         alert(`Error: ${error}`);
@@ -95,7 +92,7 @@ export default function VisPage({params}:ChartParams) {
     }
   };
   let otherForms: any = []
-  if (typeof user?.selectedForm != 'undefined' || user?.selectedForm != "") {
+  if (typeof user?.selectedForm != 'undefined') {
     otherForms = user?.forms.filter(function(e) { return e !== user?.selectedForm })
     
   }
@@ -125,7 +122,7 @@ export default function VisPage({params}:ChartParams) {
       <form onSubmit={validateForm} action="/api/createCharts" method="GET" className="space-y-5 flex flex-col justify-center text-center">
         <div>
           <h3 className="block text-sm font-semibold text-gray-800">Select form for visualization</h3>
-          <select id="formSelector"name="form" title="FirstFormS" className="bg-white-300" defaultValue={"DEFAULT"}
+          <select id="formSelector"name="form" className="bg-white-300" defaultValue={"DEFAULT"}
           onChange={handleSelect}>
             <option  value="DEFAULT" disabled hidden>-- select option --</option>
             {listForm}
