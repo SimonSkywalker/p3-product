@@ -102,7 +102,7 @@ describe("LoginPage",()=>{
         });
      
     })
-    it('Should navgiate to to the next page given the right user',async() => {
+    it('Should not navgiate to to the next page given the wrong user',async() => {
 
         const user = userEvent.setup();
         const mockPush = jest.fn();
