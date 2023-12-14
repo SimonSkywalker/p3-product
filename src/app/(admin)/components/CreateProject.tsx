@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Project, ProjectObject } from '@/app/(admin)/components/projectClass';
+import { Project, ProjectObject } from '@/app/(admin)/classes/projectClass';
 import ServerSidePaths from './ServerSidePaths';
 import { validateProjectData } from '../lib/validation/project';
-import FileSystemService from './FileSystemService';
+import FileSystemService from '../classes/FileSystemService';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { TitleDuplicateException } from '../exceptions/TitleDuplicateException';
@@ -37,7 +37,7 @@ const ProjectCreationForm: React.FC<ProjectCreationFormProps> = ({
      * A new directory with the project title is made within the database.
      */
     const createFolders = async () => {
-        await FileSystemService.makeDirectory('../', ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
+        await FileSystemService.makeDirectory(ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}`);
         await FileSystemService.writeToJSONFile([],ServerSidePaths.getProjectPath(user) + `/${newProject.getTitle()}/` + "forms.json")
     } 
 

@@ -1,5 +1,5 @@
 import WrongTypeException from "@/app/(admin)/exceptions/WrongTypeException";
-import Form from "@/app/(admin)/formCreation/Form";
+import Form from "@/app/(admin)/classes/form/Form";
 
 class CsvMaker {
 
@@ -82,12 +82,12 @@ export class ResponseData {
         return this._tokenID;
     }
 
-    public set tokenID(value: string) {
-        this._tokenID = value;
-    }
-
     public get answers(): Array<AnswerData> {
         return this._answers;
+    }
+
+    constructor(tokenID : string){
+        this._tokenID = tokenID;
     }
 
     /**
@@ -97,9 +97,7 @@ export class ResponseData {
      * @returns An instance of ResponseData with the relevant fields from the response
      */
     public static responseFromObject(response : any) : ResponseData {
-        let responseData = new ResponseData;
-        console.log(response.tokenID);
-        responseData._tokenID = Object.keys(response)[0];
+        let responseData = new ResponseData(Object.keys(response)[0]);
         if(response[responseData._tokenID].questions == undefined)
             throw new WrongTypeException;
         let answers = Object.values(response[responseData._tokenID].questions);

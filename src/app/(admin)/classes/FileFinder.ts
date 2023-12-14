@@ -1,6 +1,6 @@
 
 import NoFileNameException from "@/app/(admin)/exceptions/NoFileNameException"
-import FileSystemService from "@/app/(admin)/components/FileSystemService";
+import FileSystemService from "@/app/(admin)/classes/FileSystemService";
 import FileTypes from "./FileTypes";
 
 /**

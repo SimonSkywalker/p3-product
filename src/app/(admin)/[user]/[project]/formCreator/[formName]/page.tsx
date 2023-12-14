@@ -1,31 +1,31 @@
 'use client'
 
-import FormValidator from "@/app/(admin)/formCreation/FormValidator";
+import FormValidator from "@/app/(admin)/classes/form/FormValidator";
 import {Checkbox} from "@nextui-org/checkbox";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/dropdown"
 import {Button} from "@nextui-org/button"
 import {Input} from "@nextui-org/input"
 import {RadioGroup, Radio} from "@nextui-org/radio"
 import {Modal, ModalBody, ModalContent, ModalHeader} from "@nextui-org/react";
-import FileSystemService from "@/app/(admin)/components/FileSystemService";
-import Form from '@/app/(admin)/formCreation/Form';
-import Question from "@/app/(admin)/formCreation/question";
-import FileFinder from '@/app/(admin)/formCreation/FileFinder';
-import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "@/app/(admin)/formCreation/question";
+import FileSystemService from "@/app/(admin)/classes/FileSystemService";
+import Form from '@/app/(admin)/classes/form/Form';
+import Question from "@/app/(admin)/classes/question";
+import FileFinder from '@/app/(admin)/classes/FileFinder';
+import { QuestionTypes, MultipleChoice, Slider, ChoiceTypes, SliderTypes } from "@/app/(admin)/classes/question";
 import { useEffect, useState} from "react";
-import TokenBuilder from "@/app/(admin)/formCreation/TokenBuilder";
-import DatabaseAccess from "@/app/(admin)/formCreation/DatabaseAccess";
+import TokenBuilder from "@/app/(admin)/classes/form/TokenBuilder";
+import DatabaseAccess from "@/app/(admin)/classes/DatabaseAccess";
 import _ from 'lodash';
-import FormBuilder from "@/app/(admin)/formCreation/FormBuilder";
-import FormErrorHandler, { FormFormData } from "@/app/(admin)/formCreation/FormErrorHandler";
+import FormBuilder from "@/app/(admin)/classes/form/FormBuilder";
+import FormErrorHandler, { FormFormData } from "@/app/(admin)/classes/form/FormErrorHandler";
 import ObjectAlreadyExistsException from "@/app/(admin)/exceptions/ObjectAlreadyExistsException";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { usePathname } from 'next/navigation'
 import { z } from "zod";
-import ResponseCsvMaker, { ResponseData } from "@/app/(admin)/components/CsvMaker";
-import CsvMaker from "@/app/(admin)/components/CsvMaker";
+import ResponseCsvMaker, { ResponseData } from "@/app/(admin)/classes/CsvMaker";
+import CsvMaker from "@/app/(admin)/classes/CsvMaker";
 import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 
 
@@ -33,21 +33,24 @@ class FormCreator{
   public static createOptions(question: MultipleChoice, errors : FormErrorHandler, updateState: () => void){
     errors.addOptionErrors(question.number-1, question.options.length);
     return <>
-    {question.options.map((e, index) => {return <ul key={index}> <Input value={e} color="secondary" variant="bordered"  onValueChange={(input) =>{
+    {question.options.map((e, index) => {return <ul key={index}> 
+    <div className="inline-flex">
+    <Input value={e} color="secondary" className="w-5/6" variant="bordered"  onValueChange={(input) =>{
       question.renameOption(index, input);
       updateState();
     }}></Input>
+    <button className={"text-3xl text-align-center pl-2 pr-20"} onClick={() => {
+      question.removeOption(index);
+      errors.cleanOption(question.number-1, index);
+      updateState();
+      }}>x</button>
+      </div>
     {errors.validationErrors._questions[question.number-1]._options[index] && (
             <div 
               className="error">
               {errors.validationErrors._questions[question.number-1]._options[index]}
             </div>
-          )}
-    <Button className="button mb-5" onClick={() => {
-      question.removeOption(index);
-      errors.cleanOption(question.number-1, index);
-      updateState();
-      }}>Remove option</Button> </ul>})}
+          )} </ul>})}
     <Button className="button mb-5" onClick={() => {
       question.addOption();
       updateState();
@@ -359,7 +362,7 @@ useEffect(() => {
                 const database : FileFinder = new FileFinder(pathToSrc);
                 //Makes directory at the project path plus the current form name
                 //If directory already exists, nothing happens
-                FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
+                FileSystemService.makeDirectory(await database.getDirectory(["database", username, project]) + "/" + form.name)
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
                 updateState();
@@ -376,7 +379,7 @@ useEffect(() => {
                 const database : FileFinder = new FileFinder(pathToSrc);
                 //Makes directory at the project path plus the current form name
                 //If directory already exists, nothing happens
-                FileSystemService.makeDirectory(pathToSrc, await database.getDirectory(["database", username, project]) + "/" + form.name)
+                FileSystemService.makeDirectory(await database.getDirectory(["database", username, project]) + "/" + form.name)
                 //Overwrites the forms json file with this form added/updated
                 FileSystemService.writeToJSONFile(forms.objects, databaseFile);
                 setModalOpen(false);

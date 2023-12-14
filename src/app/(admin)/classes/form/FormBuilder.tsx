@@ -1,6 +1,6 @@
 import Token from "./Token";
 import Form from "./Form";
-import Question from "./question";
+import Question from "../question";
 import TokenBuilder from "./TokenBuilder";
 import QuestionBuilder from "./QuestionBuilder";
 import WrongTypeException from "@/app/(admin)/exceptions/WrongTypeException";

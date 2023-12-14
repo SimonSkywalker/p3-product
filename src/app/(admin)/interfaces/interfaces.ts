@@ -1,5 +1,5 @@
-import Token from "@/app/(admin)/formCreation/Token";
-import Question from "@/app/(admin)/formCreation/question";
+import Token from "@/app/(admin)/classes/form/Token";
+import Question from "@/app/(admin)/classes/question";
 
 export interface ProjectInterface {
     title: string;

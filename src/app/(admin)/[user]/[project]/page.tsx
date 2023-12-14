@@ -2,14 +2,14 @@
 
 import React, { useEffect } from 'react'
 import Modal from "react-modal";
-import FileSystemService from "@/app/(admin)/components/FileSystemService";
+import FileSystemService from "@/app/(admin)/classes/FileSystemService";
 import ServerSidePaths from '@/app/(admin)/components/ServerSidePaths';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
 import { ProjectInterface, actionProject, modalOperator } from '@/app/(admin)/interfaces/interfaces';
-import Form from '@/app/(admin)/formCreation/Form';
-import FormBuilder from '@/app/(admin)/formCreation/FormBuilder';
+import Form from '@/app/(admin)/classes/form/Form';
+import FormBuilder from '@/app/(admin)/classes/form/FormBuilder';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';

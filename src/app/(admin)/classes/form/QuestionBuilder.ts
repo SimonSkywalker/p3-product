@@ -1,5 +1,5 @@
 import WrongTypeException from "@/app/(admin)/exceptions/WrongTypeException";
-import Question, { ChoiceTypes, MultipleChoice, QuestionTypes, Slider, SliderTypes } from "./question";
+import Question, { ChoiceTypes, MultipleChoice, QuestionTypes, Slider, SliderTypes } from "../question";
 
 export default class QuestionBuilder{
     private _question : Question;

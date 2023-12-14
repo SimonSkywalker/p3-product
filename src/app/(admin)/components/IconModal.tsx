@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 import ServerSidePaths from './ServerSidePaths'; // Adjust the import path as needed
-import FileSystemService from './FileSystemService';
-import { Project } from './projectClass';
+import FileSystemService from '../classes/FileSystemService';
+import { Project } from '../classes/projectClass';
 import { toast } from 'react-toastify';
 
 interface IconModalProps {

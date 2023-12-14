@@ -1,7 +1,7 @@
 import axios from 'axios';
 import FileTypes from './FileTypes';
 import { getServerSideProps } from 'next/dist/build/templates/pages';
-import ServerSidePaths from './ServerSidePaths';
+import ServerSidePaths from '../components/ServerSidePaths';
 
 export default class FileSystemService {
   public static async listFiles(directoryPath: string): Promise<string[]> {
@@ -80,9 +80,9 @@ export default class FileSystemService {
   }
 
   /**
-   * formData: a form with the field 'file' containing the image file to upload
    * POST request to the /api/uploadIcon endpoint with formData
-   * 
+   * @param formData a form with the field 'file' containing the image file to upload
+   * @returns A promise containing an object with 
    */
   public static async postIcon(formData: FormData): Promise<{ [key: string]: any }> {
     let result: { [key: string]: any } = {};
@@ -102,9 +102,13 @@ export default class FileSystemService {
     return result;
   }
 
-  public static async makeDirectory(originPath : string, directoryPath : string) : Promise<void> {
+  /**
+   * Creates a new empty directory at the path
+   * @param directoryPath The path of the desired directory, including the directory name at the end
+   */
+  public static async makeDirectory(directoryPath : string) : Promise<void> {
     try {
-      await fetch(originPath + '/api/createDirectory', {
+      await fetch('/api/createDirectory', {
           method: 'POST',
           body: JSON.stringify({path: directoryPath})
         })
@@ -121,9 +125,9 @@ export default class FileSystemService {
     }
   }
 
-  public static async delete(originPath : string, directoryPath : string) : Promise<void> {
+  public static async delete(directoryPath : string) : Promise<void> {
     try {
-      await fetch(originPath + '/api/delete', {
+      await fetch('/api/delete', {
           method: 'POST',
           body: JSON.stringify({path: directoryPath})
         })
@@ -141,13 +145,18 @@ export default class FileSystemService {
   }
 
 
-  public static async rename(originPath : string, path : string, newName: string) : Promise<void> {
+  /**
+   * Changes the name of a file or directory, while keeping the contents the same
+   * @param path The path of the file or directory to be renamed, from the source folder
+   * @param newName The new name of the path
+   */
+  public static async rename(path : string, newName: string) : Promise<void> {
 
     let splitPath : Array<string> = path.split("/");
     splitPath[splitPath.length-1] = newName;
     let newPath = splitPath.join("/");
     try {
-      await fetch(originPath + '/api/rename', {
+      await fetch('/api/rename', {
           method: 'POST',
           body: JSON.stringify({path: path, newPath: newPath})
         })
@@ -164,7 +173,12 @@ export default class FileSystemService {
     }
   }
   
-  public static async APIRequestUser() {
+  /**
+   * Makes a fetch operation that looks at the browser's current cookie and, if it exists, returns the current user
+   * @returns A promise that, when fulfilled, contains a JSON object with one field called "Id" being the current user
+   *          or nothing if there is no user
+   */
+  public static async APIRequestUser() : Promise<any> {
     let data;
     try{
     const res = await fetch("/api/getCurrentUser") 

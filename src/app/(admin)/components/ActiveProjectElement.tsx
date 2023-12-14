@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { Project, ProjectObject } from '@/app/(admin)/components/projectClass'; // Adjust the import path
+import { Project, ProjectObject } from '@/app/(admin)/classes/projectClass'; // Adjust the import path
 import ServerSidePaths from './ServerSidePaths'; // Adjust the import path
 import { validateProjectData } from '../lib/validation/project';
-import FileSystemService from './FileSystemService';
+import FileSystemService from '../classes/FileSystemService';
 import { z } from 'zod';
 import { TitleDuplicateException } from '../exceptions/TitleDuplicateException';
 import { toast } from 'react-toastify';
@@ -150,7 +150,7 @@ export const ActiveProjectElement: React.FC<ProjectItemProps> = ({
                   isTitleUnique(project.getTitle(), creatingProject);
                   project.setBeingEdited(false);
                   formattingProjectData();
-                  FileSystemService.rename('../', ServerSidePaths.getProjectPath(user) + `/${project.getpreviousTitle()}`,project.getTitle());
+                  FileSystemService.rename(ServerSidePaths.getProjectPath(user) + `/${project.getpreviousTitle()}`,project.getTitle());
                   //setTrigger(!trigger);
                 } catch(err) {
 

@@ -8,7 +8,7 @@ import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 import Cookies from "js-cookie";
 import { dataMaker } from '@/app/(admin)/classes/chartMaker'
 import { APIHandle } from '@/app/(admin)/classes/handlerClass'
-import Question, { MultipleChoice } from '@/app/(admin)/formCreation/question'
+import Question, { MultipleChoice } from '@/app/(admin)/classes/question'
 import { param } from 'cypress/types/jquery'
 
 export default function ChartPage(response: any) {

@@ -1,7 +1,7 @@
 import Token from "./Token";
-import Question, { MultipleChoice, Slider } from "./question";
-import { QuestionTypes } from "./question";
-import Nameable from "./Nameable";
+import Question, { MultipleChoice, Slider } from "../question";
+import { QuestionTypes } from "../question";
+import Nameable from "../../interfaces/Nameable";
 import _ from "lodash";
 
 

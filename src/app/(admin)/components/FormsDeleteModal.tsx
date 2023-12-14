@@ -1,10 +1,10 @@
 import React from 'react';
 import Modal from 'react-modal';
 import ServerSidePaths from './ServerSidePaths'; // Adjust the import path as needed
-import { ProjectObject } from './projectClass';
-import FileSystemService from './FileSystemService';
+import { ProjectObject } from '../classes/projectClass';
+import FileSystemService from '../classes/FileSystemService';
 import { toast } from 'react-toastify';
-import Form from '@/app/(admin)/formCreation/Form';
+import Form from '@/app/(admin)/classes/form/Form';
 
 interface DeleteConfirmModalProps {
   modalOpen: { currentModalTitle: string, isOpen: boolean };
@@ -30,7 +30,7 @@ const ProjectDeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ modalOpe
         const projectAltered = project.replace(/-/g, ' ');
         await FileSystemService.writeToJSONFile(forms, ServerSidePaths.getFormsPath(user, projectAltered).replace(/%20/g,' '));
         
-        FileSystemService.delete('../', ServerSidePaths.getProjectPath(user) + `/` + projectAltered.replace(/%20/g,' ') + `/${actionOnProject.itemTitle}`);
+        FileSystemService.delete(ServerSidePaths.getProjectPath(user) + `/` + projectAltered.replace(/%20/g,' ') + `/${actionOnProject.itemTitle}`);
     
         toast.info("Deleted " + actionOnProject.itemTitle);
         forms.forEach((form)=>form.name = form.getUncleanName())

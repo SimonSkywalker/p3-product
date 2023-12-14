@@ -1,5 +1,5 @@
-import Form from "@/app/(admin)/formCreation/Form";
-import Question, { MultipleChoice } from "@/app/(admin)/formCreation/question";
+import Form from "@/app/(admin)/classes/form/Form";
+import Question, { MultipleChoice } from "@/app/(admin)/classes/question";
 
 const agreeDisagreeRanges = {
   9: [

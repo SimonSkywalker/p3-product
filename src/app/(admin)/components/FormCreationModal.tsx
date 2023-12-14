@@ -1,14 +1,14 @@
 import React from 'react';
 import Modal from 'react-modal';
-import Form from '../formCreation/Form';
+import Form from '../classes/form/Form';
 import ServerSidePaths from './ServerSidePaths';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import ObjectAlreadyExistsException from '../exceptions/ObjectAlreadyExistsException';
-import FormValidator from '../formCreation/FormValidator';
-import FormBuilder from '../formCreation/FormBuilder';
+import FormValidator from '../classes/form/FormValidator';
+import FormBuilder from '../classes/form/FormBuilder';
 import { z } from 'zod';
-import FileSystemService from './FileSystemService';
+import FileSystemService from '../classes/FileSystemService';
 
 interface FormCreationModalProps {
   modalOpen: { currentModalTitle: string, isOpen: boolean };

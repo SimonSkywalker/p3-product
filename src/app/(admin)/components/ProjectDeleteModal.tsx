@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 import ServerSidePaths from './ServerSidePaths'; // Adjust the import path as needed
-import { ProjectObject } from './projectClass';
-import FileSystemService from './FileSystemService';
+import { ProjectObject } from '../classes/projectClass';
+import FileSystemService from '../classes/FileSystemService';
 import { toast } from 'react-toastify';
 
 interface DeleteConfirmModalProps {
@@ -25,7 +25,7 @@ const ProjectDeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ modalOpe
     projects.splice(actionOnProject.itemIndex, 1);
 
     await formattingProjectData();
-    FileSystemService.delete('../', ServerSidePaths.getProjectPath(user) + `/${actionOnProject.itemTitle}`);
+    FileSystemService.delete(ServerSidePaths.getProjectPath(user) + `/${actionOnProject.itemTitle}`);
     
     toast.info("Deleted " + actionOnProject.itemTitle);
 

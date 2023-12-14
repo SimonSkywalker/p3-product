@@ -1,5 +1,5 @@
 import NoObjectException from "@/app/(admin)//exceptions/NoObjectException";
-import Nameable from "./Nameable";
+import Nameable from "../interfaces/Nameable";
 
 
 /**

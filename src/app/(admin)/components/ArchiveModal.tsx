@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import ServerSidePaths from './ServerSidePaths'; // Adjust the import path as needed
-import { ProjectObject } from './projectClass';
+import { ProjectObject } from '../classes/projectClass';
 import { toast } from 'react-toastify';
 
 

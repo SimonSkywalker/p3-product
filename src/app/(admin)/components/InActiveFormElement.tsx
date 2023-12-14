@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Form from "../formCreation/Form";
+import Form from "../classes/form/Form";
 import ServerSidePaths from "./ServerSidePaths";
 
 

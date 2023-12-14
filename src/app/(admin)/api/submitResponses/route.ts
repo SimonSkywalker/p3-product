@@ -1,5 +1,5 @@
 // pages/api/submitResponses.ts
-import Form from '@/app/(admin)/formCreation/Form';
+import Form from '@/app/(admin)/classes/form/Form';
 import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import { NextRequest, NextResponse } from 'next/server';

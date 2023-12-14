@@ -1,8 +1,8 @@
 import z from "zod"
 
 import Form from "./Form";
-import Question from "./question";
-import { MultipleChoice, Slider } from "./question";
+import Question from "../question";
+import { MultipleChoice, Slider } from "../question";
 import ValidationError from "@/app/(admin)/exceptions/ValidationError";
 
 const nameMax : number = 60;

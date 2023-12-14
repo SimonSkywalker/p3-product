@@ -3,8 +3,8 @@ import { checkList } from "@/app/(admin)/classes/userClass";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import * as fs from "fs/promises"
-import FormBuilder from "@/app/(admin)/formCreation/FormBuilder";
-import Form from "@/app/(admin)/formCreation/Form";
+import FormBuilder from "@/app/(admin)/classes/form/FormBuilder";
+import Form from "@/app/(admin)/classes/form/Form";
 
 export async function POST(request: NextRequest, response: NextResponse){
     const token = cookies().get('token');

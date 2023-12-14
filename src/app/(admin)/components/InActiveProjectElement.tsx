@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ServerSidePaths from "./ServerSidePaths";
 import internal from "stream";
-import { ProjectObject } from "./projectClass";
+import { ProjectObject } from "../classes/projectClass";
 
 interface InactiveProjectProps {
     project: ProjectObject;

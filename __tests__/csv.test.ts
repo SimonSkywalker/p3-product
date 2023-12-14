@@ -1,9 +1,9 @@
 import {expect, jest, test} from '@jest/globals'
 import _ from "lodash"
 import z, { ZodError } from "zod";
-import ResponseCsvMaker from '@/app/(admin)/components/CsvMaker';
-import { ResponseData } from '@/app/(admin)/components/CsvMaker';
-import Form from '@/app/(admin)/formCreation/Form';
+import ResponseCsvMaker from '@/app/(admin)/classes/CsvMaker';
+import { ResponseData } from '@/app/(admin)/classes/CsvMaker';
+import Form from '@/app/(admin)/classes/form/Form';
 
 
 describe('ResponseCsvMaker', () => {
