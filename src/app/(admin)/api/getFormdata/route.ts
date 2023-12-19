@@ -11,8 +11,8 @@ export async function POST(request: NextRequest, response: NextResponse){
     const decoded = jwt.verify(token?.value, process.env.JWT_SECRET);
     
     const selectedForm  = (await request.json())?.selectedForm as string;
-    const editSelectedForm = selectedForm.replace(/-/g, "\\-").replace(/ /g, "-");    
-    const projectName = (cookies().get('projectName')?.value as string).replace(/(?<!\\)-/g," ").replace(/\\-/g,"-");
+    const editSelectedForm = selectedForm.replace(/ /g, "-");    
+    const projectName = (cookies().get('projectName')?.value as string).replace(/-/g," ");
     
     const forms = await checkList.findForms(decoded.userId, projectName); 
      
