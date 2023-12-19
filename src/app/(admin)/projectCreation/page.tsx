@@ -19,9 +19,10 @@ import Tabs from "../components/StateTabs";
 import ProjectCreationForm from "../components/CreateProject";
 import {ActiveProjectElement} from "../components/ActiveProjectElement";
 
-
-
-
+/**
+ * This page handels the overview of already made projects &
+ * the creation new ones
+ */
 export default function ProjectPage() {
   const router = useRouter();
   const { logout } = useAuth();
@@ -100,10 +101,11 @@ export default function ProjectPage() {
    * Function that calls the getJSONFile function,
    *  which returns all of the users projects as an array of ProjectInterfaces. 
    * The projects get redefined as ProjectObjects and are set as the state projects.
+   * @param theUser 
    */
   async function getProjects(theUser: string) {
     
-    console.log("get projects user ", user);
+    //console.log("get projects user ", user);
     
     const data: ProjectInterface[] = await FileSystemService.getJSONFile(ServerSidePaths.getProjectsPath(theUser)) as ProjectInterface[];
     
