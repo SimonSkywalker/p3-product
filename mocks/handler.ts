@@ -5,7 +5,7 @@ import userList from '@/app/(admin)/database/userLogins.json'
 import { checkList } from '@/app/(admin)/classes/userClass';
 import bcrypt from 'bcrypt';
 const jwt = require("jsonwebtoken");
-import FormBuilder from '@/app/(admin)/formCreation/FormBuilder';
+import FormBuilder from '@/app/(admin)/classes/form/FormBuilder';
 
 export const handlers = [
     rest.post('/api/getFormdata', (req, res, ctx) => {

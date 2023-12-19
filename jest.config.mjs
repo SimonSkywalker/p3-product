@@ -9,7 +9,7 @@ const createJestConfig = nextJest({
 /** @type {import('jest').Config} */
 const config = {
   // Add more setup options before each test is run
-  //setupFilesAfterEnv: ['/Users/simonthordal/p3-product/jest.setup.js'],
+  setupFilesAfterEnv: [process.cwd()+'/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
 }
  

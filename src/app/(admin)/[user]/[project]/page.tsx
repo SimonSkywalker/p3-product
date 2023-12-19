@@ -106,8 +106,8 @@ let Puge = ({params}:ProjectParams) => {
           selectedForm={selectedForm as Form}
           setSelectedForm={setSelectedForm}
           user={params.user}
-          project={params.project}>
-          </FormCreationModal>
+          project={params.project}
+          />
 
           <FormsDeleteModal
             modalOpen={modalOpen}
