@@ -5,14 +5,14 @@ import { LoginException } from "@/app/(admin)/exceptions/LoginException";
 import { loginFormSchema } from "@/app/(admin)/lib/validations/loginForm";
 
 //Used for login
-interface FormData {
+interface LoginFormData {
   username: string;
   password: string;
 
 }
 
 //Used for registration
-interface RegFormData extends FormData {
+interface RegFormData extends LoginFormData {
   confirmPassword: string;
 }
 
@@ -22,7 +22,7 @@ interface RegFormData extends FormData {
  */
 export class LoginHandler{
 
-  protected _formData: FormData = {
+  protected _formData: LoginFormData = {
   username: '',
   password: '',
   }
@@ -34,7 +34,7 @@ export class LoginHandler{
     this._formData = value;
   }
 
-  protected _validationErrors: FormData = {
+  protected _validationErrors: LoginFormData = {
     username: '',
     password: '',
     }
@@ -49,7 +49,7 @@ export class LoginHandler{
   /**
    * Used to clear Validation Errors data
    */
-  public static cleanData(form: FormData){
+  public static cleanData(form: LoginFormData){
     form.username  = '';
     form.password = '';
   }
@@ -104,7 +104,7 @@ export class ErrorCheck{
   /**
    * Login Validation Error handling
    */
-  public static errorValidationLogin(Error: any, outputError: FormData){
+  public static errorValidationLogin(Error: any, outputError: LoginFormData){
     
     //Cleans the validation data
     LoginHandler.cleanData(outputError);
