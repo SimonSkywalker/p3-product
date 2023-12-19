@@ -1,40 +1,13 @@
 import {promises as fs} from "fs"
 import { RegisterException } from '@/app/(admin)/exceptions/RegisterException';
-import { user } from "@nextui-org/react";
 import Form from "@/app/(admin)/classes/form/Form";
-import Question, { MultipleChoice } from "@/app/(admin)/classes/question";
+import { MultipleChoice } from "@/app/(admin)/classes/question";
 
 interface UserObject{
     Username: string
     Password: string
     DisplayName: string
 }
-
-/* interface Question {
-    description: string;
-    mandatory: boolean;
-    userDisplay: boolean;
-    questionType: number;
-    saveRole: boolean;
-    options?: string[]; // options is an optional array of strings
-    type?: number;
-    range?: number;
-  } */
-  
-  interface Token {
-    [key: string]: {
-      isUsed: boolean;
-    };
-  }
-  
-  interface FormObject {
-    name: string;
-    description: string;
-    questions: Question[];
-    tokens: Token[];
-    isActive: boolean;
-    parent: any[string];
-  }
 
 /**
  * Class to make a User with a usename, password & displayname
@@ -101,8 +74,8 @@ export class User{
             
         //Writes to database
         userList.push({Username: this.username, Password: this.password, DisplayName: this.displayName});
-        dataManipulation.saveListData(userList);
-        dataManipulation.makeUserFolder(this.username); 
+        DataManipulation.saveListData(userList);
+        DataManipulation.makeUserFolder(this.username); 
     }
 
     /**
@@ -169,15 +142,13 @@ export class checkList{
             });
     }
     /**
-     * findRoles
-     * @param userId 
-     * @param project 
-     * @param Form 
-     * @returns 
+     * Finds a list of all options makred "saveRole" within a form instance 
+     * @param Form an instance of the Form class
+     * @returns An array of strings
      */
-    public static findRoles(Form: Form) {
+    public static findRoles(Form: Form) : Array<string> {
         try {
-            const questionsWithSaveRole = Form.questions
+            const questionsWithSaveRole : Array<string> = Form.questions
             .filter((question) => {
                 if (question instanceof MultipleChoice) {
                     return question.saveRole;
@@ -192,11 +163,11 @@ export class checkList{
             });
                 
                 
-            const uniqueQuestions = Array.from(new Set(questionsWithSaveRole));
+            const uniqueQuestions : Array<string> = Array.from(new Set(questionsWithSaveRole));
                 
             return uniqueQuestions;
         } catch (error) {
-            
+            throw new Error();
         }
         
     }
@@ -206,7 +177,7 @@ export class checkList{
 /**
  * Class for changing or making new data in the database
  */
-class dataManipulation{
+class DataManipulation{
 
     /**
      * This method saves the list of user in its corresponding json file in database
