@@ -201,7 +201,6 @@ useEffect(() => {
       }
       catch (e: any) {
         currForm = new Form;
-        toast.error("Failed to get existing forms");
       }
       
       setForm(currForm);
