@@ -36,7 +36,7 @@ const agreeDisagreeRanges = {
   ],
 };
 
-export class dataMaker {
+export class DataMaker {
   private _dataSet = {
     roles: {},
     question: {},
