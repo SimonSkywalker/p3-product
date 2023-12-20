@@ -46,7 +46,7 @@ class FormCreator{
       question.renameOption(index, input);
       updateState();
     }}></Input>
-    <button className={"text-3xl text-align-center pl-2 pr-20"} onClick={() => {
+    <button className={"text-xl text-align-center ml-2 mt-2 mb-2 pl-3 pr-3 border rounded border-black hover:bg-white-400"} onClick={() => {
       question.removeOption(index);
       errors.cleanOption(question.number-1, index);
       updateState();
