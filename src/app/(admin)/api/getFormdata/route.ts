@@ -20,7 +20,7 @@ export async function POST(request: NextRequest, response: NextResponse){
     
     const formObject =  new FormBuilder().formFromObject(selectForm)
     const roleslist: any[] | undefined = checkList.findRoles(formObject)
-    const path = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${selectedForm}/responses.json`;
+    const path = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${editSelectedForm}/responses.json`;
     
     
     const responseFile = await fs.readFile(path, "utf8")
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest, response: NextResponse){
         const selectForm2 = forms2.find((form: any) => form._name == editOtherForm)
         const formObject2 =  new FormBuilder().formFromObject(selectForm2)
         const roleslist2: any[] | undefined = checkList.findRoles(formObject2)
-        const path2 = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${otherForm}/responses.json`;
+        const path2 = process.cwd() + `/src/app/(admin)/database/${decoded.userId}/${projectName}/${editOtherForm}/responses.json`;
         
         console.log(formObject);
         console.log(formObject2);
