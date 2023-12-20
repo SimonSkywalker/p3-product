@@ -6,7 +6,7 @@ import FeedbackArea from '@/app/(admin)/components/FeedbackArea'
 import { Suspense, useEffect, useState } from 'react'
 import { TokenValidator } from "@/app/(admin)/classes/tokenClass";
 import Cookies from "js-cookie";
-import { dataMaker } from '@/app/(admin)/classes/chartMaker'
+import { DataMaker } from '@/app/(admin)/classes/DataMaker'
 import { APIHandle } from '@/app/(admin)/classes/handlerClass'
 import Question, { MultipleChoice } from '@/app/(admin)/classes/question'
 import { param } from 'cypress/types/jquery'
@@ -23,8 +23,8 @@ export default function ChartPage(response: any) {
         questions: [{} as any]
       });
     
-    const [answerData, setAnswerData] = useState(new dataMaker);
-    const [answerData2, setAnswerData2] = useState(new dataMaker);
+    const [answerData, setAnswerData] = useState(new DataMaker);
+    const [answerData2, setAnswerData2] = useState(new DataMaker);
     const formData = response.searchParams;
 
     

@@ -16,7 +16,7 @@ import { act, render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 const params = {
-    user: 'sinagaming69', 
+    user: 'sinagaming', 
     project: 'burger', 
     form: '20-10', 
     tokenId: 'tokenId1'
